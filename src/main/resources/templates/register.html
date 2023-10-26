@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles.css">
+    <title>Car Wash</title>
+</head>
+<body>
+    <header class="header">
+        <img src="https://media.istockphoto.com/id/972855840/vector/car-wash-icon.jpg?s=2048x2048&w=is&k=20&c=iNb7oZXxRQW6qEfiHkXWnM1W58FBMKJSuvl3eY5Gb5s=" alt="carwash">
+            <nav>
+            <ul class="bar">
+                <li class="navigation"><a href="/index">Home</a></li>
+                <li class="navigation"><a href="/services">Services</a></li>
+                <li class="navigation"><a href="/register">Register</a></li>
+                <li class="navigation"><a href="/login">Login</a></li>
+                <li class="navigation"><a href="#">Logout</a></li>
+                <li class="navigation"><a href="#">About us</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="mainContainer">
+        <form method="POST">
+            <label for="username"><b>Username</b><span>*</span></label>
+            <input type="text" placeholder="Enter username" name="username" id="username" class="requiredInput" required>
+            
+            <label for="email"><b>Email</b><span>*</span></label>
+            <input type="text" placeholder="Enter Email" name="email" id="email" class="requiredInput" required>
+    
+            <label for="password"><b>Password</b><span>*</span></label>
+            <input type="password" placeholder="Enter Password" name="password" id="password" class="requiredInput" required>
+    
+            <label for="password-confirm"><b>Confirm Password</b><span>*</span></label>
+            <input type="password" placeholder="Confirm Password" name="password-confirm" id="password-confirm" class="requiredInput" required>
+    
+            <label for="first-name"><b>First Name</b></label>
+            <input type="text" placeholder="Your First Name" name="firstName" id="first-name">
+    
+            <label for="last-name"><b>Last Name</b></label>
+            <input type="text" placeholder="Your Last Name" name="lastName" id="last-name">
+    
+            <label for="city"><b>City</b></label>
+            <input type="text" placeholder="City Name" name="city" id="city">
+    
+            <button onclick="check()">Confirm</button>
+            </form>
+
+    </div>
+
+    <footer>
+        <span> SoftUni &copy Petyo Veselinov <script type="text/javascript">var year = new Date();document.write(year.getFullYear());</script>
+        </span>
+    </footer>
+    </body>
+</html>
