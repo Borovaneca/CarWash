@@ -1,0 +1,18 @@
+<header class="header">
+
+    <nav>
+        <ul class="bar">
+<!--            <li class="navigation"><a href="/" class="logo"><img src="https://media.istockphoto.com/id/972855840/vector/car-wash-icon.jpg?s=2048x2048&w=is&k=20&c=iNb7oZXxRQW6qEfiHkXWnM1W58FBMKJSuvl3eY5Gb5s=" alt="carwash"></a></li>-->
+            <li class="navigation"><a href="/">Home</a></li>
+            <li class="navigation"><a href="/services">Services</a></li>
+            <li class="navigation" sec:authorize="!isAuthenticated()"><a href="/users/register">Register</a></li>
+            <li class="navigation" sec:authorize="!isAuthenticated()"><a href="/users/login">Login</a></li>
+            <li class="navigation" sec:authorize="isAuthenticated()">
+            <form th:method="post" class="form-navigation" th:action="@{/users/logout}">
+                <input type="submit" class="btn-navigation" value="Logout" />
+            </form>
+            </li>
+            <li class="navigation"><a href="#">About us</a></li>
+        </ul>
+    </nav>
+</header>

@@ -1,4 +1,4 @@
-package com.example.carwash.model;
+package com.example.carwash.model.entity;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

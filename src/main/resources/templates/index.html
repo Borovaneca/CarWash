@@ -1,33 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/styles.css">
-    <script src="/static/alert.js"></script>
-    <title>Car Wash</title>
+<th:block th:replace="~{fragments/head.html}"></th:block>
 </head>
 <body>
-    <header class="header">
-        <img src="https://media.istockphoto.com/id/972855840/vector/car-wash-icon.jpg?s=2048x2048&w=is&k=20&c=iNb7oZXxRQW6qEfiHkXWnM1W58FBMKJSuvl3eY5Gb5s=" alt="carwash">
-            <nav>
-            <ul class="bar">
-            <li class="navigation"><a href="/index">Home</a></li>
-            <li class="navigation"><a href="/services">Services</a></li>
-            <li class="navigation"><a href="/register">Register</a></li>
-            <li class="navigation"><a href="/login">Login</a></li>
-            <li class="navigation"><a href="#">Logout</a></li>
-            <li class="navigation"><a href="#">About us</a></li>
-            </ul>
-        </nav>
-    </header>
+<th:block th:replace="~{fragments/navbar.html}"></th:block>
 
-    <div class="welcome">
-        Hello and welcome to <span>Car Wash!</span>
+    <div class="welcome" sec:authorize="isAuthenticated()">
+        Hello and welcome, <span sec:authorize="isAuthenticated()" sec:authentication="name">Car Wash!</span>
     </div>
 
-    <div class="mainContainer">
+<div class="guest" sec:authorize="!isAuthenticated()">
+    Please <a href="/users/login">LOGIN</a> if you already have an account or <a href="/users/register">REGISTER</a> !
+</div>
 
+    <div class="mainContainer-index">
+        <blockquote class="index-quote">
+            <h1>Welcome to CarWash!</h1>
+            Get your car sparkling clean with our premium car washing services. Our state-of-the-art facility uses the latest tools and technologies to make sure your car gets a perfect clean, inside and out.
+                We offer a range of car washing packages to suit your needs:
+            <br>
+            <br>
+            - The Works Wash: Our signature wash includes a presoak, tri-color foam bath, high-pressure rinse, hand wax and interior vacuum and windows cleaned. Your car will look showroom new!
+            <br>
+            - Express Wash: For a quick but thorough cleaning, our express wash hits all the key areas - exterior wash and rinse, towel dry and vacuum. Great for the busy driver on the go.
+            <br>
+            - Interior Detailing: Get the inside of your vehicle detailed with a thorough vacuum, windows cleaned, mats shampooed and a wipe down and polish of all interior surfaces.
+            <br>
+            Your satisfaction is 100% guaranteed. Our team of professional detailers treat every car with care and attention. Stop by today to experience the CarWash difference!
+
+        </blockquote>
     </div>
 
     <footer>

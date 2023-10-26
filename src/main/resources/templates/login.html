@@ -1,35 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../../../../../../Downloads/Spring%20Boot%20Intro/Spring-Boot-Intro/src/main/resources/static/styles.css">
-    <title>Car Wash</title>
+    <th:block th:replace="~{fragments/head.html}"></th:block>
 </head>
 <body>
-    <header class="header">
-        <img src="https://media.istockphoto.com/id/972855840/vector/car-wash-icon.jpg?s=2048x2048&w=is&k=20&c=iNb7oZXxRQW6qEfiHkXWnM1W58FBMKJSuvl3eY5Gb5s=" alt="carwash">
-            <nav>
-            <ul class="bar">
-                <li class="navigation"><a href="/index.html">Home</a></li>
-                <li class="navigation"><a href="/services.html">Services</a></li>
-                <li class="navigation"><a href="/register.html">Register</a></li>
-                <li class="navigation"><a href="/login.html">Login</a></li>
-                <li class="navigation"><a href="#">Logout</a></li>
-                <li class="navigation"><a href="#">About us</a></li>
-            </ul>
-        </nav>
-    </header>
+<th:block th:replace="~{fragments/navbar.html}"></th:block>
 
-    <div class="mainContainer">
-        <form action="POST">
+<div class="mainContainer">
+        <form th:method="post" th:action="@{/users/login}">
             <label for="username"><b>Username</b><span>*</span></label>
-            <input type="text" placeholder="Enter username" name="username" id="username" class="requiredInput" required>
+            <input type="text" placeholder="Enter username" name="username"
+                   id="username" class="requiredInput" required>
     
             <label for="password"><b>Password</b><span>*</span></label>
-            <input type="text" placeholder="Enter Password" name="password" id="password" class="requiredInput" required>
+            <input type="password" placeholder="Enter Password" name="password" id="password" class="requiredInput" required>
     
-            <button onclick="check()">Log In</button>
+            <button type="submit">Log In</button>
             </form>
 
     </div>

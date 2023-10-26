@@ -1,0 +1,30 @@
+.mainContainer-index {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    max-width: 100%;
+    margin: 22px;
+    max-height: 60vh;
+    color: white;
+    background: black;
+    opacity: 80%;
+    font-size: 3vh;
+}
+
+.welcome {
+    display: block;
+    color: wheat;
+    text-shadow: 2px 2px 5px black;
+    font-size: 5vh;
+    text-align: center;
+
+}
+
+.guest {
+    display: block;
+    color: wheat;
+    text-shadow: 2px 2px 5px black;
+    font-size: 5vh;
+    text-align: center;
+}
+
