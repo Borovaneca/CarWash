@@ -4,7 +4,7 @@
     justify-content: center;
     max-width: 100%;
     margin: 22px;
-    max-height: 60vh;
+    max-height: fit-content;
     color: white;
     background: black;
     opacity: 80%;

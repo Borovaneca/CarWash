@@ -32,10 +32,11 @@ public class SecurityConfiguration {
                         .loginPage("/users/login")
                         .usernameParameter("username")
                         .passwordParameter("password")
-                        .defaultSuccessUrl("/")
+                        .defaultSuccessUrl("/", true)
                         .failureForwardUrl("/users/login-error")
         ).logout(logout -> logout.logoutUrl("/users/logout")
                 .logoutSuccessUrl("/")
+                .deleteCookies("JSESSIONID")
                 .invalidateHttpSession(true)
         ).build();
     }

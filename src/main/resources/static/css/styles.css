@@ -113,40 +113,7 @@ b {
     justify-content: space-between;
 }
 
-/*.card {*/
-/*    display: flex;*/
-/*    flex-direction: column;*/
-/*    text-align: center;*/
-/*    color: white;*/
-/*    justify-content: space-around;*/
-/*    background-repeat: no-repeat;*/
-/*    width: 48vh;*/
-/*    height: 32vh;*/
-/*    background-image: url("https://th.bing.com/th/id/R.5c7425c93cdeb9dac7aa3a92912a96c8?rik=8mJEESTinJOZfA&riu=http%3a%2f%2fwww.cgarena.com%2fgallery%2f3d%2fdescription%2ffullimages%2ftruck_big.jpg&ehk=c1KF9qmC5cdBk9fyL1qlDRHUs6U6VxiDwwx1iAX2z90%3d&risl=&pid=ImgRaw&r=0");*/
-/*    background-size: cover;*/
-/*    opacity: 75%;*/
-/*    border-top-left-radius: 50%;*/
-/*    border-bottom-right-radius: 50%;*/
-/*    border: 2px solid black;*/
-/*}*/
 
-/*.card:nth-child(2) {*/
-/*    background-image: url('https://www.thedrive.com/content/archive-images/syclone-hero2.jpg?width=1920&quality=70');*/
-/*}*/
-
-/*.card:nth-child(3) {*/
-/*    background-image: url('https://th.bing.com/th/id/R.8fc9c64716ea393ca0c539ff0ca132f3?rik=IuM5EQ8kWU7SnQ&riu=http%3a%2f%2fwww.newcarreleasedates.com%2fuploads%2f1%2f8%2f5%2f5%2f1855303%2f6107158_orig.jpg&ehk=Lf%2buAZpV2oKIadtoIpAqhc5D8P3ppTaA4jye20WtNxU%3d&risl=&pid=ImgRaw&r=0&sres=1&sresct=1');*/
-/*}*/
-
-
-
-p {
-    color: black;
-    display: block;
-    width: 25vh;
-    margin-left: 12vh;
-    background-color: white;
-}
 
 .card-header {
     display: block;

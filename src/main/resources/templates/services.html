@@ -4,52 +4,20 @@
 <head>
     <th:block th:replace="~{fragments/head.html}"></th:block>
 </head>
-<body>
+<body onload="getServices()">
 <th:block th:replace="~{fragments/navbar.html}"></th:block>
 
 <div class="welcome">
-        Hello and welcome to Car Wash!
+        Those are our services!
     </div>
 
-    <div class="mainContainer-services">
+    <div id="services-container" class="mainContainer-services">
 
-        <div class="card">
-            <div class="card-header">
-                    <p>Truck Wash</p>
-                </div>
-            <div class="body">
-                <p>Internal washing: <span class="price">50$</span></p>
-                <p>External washing: <span class="price">60$</span></p>
-                <p>All inclusive: <span class="price">100$</span></p>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="card-header">
-                    <p>Pickup Wash</p>
-                </div>
-            <div class="body">
-                <p>Internal washing: <span class="price">35$</span></p>
-                <p>External washing: <span class="price">25$</span></p>
-                <p>All inclusive: <span class="price">50$</span></p>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="card-header">
-                    <p>Car Wash</p>
-                </div>
-            <div class="body">
-                <p>Internal washing: <span class="price">25$</span></p>
-                <p>External washing: <span class="price">15$</span></p>
-                <p>All inclusive: <span class="price">35$</span></p>
-            </div>
-        </div>
 
     </div>
 
     <footer>
-        <span> SoftUni &copy Petyo Veselinov <script type="text/javascript">var year = new Date();document.write(year.getFullYear());</script>
+        <span> SoftUni &copy Petyo Veselinov <script type="text/javascript">let year = new Date();document.write(year.getFullYear());</script>
         </span>
         </footer>
     </body>

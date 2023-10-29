@@ -1,9 +1,11 @@
 package com.example.carwash.init;
 
 import com.example.carwash.model.entity.Role;
+import com.example.carwash.model.entity.Service;
 import com.example.carwash.model.entity.User;
 import com.example.carwash.model.enums.RoleName;
 import com.example.carwash.repository.RoleRepository;
+import com.example.carwash.repository.ServiceRepository;
 import com.example.carwash.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -17,16 +19,18 @@ import java.util.Arrays;
 import java.util.List;
 
 @Component
-public class InitRoles implements CommandLineRunner {
+public class InitDB implements CommandLineRunner {
 
 
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
+    private final ServiceRepository serviceRepository;
 
     @Autowired
-    public InitRoles(RoleRepository roleRepository, UserRepository userRepository) {
+    public InitDB(RoleRepository roleRepository, UserRepository userRepository, ServiceRepository serviceRepository) {
         this.roleRepository = roleRepository;
         this.userRepository = userRepository;
+        this.serviceRepository = serviceRepository;
     }
 
     @Override
@@ -41,6 +45,12 @@ public class InitRoles implements CommandLineRunner {
                         roles.add(role);
                     });
             roleRepository.saveAll(roles);
+            if (this.serviceRepository.count() == 0) {
+                List<Service> services = new ArrayList<>();
+                List<String> serviceNames = List.of("Interior Detailing", "Express Wash", "The Works Wash");
+                serviceNames.forEach(name -> services.add(new Service(name)));
+                serviceRepository.saveAll(services);
+            }
             addAdmin();
         }
     }

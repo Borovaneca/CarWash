@@ -4,7 +4,7 @@
 <head>
 <th:block th:replace="~{fragments/head.html}"></th:block>
 </head>
-<body>
+<body onload="fetchIndex()">
 <th:block th:replace="~{fragments/navbar.html}"></th:block>
 
     <div class="welcome" sec:authorize="isAuthenticated()">
@@ -16,20 +16,13 @@
 </div>
 
     <div class="mainContainer-index">
-        <blockquote class="index-quote">
+        <blockquote id="index-response" class="index-quote">
             <h1>Welcome to CarWash!</h1>
             Get your car sparkling clean with our premium car washing services. Our state-of-the-art facility uses the latest tools and technologies to make sure your car gets a perfect clean, inside and out.
                 We offer a range of car washing packages to suit your needs:
             <br>
             <br>
-            - The Works Wash: Our signature wash includes a presoak, tri-color foam bath, high-pressure rinse, hand wax and interior vacuum and windows cleaned. Your car will look showroom new!
-            <br>
-            - Express Wash: For a quick but thorough cleaning, our express wash hits all the key areas - exterior wash and rinse, towel dry and vacuum. Great for the busy driver on the go.
-            <br>
-            - Interior Detailing: Get the inside of your vehicle detailed with a thorough vacuum, windows cleaned, mats shampooed and a wipe down and polish of all interior surfaces.
-            <br>
-            Your satisfaction is 100% guaranteed. Our team of professional detailers treat every car with care and attention. Stop by today to experience the CarWash difference!
-
+            <th:block sec:authorize="!isAuthenticated()">To see our services please <a href="/users/login">login</a>!</th:block>
         </blockquote>
     </div>
 
