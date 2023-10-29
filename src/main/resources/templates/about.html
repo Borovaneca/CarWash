@@ -4,20 +4,13 @@
 <head>
     <th:block th:replace="~{fragments/head.html}"></th:block>
 </head>
-<body onload="getServices()">
+<body onload="fetchIndex()">
 <th:block th:replace="~{fragments/navbar.html}"></th:block>
 
-<div class="welcome">
-        Those are our services!
-    </div>
 
-    <div id="services-container" class="mainContainer-services">
-
-
-    </div>
 
 <footer>
-    <th:block th:replace="~{fragments/footer.html}"></th:block>
+<th:block th:replace="~{fragments/footer.html}"></th:block>
 </footer>
-    </body>
+</body>
 </html>
