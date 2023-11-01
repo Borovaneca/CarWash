@@ -2,12 +2,15 @@ package com.example.carwash.service;
 
 import com.example.carwash.model.entity.Role;
 import com.example.carwash.model.entity.User;
+import com.example.carwash.model.enums.RoleName;
 import com.example.carwash.repository.UserRepository;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
+import java.util.stream.Collectors;
 
 public class LoginDetailsService implements UserDetailsService {
 
@@ -29,7 +32,7 @@ public class LoginDetailsService implements UserDetailsService {
     return org.springframework.security.core.userdetails.User
             .withUsername(user.getUsername())
             .password(user.getPassword())
-            .authorities(user.getRoles().stream().map(LoginDetailsService::map).toList())
+            .authorities(user.getRoles().stream().map(LoginDetailsService::map).collect(Collectors.toList()))
             .build();
     }
 

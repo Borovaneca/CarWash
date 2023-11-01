@@ -23,8 +23,10 @@ public class SecurityConfiguration {
         return httpSecurity.authorizeHttpRequests(
                 authorizeRequests -> authorizeRequests
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                        .requestMatchers("/", "/users/login", "/users/register", "/users/logout").permitAll()
-                        .requestMatchers("/appointments/awaiting").hasRole(RoleName.MODERATOR.name())
+                        .requestMatchers("/", "/users/login", "/users/register", "/about").permitAll()
+                        .requestMatchers("/api/about/").permitAll()
+                        .requestMatchers("/appointments/awaiting").hasRole(RoleName.MANAGER.name())
+                        .requestMatchers("/owner").hasRole(RoleName.OWNER.name())
                         .anyRequest().authenticated()
 
         ).formLogin(

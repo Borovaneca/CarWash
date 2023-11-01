@@ -1,18 +1,56 @@
-<header class="header">
-
-    <nav>
-        <ul class="bar">
-<!--            <li class="navigation"><a href="/" class="logo"><img src="https://media.istockphoto.com/id/972855840/vector/car-wash-icon.jpg?s=2048x2048&w=is&k=20&c=iNb7oZXxRQW6qEfiHkXWnM1W58FBMKJSuvl3eY5Gb5s=" alt="carwash"></a></li>-->
-            <li class="navigation"><a href="/">Home</a></li>
-            <li class="navigation"><a href="/services/view">Services</a></li>
-            <li class="navigation" sec:authorize="!isAuthenticated()"><a href="/users/register">Register</a></li>
-            <li class="navigation" sec:authorize="!isAuthenticated()"><a href="/users/login">Login</a></li>
-            <li class="navigation" sec:authorize="isAuthenticated()">
-            <form th:method="post" class="form-navigation" th:action="@{/users/logout}">
-                <input type="submit" class="btn-navigation" value="Logout" />
-            </form>
-            </li>
-            <li class="navigation"><a href="#">About us</a></li>
-        </ul>
+<header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
+        <div class="container">
+            <a class="navbar-brand" href="/"><img src="https://i.postimg.cc/nV60PfBg/favicon.png" width="47" alt="logo"></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" sec:authorize="!isAuthenticated()" href="/users/login">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" sec:authorize="!isAuthenticated()" href="/users/register">Register</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" sec:authorize="isAuthenticated()" href="/services/view">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/contact">Contact Us</a>
+                    </li>
+                    <li class="nav-item" sec:authorize="isAuthenticated()">
+                        <form th:action="@{/users/logout}" th:method="post">
+                        <input class="nav-link border-0 bg-transparent" type="submit" value="Logout"/>
+                        </form>
+                    </li>
+                    <li class="nav-item dropdown" sec:authorize="hasRole('OWNER')">
+                        <a class="nav-link dropdown-toggle" href="#" id="ownerNavbar" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Admin
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="#">Action</a>
+                            <a class="dropdown-item" href="#">Another action</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Something else here</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown" sec:authorize="hasRole('MANAGER')">
+                        <a class="nav-link dropdown-toggle" href="#" id="managerNavbar" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Manager
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="#">Action</a>
+                            <a class="dropdown-item" href="#">Another action</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Something else here</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </nav>
 </header>

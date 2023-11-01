@@ -3,10 +3,14 @@ package com.example.carwash.model.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Positive;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -17,7 +21,7 @@ import java.util.List;
 @Setter
 @Getter
 @EqualsAndHashCode(callSuper = true)
-public class User extends BaseEntity{
+public class User extends BaseEntity {
 
     @Column(nullable = false, unique = true)
     private String username;
@@ -25,7 +29,11 @@ public class User extends BaseEntity{
     @Column(nullable = false)
     private String password;
 
-    @Column String imageUrl;
+    @Column
+    private Integer age;
+
+    @Column
+    private String imageUrl;
 
     @Column
     private String firstName;
@@ -47,9 +55,20 @@ public class User extends BaseEntity{
     private boolean isActive;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinColumn(
-            name = "role_id", referencedColumnName = "id")
-    @JoinTable(name = "users_roles"
+    @JoinTable(
+        name = "users_roles",
+            joinColumns = { @JoinColumn(name = "user_id") },
+            inverseJoinColumns = { @JoinColumn(name = "role_id") }
     )
     private List<Role> roles;
+
+    @OneToMany(fetch = FetchType.EAGER)
+    private List<Vehicle> vehicles;
+
+    @OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
+    private List<Appointment> appointments;
+
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
 }

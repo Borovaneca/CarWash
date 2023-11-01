@@ -1,41 +1,40 @@
 package com.example.carwash.init;
 
-import com.example.carwash.model.entity.Role;
-import com.example.carwash.model.entity.Service;
-import com.example.carwash.model.entity.User;
+import com.example.carwash.model.entity.*;
 import com.example.carwash.model.enums.RoleName;
-import com.example.carwash.repository.RoleRepository;
-import com.example.carwash.repository.ServiceRepository;
-import com.example.carwash.repository.UserRepository;
+import com.example.carwash.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class InitDB implements CommandLineRunner {
 
-
-    private final RoleRepository roleRepository;
-    private final UserRepository userRepository;
     private final ServiceRepository serviceRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
+
 
     @Autowired
-    public InitDB(RoleRepository roleRepository, UserRepository userRepository, ServiceRepository serviceRepository) {
-        this.roleRepository = roleRepository;
-        this.userRepository = userRepository;
+    public InitDB(ServiceRepository serviceRepository, PasswordEncoder passwordEncoder, UserRepository userRepository, RoleRepository roleRepository) {
+
         this.serviceRepository = serviceRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
     }
 
     @Override
     public void run(String... args) throws Exception {
-        if (this.roleRepository.count() == 0) {
+        if (this.userRepository.count() == 0) {
             List<Role> roles = new ArrayList<>();
 
             Arrays.stream(RoleName.values())
@@ -52,21 +51,79 @@ public class InitDB implements CommandLineRunner {
                 serviceRepository.saveAll(services);
             }
             addAdmin();
+            addManager();
+            addEmployee();
+            addClient();
         }
+    }
+
+    private void addClient() {
+        User user = new User();
+        user.setUsername("Svetoslav");
+        user.setAge(23);
+        user.setPassword(passwordEncoder.encode("Svetoslav"));
+        user.setFirstName("Svetoslav");
+        user.setLastName("Petrov");
+        user.setEmail("svetoslav@abv.bg");
+        user.setCity("Vratsa");
+        user.setRegisteredOn(LocalDate.now());
+        user.setRoles(roleRepository.findAll()
+                .stream()
+                .filter(role -> role.getName().name().equals("USER"))
+                .collect(Collectors.toList()));
+        user.setImageUrl("https://th.bing.com/th/id/OIP.QL8ndxperzvCb5kebHpdxAHaKD?pid=ImgDet&rs=1");
+        userRepository.save(user);
+    }
+
+    private void addEmployee() {
+        User detailer = new User();
+        detailer.setUsername("Detailer");
+        detailer.setPassword(passwordEncoder.encode("detailer"));
+        detailer.setRoles(roleRepository.findAll()
+                .stream()
+                .filter(name -> !name.getName().name().equals("OWNER") &&
+                        !name.getName().name().equals("MANAGER"))
+                .collect(Collectors.toList()));
+        detailer.setCity("Vratsa");
+        detailer.setAge(23);
+        detailer.setEmail("borovanec@abv.bg");
+        detailer.setFirstName("Ivan");
+        detailer.setLastName("Ivanov");
+        detailer.setRegisteredOn(LocalDate.now());
+        detailer.setImageUrl("https://th.bing.com/th/id/OIP.QL8ndxperzvCb5kebHpdxAHaKD?pid=ImgDet&rs=1");
+        userRepository.save(detailer);
+    }
+
+    private void addManager() {
+        User manager = new User();
+        manager.setUsername("Manager");
+        manager.setPassword(passwordEncoder.encode("manager"));
+        manager.setRoles(roleRepository.findAll()
+                .stream()
+                .filter(name -> !name.getName().name().equals("OWNER"))
+                .collect(Collectors.toList()));
+        manager.setCity("Vratsa");
+        manager.setEmail("borovane@abv.bg");
+        manager.setFirstName("Ivan");
+        manager.setLastName("Ivanov");
+        manager.setAge(23);
+        manager.setRegisteredOn(LocalDate.now());
+        manager.setImageUrl("https://th.bing.com/th/id/OIP.QL8ndxperzvCb5kebHpdxAHaKD?pid=ImgDet&rs=1");
+        userRepository.save(manager);
     }
 
     private void addAdmin() {
         User admin = new User();
-        PasswordEncoder passwordEncoder = Pbkdf2PasswordEncoder.defaultsForSpringSecurity_v5_8();
         admin.setUsername("Borovaneca");
         admin.setPassword(passwordEncoder.encode("Borovaneca1"));
         admin.setRoles(roleRepository.findAll());
         admin.setCity("Vratsa");
+        admin.setAge(23);
         admin.setEmail("borovaneca@abv.bg");
         admin.setFirstName("Petyo");
         admin.setLastName("Veselinov");
         admin.setRegisteredOn(LocalDate.now());
-        admin.setActive(true);
+        admin.setImageUrl("https://i.ibb.co/CJ3Yqqt/69713466-3289830984390387-2336911265034665984-n.jpg");
         userRepository.save(admin);
     }
 }

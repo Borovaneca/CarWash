@@ -4,16 +4,8 @@
 <head>
 <th:block th:replace="~{fragments/head.html}"></th:block>
 </head>
-<body onload="fetchIndex()">
+<body>
 <th:block th:replace="~{fragments/navbar.html}"></th:block>
-
-    <div class="welcome" sec:authorize="isAuthenticated()">
-        Hello and welcome, <span sec:authorize="isAuthenticated()" sec:authentication="name">Car Wash!</span>
-    </div>
-
-<div class="guest" sec:authorize="!isAuthenticated()">
-    Please <a href="/users/login">LOGIN</a> if you already have an account or <a href="/users/register">REGISTER</a> !
-</div>
 
     <div class="mainContainer-index">
         <blockquote id="index-response" class="index-quote">
@@ -22,12 +14,17 @@
                 We offer a range of car washing packages to suit your needs:
             <br>
             <br>
-            <th:block sec:authorize="!isAuthenticated()">To see our services please <a href="/users/login">login</a>!</th:block>
+            <th:block sec:authorize="!isAuthenticated()">To see our services please <a href="/users/login">Login</a> or <a href="/users/register">Register</a>!</th:block>
+            <th:block sec:authorize="isAuthenticated()">
+                <script>
+                    fetchIndex()
+                </script>
+            </th:block>
         </blockquote>
     </div>
 
-<footer>
+
     <th:block th:replace="~{fragments/footer.html}"></th:block>
-</footer>
+
     </body>
 </html>

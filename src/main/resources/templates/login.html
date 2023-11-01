@@ -6,23 +6,67 @@
 </head>
 <body>
 <th:block th:replace="~{fragments/navbar.html}"></th:block>
+<section class="h-100 gradient-form">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-xl-10 ">
+                <div class="card rounded-3 text-black ">
+                    <div class="row g-0 ">
+                        <div class="col-lg-6 ">
+                            <div class="card-body p-md-5 mx-md-4 ">
 
-<div class="mainContainer">
-        <form th:method="post" th:action="@{/users/login}">
-            <label for="username"><b>Username</b><span>*</span></label>
-            <input type="text" placeholder="Enter username" name="username"
-                   id="username" class="requiredInput" required>
-    
-            <label for="password"><b>Password</b><span>*</span></label>
-            <input type="password" placeholder="Enter Password" name="password" id="password" class="requiredInput" required>
-    
-            <button type="submit">Log In</button>
-            </form>
+                                <div class="text-center">
+                                    <img src="https://i.postimg.cc/WpFj1zb8/logo.png"
+                                         style="width: 8rem;" alt="logo">
+                                    <h4 class="mt-1 mb-5 pb-1">We are Car Wash Team</h4>
+                                </div>
 
+                                <form th:action="@{/users/login}" method="post">
+                                    <p>Please login to your account</p>
+
+                                    <div class="form-outline mb-4">
+                                        <input type="text" id="username" name="username" class="form-control"
+                                               placeholder="Username"/>
+                                        <label class="form-label" for="username"></label>
+                                    </div>
+
+                                    <div class="form-outline mb-4">
+                                        <input type="password" placeholder="Password" id="password" name="password"
+                                               class="form-control"/>
+                                        <label class="form-label" for="password"></label>
+                                    </div>
+
+                                    <div class="text-center pt-1 mb-5 pb-1">
+                                        <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3"
+                                                type="submit">Log
+                                            in
+                                        </button>
+                                        <!--                                        <a class="text-muted" href="#!">Forgot password?</a>-->
+                                    </div>
+
+                                    <div class="d-flex align-items-center justify-content-center pb-4">
+                                        <p class="mb-0 me-2">Don't have an account?</p>
+                                        <button type="button" class="btn btn-outline-danger"
+                                                onclick="location.href = '/users/register'">Create new
+                                        </button>
+                                    </div>
+
+                                </form>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-6 d-flex align-items-center gradient-custom-2">
+                            <div class="text-black px-3 py-4 p-md-5 mx-md-4">
+                                <h4 class="mb-4">We are more than just a company</h4>
+                                <p class="small mb-0">At Car Wash, we're passionate about keeping your vehicle looking its best. Our state-of-the-art facilities and dedicated team of professionals are here to make your car shine like new. Whether you're a frequent visitor or a first-time customer, we're committed to delivering top-quality service and exceptional results.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-
-<footer>
-    <th:block th:replace="~{fragments/footer.html}"></th:block>
-</footer>
-    </body>
+</section>
+<th:block th:replace="~{fragments/footer.html}"></th:block>
+</body>
 </html>

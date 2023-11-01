@@ -1,0 +1,40 @@
+.card {
+    width: fit-content;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    padding: 20px;
+    margin: 10px;
+}
+
+/* Card Title */
+.video-container {
+    width: fit-content;
+}
+
+/* Card Content */
+.card-content {
+    font-size: 16px;
+    color: #555;
+    line-height: 1.6;
+}
+
+/* Card Button */
+.card-button {
+    display: inline-block;
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-decoration: none;
+    margin-top: 15px;
+}
+
+.card-button:hover {
+    background-color: #0056b3;
+}

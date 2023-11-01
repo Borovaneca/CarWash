@@ -7,36 +7,9 @@
 <body>
 <th:block th:replace="~{fragments/navbar.html}"></th:block>
 
-<div class="mainContainer">
-        <form method="POST">
-            <label for="username"><b>Username</b><span>*</span></label>
-            <input type="text" placeholder="Enter username" name="username" id="username" class="requiredInput" required>
-            
-            <label for="email"><b>Email</b><span>*</span></label>
-            <input type="text" placeholder="Enter Email" name="email" id="email" class="requiredInput" required>
-    
-            <label for="password"><b>Password</b><span>*</span></label>
-            <input type="password" placeholder="Enter Password" name="password" id="password" class="requiredInput" required>
-    
-            <label for="password-confirm"><b>Confirm Password</b><span>*</span></label>
-            <input type="password" placeholder="Confirm Password" name="password-confirm" id="password-confirm" class="requiredInput" required>
-    
-            <label for="first-name"><b>First Name</b></label>
-            <input type="text" placeholder="Your First Name" name="firstName" id="first-name">
-    
-            <label for="last-name"><b>Last Name</b></label>
-            <input type="text" placeholder="Your Last Name" name="lastName" id="last-name">
-    
-            <label for="city"><b>City</b></label>
-            <input type="text" placeholder="City Name" name="city" id="city">
-    
-            <button onclick="check()">Confirm</button>
-            </form>
+<th:block th:replace="~{fragments/register.html}"></th:block>
 
-    </div>
-
-<footer>
     <th:block th:replace="~{fragments/footer.html}"></th:block>
-</footer>
+
     </body>
 </html>

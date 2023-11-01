@@ -1,1 +1,62 @@
-<span> SoftUni &copy Petyo Veselinov <script type="text/javascript">var year = new Date();document.write(year.getFullYear());</script></span>
+<!-- Remove the container if you want to extend the Footer to full width. -->
+<footer id="site-footer" class="bg-dark text-center text-white">
+    <!-- Grid container -->
+    <div class="container p-4 pb-0">
+        <!-- Section: Social media -->
+        <section class="mb-4">
+            <!-- Facebook -->
+            <a class="btn btn-outline-light btn-floating m-1" href="https://facebook.com/borovaneca" role="button"
+            ><i class="fab fa-facebook-f"></i
+            ></a>
+
+            <!-- Twitter -->
+            <a class="btn btn-outline-light btn-floating m-1" href="https://twitter.com/VeselinovPetyo" role="button"
+            ><i class="fab fa-twitter"></i
+            ></a>
+
+            <!-- Instagram -->
+            <a class="btn btn-outline-light btn-floating m-1" href="https://www.instagram.com/petyo.veselinov"
+               role="button"
+            ><i class="fab fa-instagram"></i
+            ></a>
+
+            <!-- Linkedin -->
+            <a class="btn btn-outline-light btn-floating m-1"
+               href="https://www.linkedin.com/in/petyo-veselinov-57b838264/" role="button"
+            ><i class="fab fa-linkedin-in"></i
+            ></a>
+
+            <!-- Github -->
+            <a class="btn btn-outline-light btn-floating m-1" href="https://github.com/Borovaneca" role="button"
+            ><i class="fab fa-github"></i
+            ></a>
+        </section>
+        <!-- Section: Social media -->
+    </div>
+    <!-- Grid container -->
+
+    <!-- Copyright -->
+    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+        © 2023 Copyright:
+        <a class="text-white" href="https://petyoveselinov.com">PetyoVeselinov.com</a>
+    </div>
+    <!-- Copyright -->
+</footer>
+<script>
+    let lastScrollTop = 0;
+    const footer = document.getElementById('site-footer');
+
+    window.addEventListener('scroll', () => {
+        let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+        if (scrollTop > lastScrollTop) {
+            // Scrolling down
+            footer.style.transform = 'translateY(100%)';
+        } else {
+            // Scrolling up
+            footer.style.transform = 'translateY(0)';
+        }
+    });
+</script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

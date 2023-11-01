@@ -4,13 +4,41 @@
 <head>
     <th:block th:replace="~{fragments/head.html}"></th:block>
 </head>
-<body onload="fetchIndex()">
+<body onload="fetchAbout()">
 <th:block th:replace="~{fragments/navbar.html}"></th:block>
+<div id="about-container">
+<section id="where-are-we">
+    <h2>Where find us?</h2>
+    <div id="map"></div>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+        var map = L.map('map').setView([43.2103, 23.5623], 13);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
+        var redIcon = L.icon({
+            iconUrl: '/images/pointer.png',
+            iconSize: [32, 32],
+            iconAnchor: [16, 32],
+        });
 
+        L.marker([43.2103, 23.5623], { icon: redIcon }).addTo(map);
+    </script>
 
-<footer>
+    <p>
+        You can find us conveniently located at the heart of the city. Our address is 123 Car Wash Lane, Vratsa, State, Zip Code: 3000. We're easily accessible from all major roads, so bringing your vehicle to us is a breeze.
+    </p>
+</section>
+
+<section id="who-we-are">
+    <h2>Who we are?</h2>
+
+    <div id="team-member-container">
+    </div>
+</section>
+
+</div>
+
 <th:block th:replace="~{fragments/footer.html}"></th:block>
-</footer>
+
 </body>
 </html>
