@@ -22,6 +22,13 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/contact">Contact Us</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" sec:authorize="isAuthenticated()" th:text="${#authentication.principal.username}"
+                           th:href="@{/users/profile/{name}(name = ${#authentication.principal.username})}"></a>
+                    </li>
+                    <li class="nav-item" sec:authorize="isAuthenticated()">
+                        <a class="nav-link" href="/appointments/apply">Make Appointment</a>
+                    </li>
                     <li class="nav-item" sec:authorize="isAuthenticated()">
                         <form th:action="@{/users/logout}" th:method="post">
                         <input class="nav-link border-0 bg-transparent" type="submit" value="Logout"/>

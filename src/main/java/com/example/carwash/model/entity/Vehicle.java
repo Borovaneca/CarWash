@@ -25,4 +25,14 @@ public class Vehicle extends BaseEntity {
 
     @Column(nullable = false)
     private String color;
+
+    @Override
+    public String toString() {
+        return "Vehicle{" +
+                "imageUrl='" + imageUrl + '\'' +
+                ", brand='" + brand + '\'' +
+                ", model='" + model + '\'' +
+                ", color='" + color + '\'' +
+                '}';
+    }
 }

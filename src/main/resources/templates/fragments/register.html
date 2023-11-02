@@ -1,34 +1,52 @@
 <div class="card bg-light" style="width: 18rem; margin: 0 auto">
     <article class="card-body mx-auto" style="max-width: 400px;">
         <h4 class="card-title mt-3 text-center">Create Account</h4>
-        <form>
+        <small>Chose profile picture:</small>
+        <form th:method="post" th:action="@{/users/register}" th:object="${userRegisterDTO}" enctype="multipart/form-data">
+            <div class="form-group input-group">
+                <label for="image" class="h4 mb-2 text-white"></label>
+                <div class="input-group-prepend">
+                    <span class="input-group-text"> <i class="fa fa-image"></i> </span>
+                </div>
+                <input id="image"
+                       th:field="*{image}"
+                       class="form-control" type="file">
+            </div>
             <div class="form-group input-group">
                 <label for="username" class="h4 mb-2 text-white"></label>
                 <div class="input-group-prepend">
                     <span class="input-group-text"> <i class="fa fa-user"></i> </span>
                 </div>
-                <input id="username" name="username" class="form-control" placeholder="Username" type="text">
-            </div> <!-- form-group// -->
+                <input id="username"
+                       th:field="*{username}"
+                       class="form-control" placeholder="Username" type="text">
+            </div>
             <div class="form-group input-group">
                 <label for="email" class="h4 mb-2 text-white"></label>
                 <div class="input-group-prepend">
                     <span class="input-group-text"> <i class="fa fa-envelope"></i> </span>
                 </div>
-                <input id="email" name="email" class="form-control" placeholder="Email address" type="email">
+                <input id="email"
+                       th:field="*{email}"
+                       class="form-control" placeholder="Email address" type="email">
             </div>
             <div class="form-group input-group">
                 <label for="password" class="h4 mb-2 text-white"></label>
                 <div class="input-group-prepend">
                     <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
                 </div>
-                <input id="password" name="password" class="form-control" placeholder="Create password" type="password">
+                <input id="password"
+                       th:field="*{password}"
+                       class="form-control" placeholder="Create password" type="password">
             </div> <!-- form-group// -->
             <div class="form-group input-group">
                 <label for="confirmPassword" class="h4 mb-2 text-white"></label>
                 <div class="input-group-prepend">
                     <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
                 </div>
-                <input id="confirmPassword" name="confirmPassword" class="form-control" placeholder="Repeat password" type="password">
+                <input id="confirmPassword"
+                       th:field="*{confirmPassword}"
+                       class="form-control" placeholder="Repeat password" type="password">
             </div> <!-- form-group// -->
             <div class="form-group">
                 <button type="submit" class="btn btn-primary btn-block"> Create Account  </button>

@@ -5,10 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Positive;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -18,9 +15,9 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 @NoArgsConstructor
+@AllArgsConstructor
 @Setter
 @Getter
-@EqualsAndHashCode(callSuper = true)
 public class User extends BaseEntity {
 
     @Column(nullable = false, unique = true)
@@ -31,9 +28,6 @@ public class User extends BaseEntity {
 
     @Column
     private Integer age;
-
-    @Column
-    private String imageUrl;
 
     @Column
     private String firstName;
@@ -68,7 +62,30 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
     private List<Appointment> appointments;
 
+    @OneToOne(fetch = FetchType.EAGER)
+    private ProfileImage image;
+
     public String getFullName() {
         return firstName + " " + lastName;
+    }
+
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "username='" + username + '\'' +
+                ", password='" + "[PRIVATE]" + '\'' +
+                ", age=" + age +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", city='" + city + '\'' +
+                ", registeredOn=" + registeredOn +
+                ", isActive=" + isActive +
+                ", roles=" + roles +
+                ", vehicles=" + vehicles +
+                ", appointments=" + appointments +
+                ", image=" + image.getLocatedOn() +
+                '}';
     }
 }

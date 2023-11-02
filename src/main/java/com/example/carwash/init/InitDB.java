@@ -71,7 +71,6 @@ public class InitDB implements CommandLineRunner {
                 .stream()
                 .filter(role -> role.getName().name().equals("USER"))
                 .collect(Collectors.toList()));
-        user.setImageUrl("https://th.bing.com/th/id/OIP.QL8ndxperzvCb5kebHpdxAHaKD?pid=ImgDet&rs=1");
         userRepository.save(user);
     }
 
@@ -90,7 +89,6 @@ public class InitDB implements CommandLineRunner {
         detailer.setFirstName("Ivan");
         detailer.setLastName("Ivanov");
         detailer.setRegisteredOn(LocalDate.now());
-        detailer.setImageUrl("https://th.bing.com/th/id/OIP.QL8ndxperzvCb5kebHpdxAHaKD?pid=ImgDet&rs=1");
         userRepository.save(detailer);
     }
 
@@ -108,7 +106,6 @@ public class InitDB implements CommandLineRunner {
         manager.setLastName("Ivanov");
         manager.setAge(23);
         manager.setRegisteredOn(LocalDate.now());
-        manager.setImageUrl("https://th.bing.com/th/id/OIP.QL8ndxperzvCb5kebHpdxAHaKD?pid=ImgDet&rs=1");
         userRepository.save(manager);
     }
 
@@ -123,7 +120,6 @@ public class InitDB implements CommandLineRunner {
         admin.setFirstName("Petyo");
         admin.setLastName("Veselinov");
         admin.setRegisteredOn(LocalDate.now());
-        admin.setImageUrl("https://i.ibb.co/CJ3Yqqt/69713466-3289830984390387-2336911265034665984-n.jpg");
-        userRepository.save(admin);
+       userRepository.save(admin);
     }
 }
