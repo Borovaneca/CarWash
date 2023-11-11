@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <th:block th:replace="~{fragments/head.html}"></th:block>
+</head>
+<body>
+<th:block th:replace="~{fragments/navbar.html}"></th:block>
+
+<div class="content">
+
+    <div class="container">
+        <div class="row bg-light rounded mt-2">
+            <div class="col-md-5 mr-auto">
+                <h2>Contact Us</h2>
+                <p class="mb-5">Get your car sparkling clean with our premium car washing services. Our state-of-the-art facility uses the latest tools and technologies to make sure your car gets a perfect clean, inside and out.</p>
+
+                <ul class="list-unstyled pl-md-5 mb-5">
+                    <li class="d-flex text-black mb-2">
+                        <span class="mr-3"><i class="fa-solid fa-location-dot"></i></span> Odrin 1, Vratsa, <br> Bulgaria
+                    </li>
+                    <li class="d-flex text-black mb-2"><span class="mr-3"><i class="fa-solid fa-phone"></i></span> +359 (092) 777 777</li>
+                    <li class="d-flex text-black"><span class="mr-3"><i class="fa-solid fa-envelope"></i></span> carwash1303@gmail.com </li>
+                </ul>
+            </div>
+
+            <div class="col-md-6">
+                <form class="mb-5" method="post" id="contactForm" name="contactForm" th:action="@{/contact}" th:object="${contact}">
+                    <p class="alert alert-danger" th:if="${invalid}">All fields are required!</p>
+                    <p class="alert alert-success" th:if="${success}">
+                        Thank you for your message. We will get back to you as soon as possible.
+                    </p>
+
+                    <div class="row">
+                        <div class="col-md-12 form-group">
+                            <label for="name" class="col-form-label">Name</label>
+                            <input type="text" class="form-control" th:field="*{name}" id="name">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 form-group">
+                            <label for="email" class="col-form-label">Email</label>
+                            <input type="text" class="form-control"
+                                   th:field="*{email}" id="email"
+                                    th:errorclass="is-invalid">
+                            <span class="invalid-feedback bg-danger" th:if="${#fields.hasErrors('email')}">Invalid email!</span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12 form-group">
+                            <label for="message" class="col-form-label">Message</label>
+                            <textarea class="form-control" th:field="*{message}" id="message" cols="30" rows="7"></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <input type="submit" value="Send Message" class="btn btn-primary rounded-0 py-2 px-4">
+                            <span class="submitting"></span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<th:block th:replace="~{fragments/footer.html}"></th:block>
+</body>
+</html>

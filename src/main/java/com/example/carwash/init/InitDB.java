@@ -9,32 +9,33 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.*;
 
 @Component
 public class InitDB implements CommandLineRunner {
 
     private final ServiceRepository serviceRepository;
+    private final ProfileImageRepository profileImageRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
 
 
     @Autowired
-    public InitDB(ServiceRepository serviceRepository, PasswordEncoder passwordEncoder, UserRepository userRepository, RoleRepository roleRepository) {
+    public InitDB(ServiceRepository serviceRepository, ProfileImageRepository profileImageRepository, PasswordEncoder passwordEncoder, UserRepository userRepository, RoleRepository roleRepository) {
 
         this.serviceRepository = serviceRepository;
+        this.profileImageRepository = profileImageRepository;
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
     }
 
+    private ProfileImage profileImage;
     @Override
     public void run(String... args) throws Exception {
         if (this.userRepository.count() == 0) {
+            profileImage = profileImageRepository.save(new ProfileImage().setLocatedOn("http://localhost:8080/images/Borovaneca/69713466_3289830984390387_2336911265034665984_n.jpg"));
             List<Role> roles = new ArrayList<>();
 
             Arrays.stream(RoleName.values())
@@ -51,62 +52,7 @@ public class InitDB implements CommandLineRunner {
                 serviceRepository.saveAll(services);
             }
             addAdmin();
-            addManager();
-            addEmployee();
-            addClient();
         }
-    }
-
-    private void addClient() {
-        User user = new User();
-        user.setUsername("Svetoslav");
-        user.setAge(23);
-        user.setPassword(passwordEncoder.encode("Svetoslav"));
-        user.setFirstName("Svetoslav");
-        user.setLastName("Petrov");
-        user.setEmail("svetoslav@abv.bg");
-        user.setCity("Vratsa");
-        user.setRegisteredOn(LocalDate.now());
-        user.setRoles(roleRepository.findAll()
-                .stream()
-                .filter(role -> role.getName().name().equals("USER"))
-                .collect(Collectors.toList()));
-        userRepository.save(user);
-    }
-
-    private void addEmployee() {
-        User detailer = new User();
-        detailer.setUsername("Detailer");
-        detailer.setPassword(passwordEncoder.encode("detailer"));
-        detailer.setRoles(roleRepository.findAll()
-                .stream()
-                .filter(name -> !name.getName().name().equals("OWNER") &&
-                        !name.getName().name().equals("MANAGER"))
-                .collect(Collectors.toList()));
-        detailer.setCity("Vratsa");
-        detailer.setAge(23);
-        detailer.setEmail("borovanec@abv.bg");
-        detailer.setFirstName("Ivan");
-        detailer.setLastName("Ivanov");
-        detailer.setRegisteredOn(LocalDate.now());
-        userRepository.save(detailer);
-    }
-
-    private void addManager() {
-        User manager = new User();
-        manager.setUsername("Manager");
-        manager.setPassword(passwordEncoder.encode("manager"));
-        manager.setRoles(roleRepository.findAll()
-                .stream()
-                .filter(name -> !name.getName().name().equals("OWNER"))
-                .collect(Collectors.toList()));
-        manager.setCity("Vratsa");
-        manager.setEmail("borovane@abv.bg");
-        manager.setFirstName("Ivan");
-        manager.setLastName("Ivanov");
-        manager.setAge(23);
-        manager.setRegisteredOn(LocalDate.now());
-        userRepository.save(manager);
     }
 
     private void addAdmin() {
@@ -115,11 +61,30 @@ public class InitDB implements CommandLineRunner {
         admin.setPassword(passwordEncoder.encode("Borovaneca1"));
         admin.setRoles(roleRepository.findAll());
         admin.setCity("Vratsa");
+        admin.setActive(true);
         admin.setAge(23);
         admin.setEmail("borovaneca@abv.bg");
         admin.setFirstName("Petyo");
         admin.setLastName("Veselinov");
         admin.setRegisteredOn(LocalDate.now());
+        admin.setImage(profileImage);
+        admin.setSocialMedias(getSocialMedias(admin));
+        admin.setBio("Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis ducimus ad atque nulla. Reiciendis praesentium beatae quod cumque odit accusamus. Doloribus inventore voluptatem suscipit pariatur omnis aliquid non illo mollitia!");
        userRepository.save(admin);
+    }
+
+    private Set<SocialMedia> getSocialMedias(User admin) {
+        Set<SocialMedia> socialMedias = new HashSet<>();
+        SocialMedia facebook = new SocialMedia();
+        facebook.setType("facebook");
+        facebook.setLink("https://www.facebook.com/Borovaneca");
+        facebook.setUser(admin);
+        socialMedias.add(facebook);
+        SocialMedia github = new SocialMedia();
+        github.setType("github");
+        github.setLink("https://github.com/Borovaneca");
+        github.setUser(admin);
+        socialMedias.add(github);
+        return socialMedias;
     }
 }

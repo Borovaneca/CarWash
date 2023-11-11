@@ -1,10 +1,12 @@
 package com.example.carwash.web.controller;
 
 import com.example.carwash.model.dtos.UserRegisterDTO;
-import com.example.carwash.service.RegisterService;
+import com.example.carwash.service.RegisterServiceImpl;
+import com.example.carwash.service.interfaces.RegisterService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextHolderStrategy;
@@ -16,14 +18,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.security.Principal;
-
 @Controller
 public class RegisterController {
 
     private final RegisterService registerService;
-    private SecurityContextRepository securityContextRepository;
+    private final SecurityContextRepository securityContextRepository;
 
+
+    @Autowired
     public RegisterController(RegisterService registerService, SecurityContextRepository securityContextRepository) {
         this.registerService = registerService;
         this.securityContextRepository = securityContextRepository;

@@ -6,7 +6,7 @@ fetch('http://localhost:8080/api/about/').then(response => response.json())
         let teamContainer = document.createElement('div');
         teamContainer.classList.add('team-member');
         let image = document.createElement('img');
-        image.src = member.imageUrl;
+        image.src = member.image;
         image.alt = member.fullName;
         teamContainer.appendChild(image);
 

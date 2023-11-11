@@ -2,7 +2,7 @@ package com.example.carwash.config;
 
 import com.example.carwash.model.enums.RoleName;
 import com.example.carwash.repository.UserRepository;
-import com.example.carwash.service.LoginDetailsService;
+import com.example.carwash.service.LoginDetailsServiceImpl;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,8 +16,6 @@ import org.springframework.security.web.context.HttpSessionSecurityContextReposi
 import org.springframework.security.web.context.RequestAttributeSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
 
-
-// TODO REMEMBER ME !
 @Configuration
 public class SecurityConfiguration {
 
@@ -28,8 +26,9 @@ public class SecurityConfiguration {
         return httpSecurity.authorizeHttpRequests(
                 authorizeRequests -> authorizeRequests
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                        .requestMatchers("/", "/users/login", "/users/register", "/about").permitAll()
-                        .requestMatchers("/api/about/").permitAll()
+                        .requestMatchers("/", "/users/forgot-password", "/users/logout", "/users/register", "/users/login", "/users/register", "/about", "/users/login-error").permitAll()
+                            .requestMatchers("/api/about/", "/contact").permitAll()
+                        .requestMatchers("/users/reset-password/**").permitAll()
                         .requestMatchers("/appointments/awaiting").hasRole(RoleName.MANAGER.name())
                         .requestMatchers("/owner").hasRole(RoleName.OWNER.name())
                         .anyRequest().authenticated()
@@ -39,7 +38,7 @@ public class SecurityConfiguration {
                         .loginPage("/users/login")
                         .usernameParameter("username")
                         .passwordParameter("password")
-                        .defaultSuccessUrl("/", true)
+                        .defaultSuccessUrl("/")
                         .failureForwardUrl("/users/login-error")
         ).logout(logout -> logout.logoutUrl("/users/logout")
                 .logoutSuccessUrl("/")
@@ -50,7 +49,7 @@ public class SecurityConfiguration {
 
     @Bean
     public UserDetailsService userDetailsService(UserRepository userRepository) {
-        return new LoginDetailsService(userRepository);
+        return new LoginDetailsServiceImpl(userRepository);
     }
 
     @Bean

@@ -1,0 +1,38 @@
+    <!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/not-found.css">
+    <title>Not Found</title>
+</head>
+<body>
+<header>
+    <div class="head-text">
+        <p th:text="'User with username: ' + ${username} + ' was not found!'"></p>
+    </div>
+</header>
+<main>
+    <div class="main-wrapper">
+        <picture class="scarecrow-img">
+            <img src="https://raw.githubusercontent.com/nat-oku/devchallenges/main/Scarecrow.png" alt="scarecrow">
+        </picture>
+        <div class="error-text">
+            <h2>I have bad news for you</h2>
+            <p th:text="'User with the username: ' + ${username} + ' was not found!'"></p>
+            <span class="input-group-btn">
+          <button id="myButton" class="btn" onclick="">Back to homepage</button>
+        </span>
+        </div>
+    </div>
+
+</main>
+<th:block th:replace="~{fragments/footer.html}"></th:block>
+<script>
+    document.getElementById("myButton").onclick = function () {
+        location.href = "http://localhost:8080";
+    };
+</script>
+</body>
+</html>

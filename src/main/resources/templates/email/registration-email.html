@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Hello</title>
+</head>
+<body th:object="${UserService}">
+    <h1>Hello, <th:block th:text="${username}"></th:block></h1>
+Welcome to the CarWash!
+Please follow the link below to confirm your email address:
+<a th:href="@{'http://localhost:8080/confirm-email/token/' + ${token}}">Confirm Email</a>
+</body>
+</html>

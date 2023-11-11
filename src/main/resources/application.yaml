@@ -13,10 +13,15 @@ spring:
         show_sql: true
     hibernate:
       ddl-auto: update
-  sql:
-    init:
-      mode: never
   mvc:
     hiddenmethod:
       filter:
         enabled: true
+
+
+  mail:
+    carwash: carwash1303@gmail.com
+    host: smtp.gmail.com
+    port: 587
+    username: carwash1303@gmail.com
+    password: nbmpndmvsjofuvqv

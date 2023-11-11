@@ -10,6 +10,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @NoArgsConstructor
 @Setter
@@ -40,25 +41,32 @@ public class ProfileView {
 
     private String locatedOn;
 
+    private String bio;
+
+    private Set<SocialMediaView> socials;
+
     public String getFullName() {
         return firstName + " " + lastName;
     }
+
 
     @Override
     public String toString() {
         return "ProfileView{" +
                 "username='" + username + '\'' +
-                ", age=" + (age == null ? "[N/A]" : age) +
-                ", firstName='" + (firstName == null ? "[N/A]" : firstName) + '\'' +
-                ", lastName='" + (lastName == null ? "[N/A]" : lastName) + '\'' +
+                ", age=" + age +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
-                ", city='" + (city == null ? "[N/A]" : city) + '\'' +
+                ", city='" + city + '\'' +
                 ", registeredOn=" + registeredOn +
                 ", isActive=" + isActive +
                 ", role='" + role + '\'' +
                 ", vehicles=" + vehicles +
                 ", appointments=" + appointments +
                 ", locatedOn='" + locatedOn + '\'' +
+                ", bio='" + bio + '\'' +
+                ", socials=" + socials +
                 '}';
     }
 }

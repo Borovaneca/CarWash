@@ -2,18 +2,50 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
+    <script th:src="@{/js/profile.js}"></script>
     <th:block th:replace="~{fragments/head.html}"></th:block>
+
 </head>
-<body>
+<body th:object="${user}">
 <th:block th:replace="~{fragments/navbar.html}"></th:block>
+
+<div id="container-update-photo">
+    <form method="post" th:action="@{/users/change/image}" enctype="multipart/form-data">
+        <h5 class="d-inline-block">Choose a picture!</h5>
+        <button id="close" type="button" class="float-right btn-dark mr-2" onclick="hide('container-update-photo')">
+            Close
+        </button>
+        <input type="hidden" th:value="${user.getUsername()}" name="username"/>
+        <input id="input-file" type="file" name="image" accept="image/png, image/jpeg"/>
+        <p></p>
+        <button type="submit" id="upload-btn" class="btn btn-outline-danger" onclick="submit('container-update-photo')">
+            Submit
+        </button>
+    </form>
+</div>
+
+<div id="container-add-social">
+    <form method="post" th:action="@{/users/social/add/{username}(username = ${user.getUsername()})}">
+        <h5 class="d-inline-block">Insert the name and the url!</h5>
+        <button class="float-right btn-dark mr-2" onclick="submit('container-add-social')">Close</button>
+        <input type="hidden" th:value="${user.getUsername()}" name="username"/>
+        <input type="text" name="type" placeholder="Ex. Facebook, Instagram, Twitter"/>
+        <input type="text" placeholder="URL" name="link" id="Link"/>
+        <p></p>
+        <button type="submit" class="btn btn-outline-danger" onclick="submit('container-add-social')">Submit</button>
+    </form>
+</div>
 
 
 <div class="container emp-profile">
-    <form method="post" th:object="${user}">
+    <div>
         <div class="row">
             <div class="col-md-4">
                 <div class="profile-img">
                     <img th:src="*{locatedOn}" alt="Profile"/>
+                    <!--                    <a href="#" class="file btn btn-lg btn-primary" onclick="popup()" >-->
+                    <!--                        Change Photo-->
+                    <!--                    </a>-->
                 </div>
             </div>
             <div class="col-md-6">
@@ -23,33 +55,38 @@
                     <p class="proile-rating">APPOINTMENTS : <span th:text="*{appointments}"></span></p>
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
                         <li class="nav-item">
-                            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">About</a>
+                            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab"
+                               aria-controls="home" aria-selected="true">About</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Timeline</a>
+                            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
+                               aria-controls="profile" aria-selected="false">Timeline</a>
                         </li>
                     </ul>
                 </div>
             </div>
             <div class="col-md-2">
-                <a th:each="authority : ${#authentication.getAuthorities()}"
-                   th:if="${authority.getAuthority() == 'ROLE_MANAGER' or #authentication.principal.username == user.getUsername()}"
-                   th:href="@{/users/edit/{username}(username=${user.username})}" class="btn btn-outline-dark profile-edit-btn">Edit Profile</a>
+                <a th:if="${isAuthorized}"
+                   th:href="@{/users/edit/{username}(username=${user.username})}"
+                   class="btn btn-outline-info profile-edit-btn">Edit Profile</a>
+                <a th:if="${isAuthorized}"
+                   onclick="showForm('container-update-photo')" class="btn btn-outline-dark profile-edit-btn">Change
+                    Photo</a>
+                <a th:if="${isAuthorized}"
+                   onclick="showForm('container-add-social')" class="btn btn-outline-success profile-edit-btn">Add
+                    Social</a>
             </div>
         </div>
         <div class="row">
             <div class="col-md-4">
                 <div class="profile-work">
-                    <p>WORK LINK</p>
-                    <a href="">Website Link</a><br/>
-                    <a href="">Bootsnipp Profile</a><br/>
-                    <a href="">Bootply Profile</a>
-                    <p>SKILLS</p>
-                    <a href="">Web Designer</a><br/>
-                    <a href="">Web Developer</a><br/>
-                    <a href="">WordPress</a><br/>
-                    <a href="">WooCommerce</a><br/>
-                    <a href="">PHP, .Net</a><br/>
+                    <p>SOCIALS</p>
+                    <div th:each="social : *{socials}">
+                        <a th:href="${social.link}" th:text="${social.type.toUpperCase()}" th:target="_blank"></a>
+                        <form method="post" th:action="@{'/users/social/delete/' + ${username} + '/' + ${social.type}}" class="float-md-right">
+                            <button class="btn-dark ml-3" type="submit" th:if="${isAuthorized}">Remove</button>
+                        </form>
+                    </div>
                 </div>
             </div>
             <div class="col-md-8">
@@ -115,40 +152,25 @@
                         </div>
                         <div class="row">
                             <div class="col-md-6">
-                                <label>Is Banned</label>
+                                <label>Email Validated</label>
                             </div>
                             <div class="col-md-6">
-                                <p>230</p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label>English Level</label>
-                            </div>
-                            <div class="col-md-6">
-                                <p>Expert</p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label>Availability</label>
-                            </div>
-                            <div class="col-md-6">
-                                <p>6 months</p>
+                                <p th:text="*{isActive()} ? 'Yes' : 'No'"></p>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-12">
-                                <label>Your Bio</label><br/>
-                                <p>Your detail description</p>
+                                <label>Bio</label><br/>
+                                <p th:text="*{bio}"></p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </form>
+    </div>
 </div>
 <th:block th:replace="~{fragments/footer.html}"></th:block>
+
 </body>
 </html>

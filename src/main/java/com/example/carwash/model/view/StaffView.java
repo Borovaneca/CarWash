@@ -11,6 +11,8 @@ import lombok.Setter;
 @Getter
 public class StaffView {
 
+    private String image;
+
     private Integer age;
 
     private String fullName;

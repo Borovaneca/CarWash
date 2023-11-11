@@ -7,6 +7,12 @@
 <body>
 <th:block th:replace="~{fragments/navbar.html}"></th:block>
 
+<div id="email-not-validated" sec:authorize="isAuthenticated()">
+    <div th:unless="${emailNotValidated}" class="alert alert-danger text-center h4" >
+    <p>Please verify your email!</p>
+    </div>
+</div>
+
     <div class="mainContainer-index">
         <blockquote id="index-response" class="index-quote">
             <h1>Welcome to CarWash!</h1>

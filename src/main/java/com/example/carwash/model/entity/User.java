@@ -11,6 +11,7 @@ import org.hibernate.annotations.FetchMode;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -25,6 +26,9 @@ public class User extends BaseEntity {
 
     @Column(nullable = false)
     private String password;
+
+    @Column
+    private String bio;
 
     @Column
     private Integer age;
@@ -50,9 +54,9 @@ public class User extends BaseEntity {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-        name = "users_roles",
-            joinColumns = { @JoinColumn(name = "user_id") },
-            inverseJoinColumns = { @JoinColumn(name = "role_id") }
+            name = "users_roles",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "role_id")}
     )
     private List<Role> roles;
 
@@ -65,6 +69,11 @@ public class User extends BaseEntity {
     @OneToOne(fetch = FetchType.EAGER)
     private ProfileImage image;
 
+    @OneToMany(mappedBy = "user",
+            fetch = FetchType.EAGER,
+            cascade = CascadeType.ALL)
+    private Set<SocialMedia> socialMedias;
+
     public String getFullName() {
         return firstName + " " + lastName;
     }
@@ -74,7 +83,8 @@ public class User extends BaseEntity {
     public String toString() {
         return "User{" +
                 "username='" + username + '\'' +
-                ", password='" + "[PRIVATE]" + '\'' +
+                ", password='" + password + '\'' +
+                ", bio='" + bio + '\'' +
                 ", age=" + age +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
@@ -85,7 +95,8 @@ public class User extends BaseEntity {
                 ", roles=" + roles +
                 ", vehicles=" + vehicles +
                 ", appointments=" + appointments +
-                ", image=" + image.getLocatedOn() +
+                ", image=" + image +
+                ", socialMedias=" + socialMedias +
                 '}';
     }
 }

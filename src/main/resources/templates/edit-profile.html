@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <th:block th:replace="~{fragments/head.html}"></th:block>
+</head>
+<body>
+<th:block th:replace="~{fragments/navbar.html}"></th:block>
+
+<div class="px-2 py-5 mx-2 bg-transparent">
+    <div class="row d-flex m-5 bg-transparent justify-content-center">
+        <div class="card col-xl-7 col-lg-8 col-md-9 col-11 text-center" th:object="${profileEditDTO}">
+            <h5 class="text-center mb-4">Fields with <span class="text-danger">*</span> are required!</h5>
+            <form class="form-card"
+                  th:action="@{/users/edit/{username}(username=${username})}"
+                  th:method="post">
+                <div class="row justify-content-between text-left">
+                    <input type="hidden" th:field="*{id}"/>
+                    <div class="form-group col-sm-6 flex-column d-flex"><label
+                            class="form-control-label px-3">Email<span class="text-danger"> *</span></label>
+                        <input type="email" id="email"
+                               th:field="*{email}"
+                               th:value="*{email}"
+                                th:classappend="${#fields.hasErrors('email')} ? 'bg-danger'">
+                        <p class="text-center mb-4 alert alert-danger" th:if="${#fields.hasErrors('email')}"
+                           th:each="msg : ${#fields.errors('email')}"
+                           th:text="${msg}"></p>
+                    </div>
+                    <div class="form-group col-sm-6 flex-column d-flex"><label
+                            class="form-control-label px-3">Username<span class="text-danger"> *</span></label>
+                        <input type="text" id="username"
+                               th:value="*{username}"
+                               th:field="*{username}"
+                               th:classappend="${#fields.hasErrors('username')} ? 'bg-danger'"
+                               min="3" max="20" required>
+                        <p class="text-center mb-4 alert alert-danger" th:if="${#fields.hasErrors('username')}"
+                           th:each="msg : ${#fields.errors('username')}"
+                           th:text="${msg}"></p>
+                    </div>
+                </div>
+                <div class="row justify-content-between text-left">
+                    <div class="form-group col-sm-6 flex-column d-flex"><label
+                            class="form-control-label px-3">Password<span class="text-danger"> *</span></label>
+                        <input type="password" id="password"
+                               th:field="*{password}"
+                                th:classappend="${#fields.hasErrors('password')} ? 'bg-danger'">
+                        <p class="text-center mb-4 alert alert-danger" th:if="${#fields.hasErrors('password')}"
+                           th:each="msg : ${#fields.errors('password')}"
+                           th:text="${msg}"></p>
+                    </div>
+                    <div class="form-group col-sm-6 flex-column d-flex"><label
+                            class="form-control-label px-3">Confirm Password<span class="text-danger"> *</span></label>
+                        <input type="password" id="confirmPassword"
+                               th:field="*{confirmPassword}"
+                                th:classappend="${#fields.hasErrors('confirmPassword')} ? 'bg-danger'">
+                        <p class="text-center mb-4 alert alert-danger" th:if="${#fields.hasErrors('confirmPassword')}"
+                           th:each="msg : ${#fields.errors('confirmPassword')}"
+                           th:text="${msg}"></p>
+                    </div>
+                </div>
+                <div class="row justify-content-between text-left">
+                    <div class="form-group col-sm-6 flex-column d-flex">
+                        <label class="form-control-label px-3">First name
+                        </label> <input type="text" id="fname"
+                                        th:field="*{firstName}"
+                                        th:value="*{firstName}"
+                                        placeholder="Enter your first name">
+                    </div>
+                    <div class="form-group col-sm-6 flex-column d-flex">
+                        <label class="form-control-label px-3">Last name</label>
+                        <input type="text" id="lname"
+                               th:field="*{lastName}"
+                               th:value="*{lastName}"
+                               placeholder="Enter your last name">
+                    </div>
+                </div>
+                <div class="row justify-content-between text-left">
+                    <div class="form-group col-sm-6 flex-column d-flex"><label
+                            class="form-control-label px-3">Age</label>
+                        <input type="number" id="job"
+                               th:field="*{age}"
+                               th:value="*{age}"
+                               placeholder="Enter your age">
+                    </div>
+                    <div class="form-group col-sm-6 flex-column d-flex"><label
+                            class="form-control-label px-3">City</label>
+                        <input type="text" id="city"
+                               th:field="*{city}"
+                               th:value="*{city}"
+                               placeholder="Enter your city">
+                    </div>
+                </div>
+                <div class="row justify-content-between text-left">
+                    <div class="form-group col-12 flex-column d-flex">
+                        <label class="form-control-label px-3">Bio</label>
+                        <input type="text" id="ans"
+                               th:field="*{bio}"
+                               th:value="*{bio}"
+                               placeholder="Enter your bio">
+                    </div>
+                </div>
+                <div class="row justify-content-end">
+                    <div class="form-group col-sm-6">
+                        <button type="submit" class="btn btn-outline-dark bg-secondary">Submit</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+
+<th:block th:replace="~{fragments/footer.html}"></th:block>
+</body>
+</html>

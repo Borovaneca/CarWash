@@ -4,6 +4,7 @@ import com.example.carwash.model.entity.Role;
 import com.example.carwash.model.entity.User;
 import com.example.carwash.model.enums.RoleName;
 import com.example.carwash.model.view.ProfileView;
+import com.example.carwash.model.view.SocialMediaView;
 import com.example.carwash.model.view.StaffView;
 import com.example.carwash.repository.UserRepository;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class ViewService {
@@ -41,7 +44,19 @@ public class ViewService {
         profileView.setVehicles(user.getVehicles().size());
         profileView.setRegisteredOn(user.getRegisteredOn());
         profileView.setAppointments(user.getAppointments().size());
+        profileView.setBio(user.getBio());
+        profileView.setActive(user.isActive());
+        profileView.setSocials(getSocials(user));
         return profileView;
+    }
+
+    private Set<SocialMediaView> getSocials(User user) {
+        return user.getSocialMedias().stream().map(social -> {
+            SocialMediaView socialMediaView = new SocialMediaView();
+            socialMediaView.setType(social.getType());
+            socialMediaView.setLink(social.getLink());
+            return socialMediaView;
+        }).collect(Collectors.toSet());
     }
 
     public List<StaffView> getAllStaffViews() {
@@ -58,6 +73,7 @@ public class ViewService {
         staff.setFullName(user.getFullName());
         staff.setAge(user.getAge());
         staff.setPosition(getMajorRole(user.getRoles()));
+        staff.setImage(user.getImage().getLocatedOn());
         return staff;
     }
 
