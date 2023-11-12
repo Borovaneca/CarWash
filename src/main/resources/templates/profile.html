@@ -27,10 +27,12 @@
 <div id="container-add-social">
     <form method="post" th:action="@{/users/social/add/{username}(username = ${user.getUsername()})}">
         <h5 class="d-inline-block">Insert the name and the url!</h5>
-        <button class="float-right btn-dark mr-2" onclick="submit('container-add-social')">Close</button>
-        <input type="hidden" th:value="${user.getUsername()}" name="username"/>
-        <input type="text" name="type" placeholder="Ex. Facebook, Instagram, Twitter"/>
-        <input type="text" placeholder="URL" name="link" id="Link"/>
+        <button type="button" class="float-right btn-dark mr-2" onclick="hide('container-add-social')">Close</button>
+        <input type="hidden" th:value="${user.getUsername()}" name="username" required/>
+        <label for="type"></label>
+        <input type="text" placeholder="Ex. Facebook, Instagram, Twitter" name="type" id="type" required/>
+        <label for="Link"></label>
+        <input type="url" placeholder="URL" name="link" id="Link" required/>
         <p></p>
         <button type="submit" class="btn btn-outline-danger" onclick="submit('container-add-social')">Submit</button>
     </form>

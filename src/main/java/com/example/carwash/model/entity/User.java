@@ -60,7 +60,7 @@ public class User extends BaseEntity {
     )
     private List<Role> roles;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL)
     private List<Vehicle> vehicles;
 
     @OneToMany(mappedBy = "client", fetch = FetchType.EAGER)

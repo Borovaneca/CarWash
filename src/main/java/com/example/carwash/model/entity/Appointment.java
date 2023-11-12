@@ -22,8 +22,8 @@ public class Appointment extends BaseEntity {
     @Future
     private LocalDateTime madeFor;
 
-    @Column
-    private String question;
+    @OneToOne
+    private Service service;
 
     @Column(nullable = false)
     private Integer status = 0;

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<link rel="stylesheet" th:href="@{/css/vehicles.css}">
+<head>
+    <th:block th:replace="~{fragments/head.html}"></th:block>
+</head>
+<body onload="getVehicles()">
+<th:block th:replace="~{fragments/navbar.html}"></th:block>
+
+<div id="vehicle-container" class="table-responsive bg-light">
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Brand</th>
+            <th scope="col">Model</th>
+            <th scope="col">Color</th>
+            <th scope="col">Remove</th>
+        </tr>
+        </thead>
+        <tbody id="tbodyVehicles">
+        </tbody>
+    </table>
+</div>
+
+<th:block th:replace="~{/fragments/vehicleAddForm.html}" th:id="'vehicleAdd'" th:class="'hidden'"></th:block>
+
+<th:block th:replace="~{fragments/footer.html}"></th:block>
+<script th:src="@{/js/vehicles.js}"></script>
+</body>
+</html>

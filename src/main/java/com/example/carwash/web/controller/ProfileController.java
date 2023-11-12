@@ -133,8 +133,13 @@ public class ProfileController {
 
     @PostMapping("/social/add/{username}")
     public String addSocial(@PathVariable String username,
-                            SocialMediaAddDTO socialMediaAddDTO,
+                            @Valid SocialMediaAddDTO socialMediaAddDTO,
+                            BindingResult bindingResult,
                             @AuthenticationPrincipal UserDetails userDetails) throws InterruptedException {
+
+        if (bindingResult.hasErrors()) {
+            return "redirect:/users/view/" + socialMediaAddDTO.getUsername();
+        }
 
         checkIfAuthorized(userDetails, username);
 

@@ -2,26 +2,32 @@ package com.example.carwash.service;
 
 import com.example.carwash.model.entity.Role;
 import com.example.carwash.model.entity.User;
+import com.example.carwash.model.entity.Vehicle;
 import com.example.carwash.model.enums.RoleName;
 import com.example.carwash.model.view.ProfileView;
 import com.example.carwash.model.view.SocialMediaView;
 import com.example.carwash.model.view.StaffView;
+import com.example.carwash.model.view.VehicleView;
 import com.example.carwash.repository.UserRepository;
+import com.example.carwash.repository.VehicleRepository;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
 public class ViewService {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final VehicleRepository vehicleRepository;
 
-    public ViewService(UserRepository userRepository) {
+    public ViewService(UserRepository userRepository, VehicleRepository vehicleRepository) {
         this.userRepository = userRepository;
+        this.vehicleRepository = vehicleRepository;
     }
 
 
@@ -92,5 +98,19 @@ public class ViewService {
             }
         }
         return majorRole.getName().name();
+    }
+
+    public List<VehicleView> getVehiclesViewByUsername(String username) {
+        Optional<List<Vehicle>> vehicles = vehicleRepository.findByUserUsername(username);
+        return vehicles.map(vehicleList -> vehicleList.stream().map(this::toVehicleView).toList()).orElse(null);
+    }
+
+    private VehicleView toVehicleView(Vehicle vehicle) {
+        VehicleView vehicleView = new VehicleView();
+        vehicleView.setId(vehicle.getId());
+        vehicleView.setBrand(vehicle.getBrand());
+        vehicleView.setModel(vehicle.getModel());
+        vehicleView.setColor(vehicle.getColor());
+        return vehicleView;
     }
 }

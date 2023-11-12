@@ -1,0 +1,24 @@
+<div class="container px-5 my-5">
+    <form id="contactForm" class="bg-light rounded" th:method="post" th:action="@{/my-vehicles/add}">
+        <div class="form-floating mb-3">
+            <h1>Add vehicle</h1>
+            <p class="alert alert-danger" th:if="${invalidFields}">All fields are required!</p>
+            <input class="form-control" name="brand" id="brandBmwMercedesAudi" type="text" placeholder="Brand: BMW, Mercedes, Audi..." data-sb-validations="required" />
+            <label for="brandBmwMercedesAudi"></label>
+            <div class="invalid-feedback" data-sb-feedback="brandBmwMercedesAudi:required">is required.</div>
+        </div>
+        <div class="form-floating mb-3">
+            <input class="form-control" id="modelX3CClassRs4" name="model" type="text" placeholder="Model: X3, C-Class, RS4..." data-sb-validations="required" />
+            <label for="modelX3CClassRs4"></label>
+            <div class="invalid-feedback" data-sb-feedback="modelX3CClassRs4:required">is required.</div>
+        </div>
+        <div class="form-floating mb-3">
+            <input class="form-control" id="colorRedBlueGreen" name="color" type="text" placeholder="Color: Red, Blue, Green..." data-sb-validations="required" />
+            <label for="colorRedBlueGreen"></label>
+            <div class="invalid-feedback" data-sb-feedback="colorRedBlueGreen:required">is required.</div>
+        </div>
+        <div class="d-grid">
+            <button class="btn btn-primary btn-lg disabled" id="submitButton" type="submit">Submit</button>
+        </div>
+    </form>
+</div>

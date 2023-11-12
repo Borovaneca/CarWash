@@ -20,8 +20,8 @@ spring:
 
 
   mail:
-    carwash: carwash1303@gmail.com
+    carwash: ${EMAIL}
     host: smtp.gmail.com
     port: 587
-    username: carwash1303@gmail.com
-    password: nbmpndmvsjofuvqv
+    username: ${EMAIL}
+    password: ${EMAIL_PASSWORD}

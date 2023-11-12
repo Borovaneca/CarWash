@@ -4,19 +4,19 @@ import com.example.carwash.errors.UserNotFoundException;
 import com.example.carwash.model.dtos.ProfileEditDTO;
 import com.example.carwash.model.dtos.ProfileUpdateImageDTO;
 import com.example.carwash.model.dtos.SocialMediaAddDTO;
+import com.example.carwash.model.dtos.VehicleAddDTO;
 import com.example.carwash.model.entity.ResetPassword;
 import com.example.carwash.model.entity.SocialMedia;
 import com.example.carwash.model.entity.User;
+import com.example.carwash.model.entity.Vehicle;
 import com.example.carwash.model.events.ForgotPasswordEvent;
 import com.example.carwash.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class UserService {
@@ -27,15 +27,16 @@ public class UserService {
     private final ProfileImageService profileImageService;
     private final ResetService resetService;
     private final ApplicationEventPublisher applicationEventPublisher;
-
+    private final VehicleService vehicleService;
     @Autowired
-    public UserService(UserRepository userRepository, SocialMediaService socialMediaService, PasswordEncoder passwordEncoder, ProfileImageService profileImageService, ResetService resetService, ApplicationEventPublisher applicationEventPublisher) {
+    public UserService(UserRepository userRepository, SocialMediaService socialMediaService, PasswordEncoder passwordEncoder, ProfileImageService profileImageService, ResetService resetService, ApplicationEventPublisher applicationEventPublisher, VehicleService vehicleService) {
         this.userRepository = userRepository;
         this.socialMediaService = socialMediaService;
         this.passwordEncoder = passwordEncoder;
         this.profileImageService = profileImageService;
         this.resetService = resetService;
         this.applicationEventPublisher = applicationEventPublisher;
+        this.vehicleService = vehicleService;
     }
 
 
@@ -111,5 +112,36 @@ public class UserService {
             userRepository.save(user);
             socialMediaService.delete(media);
         }
+    }
+
+    private Vehicle mapToVehicleFromDTO(VehicleAddDTO vehicleAddDTO) {
+        Vehicle vehicle = new Vehicle();
+        vehicle.setBrand(vehicleAddDTO.getBrand());
+        vehicle.setModel(vehicleAddDTO.getModel());
+        vehicle.setColor(vehicleAddDTO.getColor());
+        return vehicle;
+    }
+
+    public void addVehicleToUser(String username, VehicleAddDTO vehicleAddDTO) {
+        Vehicle vehicle = mapToVehicleFromDTO(vehicleAddDTO);
+        User user = findByUsername(username);
+        user.getVehicles().add(vehicle);
+        vehicle.setUser(user);
+        userRepository.save(user);
+        vehicleService.save(vehicle);
+
+    }
+
+    public boolean removeVehicleFromUser(String username, Long id) {
+        User user = findByUsername(username);
+        Vehicle vehicle = vehicleService.findById(id);
+        if (vehicle == null) {
+            return false;
+        }
+
+        user.getVehicles().remove(vehicle);
+        vehicleService.delete(vehicle);
+        userRepository.save(user);
+        return true;
     }
 }

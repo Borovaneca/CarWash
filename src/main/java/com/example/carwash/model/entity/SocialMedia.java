@@ -12,10 +12,10 @@ import lombok.Setter;
 @NoArgsConstructor
 public class SocialMedia extends BaseEntity {
 
-    @Column
+    @Column(unique = true, nullable = false)
     private String type;
 
-    @Column
+    @Column(unique = true, nullable = false)
     private String link;
 
     @ManyToOne()
