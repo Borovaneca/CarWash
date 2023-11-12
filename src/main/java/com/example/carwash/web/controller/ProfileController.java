@@ -46,7 +46,7 @@ public class ProfileController {
     }
 
     @CrossOrigin(value = "*")
-    @GetMapping(value = "/view/{username}")
+    @GetMapping("/view/{username}")
     public String getProfile(@PathVariable String username, Model model,
                              @AuthenticationPrincipal UserDetails userDetails) {
 
@@ -89,7 +89,7 @@ public class ProfileController {
     @PostMapping("/edit/{username}")
     public String postProfile(@Valid ProfileEditDTO profileEditDTO, BindingResult bindingResult,
                               RedirectAttributes redirectAttributes,
-                              UserDetails userDetails,
+                              @AuthenticationPrincipal UserDetails userDetails,
                               @PathVariable String username) {
 
         checkIfAuthorized(userDetails, username);
@@ -102,7 +102,7 @@ public class ProfileController {
             }
             userService.update(profileEditDTO);
         }
-        return "redirect:/users/" + username;
+        return "redirect:/users/view/" + username;
     }
 
     private static void checkIfAuthorized(UserDetails userDetails, String username) {

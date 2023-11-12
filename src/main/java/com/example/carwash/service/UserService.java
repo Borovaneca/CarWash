@@ -42,15 +42,15 @@ public class UserService {
 
 
     public void update(ProfileEditDTO profileEditDTO) {
-        User user = userRepository.findById(profileEditDTO.getId()).get();
-
-        user.setFirstName(profileEditDTO.getFirstName());
-        user.setLastName(profileEditDTO.getLastName());
-        user.setCity(profileEditDTO.getCity());
-        user.setAge(profileEditDTO.getAge());
-        user.setBio(profileEditDTO.getBio());
-        user.setPassword(passwordEncoder.encode(profileEditDTO.getPassword()));
-        userRepository.save(user);
+        userRepository.findById(profileEditDTO.getId()).ifPresent(user -> {
+            user.setFirstName(profileEditDTO.getFirstName());
+            user.setLastName(profileEditDTO.getLastName());
+            user.setCity(profileEditDTO.getCity());
+            user.setAge(profileEditDTO.getAge());
+            user.setBio(profileEditDTO.getBio());
+            user.setPassword(passwordEncoder.encode(profileEditDTO.getPassword()));
+            userRepository.save(user);
+        });
     }
     public ProfileEditDTO getUserAndMapToProfileEditDTO(String username) {
         Optional<User> user = userRepository.findByUsername(username);
