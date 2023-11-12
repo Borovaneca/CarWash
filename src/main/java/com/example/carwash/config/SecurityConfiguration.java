@@ -3,6 +3,7 @@ package com.example.carwash.config;
 import com.example.carwash.model.enums.RoleName;
 import com.example.carwash.repository.UserRepository;
 import com.example.carwash.service.LoginDetailsServiceImpl;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,6 +20,10 @@ import org.springframework.security.web.context.SecurityContextRepository;
 @Configuration
 public class SecurityConfiguration {
 
+    private final String rememberKey;
+    public SecurityConfiguration(@Value("${spring.remember.key}") String rememberKey) {
+        this.rememberKey = rememberKey;
+    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity,
@@ -27,7 +32,7 @@ public class SecurityConfiguration {
                 authorizeRequests -> authorizeRequests
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                         .requestMatchers("/", "/users/forgot-password", "/users/logout", "/users/register", "/users/login", "/users/register", "/about", "/users/login-error").permitAll()
-                            .requestMatchers("/api/about/", "/contact").permitAll()
+                        .requestMatchers("/api/about/", "/contact").permitAll()
                         .requestMatchers("/users/reset-password/**").permitAll()
                         .requestMatchers("/appointments/awaiting").hasRole(RoleName.MANAGER.name())
                         .requestMatchers("/owner").hasRole(RoleName.OWNER.name())
@@ -44,9 +49,15 @@ public class SecurityConfiguration {
                 .logoutSuccessUrl("/")
                 .deleteCookies("JSESSIONID")
                 .invalidateHttpSession(true)
-        ).securityContext(securityContext -> securityContext.securityContextRepository(securityContextRepository)).build();
+        ).rememberMe(
+                rememberMe ->
+                        rememberMe
+                                .key(rememberKey)
+                                .rememberMeParameter("rememberme")
+                                .rememberMeCookieName("rememberme"))
+                .build();
     }
-
+// .securityContext(securityContext -> securityContext.securityContextRepository(securityContextRepository)).build();
     @Bean
     public UserDetailsService userDetailsService(UserRepository userRepository) {
         return new LoginDetailsServiceImpl(userRepository);

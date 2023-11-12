@@ -4,6 +4,7 @@ spring:
     url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/carwash?allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true&serverTimezone=UTC
     username: ${MYSQL_USER:root}
     password: ${MYSQL_PASSWORD:}
+
   jpa:
     database-platform: org.hibernate.dialect.MySQLDialect
     defer-datasource-initialization: true
@@ -13,11 +14,11 @@ spring:
         show_sql: true
     hibernate:
       ddl-auto: update
+
   mvc:
     hiddenmethod:
       filter:
         enabled: true
-
 
   mail:
     carwash: ${EMAIL}
@@ -25,3 +26,6 @@ spring:
     port: 587
     username: ${EMAIL}
     password: ${EMAIL_PASSWORD}
+
+  remember:
+    key: ${REMEMBER_KEY}
