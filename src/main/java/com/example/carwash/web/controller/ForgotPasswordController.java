@@ -10,8 +10,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class ForgotPasswordController {
@@ -44,7 +46,7 @@ public class ForgotPasswordController {
 
     @GetMapping("/users/reset-password/{username}/{token}")
     public String resetPassword(@PathVariable String username, @PathVariable String token,
-                                Model model) {
+                                @ModelAttribute ResetPasswordDTO resetPasswordDTO, Model model) {
         if (username == null || token == null) return "redirect:/";
         User user = userService.findByUsername(username);
         if (user == null) return "redirect:/";
@@ -60,13 +62,18 @@ public class ForgotPasswordController {
 
     @PostMapping("/users/reset-password/{username}/{token}")
     public String postResetPassword(@PathVariable String username, @PathVariable String token,
-                                @Valid ResetPasswordDTO resetPasswordDTO, BindingResult bindingResult,
-                                Model model) {
+                                    @Valid @ModelAttribute ResetPasswordDTO resetPasswordDTO,
+                                    BindingResult bindingResult,
+                                    RedirectAttributes redirectAttributes, Model model) {
             if (username == null || token == null) return "reset-password";
 
-        if (bindingResult.hasErrors()) return "reset-password";
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("resetPasswordDTO", resetPasswordDTO);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.resetPasswordDTO", bindingResult);
+            return "redirect:/users/reset-password/" + username + "/" + token ;
+        }
 
-        resetService.resetPasswordForUserAndDeleteToken(username, resetPasswordDTO.getPassword(), token);
+        resetService.resetPasswordForUserAndDeleteToken(username, resetPasswordDTO.getPassword());
         model.addAttribute("passwordChanged", true);
         model.addAttribute("username", username);
         model.addAttribute("token", token);

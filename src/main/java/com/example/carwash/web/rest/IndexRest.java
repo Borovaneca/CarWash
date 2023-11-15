@@ -2,7 +2,9 @@ package com.example.carwash.web.rest;
 
 import com.example.carwash.model.view.ServiceIndexView;
 import com.example.carwash.repository.ServiceRepository;
+import com.example.carwash.service.interfaces.ServiceService;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,21 +19,16 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/index")
 public class IndexRest {
 
-    private final ServiceRepository serviceRepository;
-    private final ModelMapper modelMapper;
+    private final ServiceService serviceService;
 
-    public IndexRest(ServiceRepository serviceRepository, ModelMapper modelMapper) {
-        this.serviceRepository = serviceRepository;
-        this.modelMapper = modelMapper;
+    @Autowired
+    public IndexRest(ServiceService serviceService) {
+        this.serviceService = serviceService;
     }
 
 
     @GetMapping("/")
     public ResponseEntity<List<ServiceIndexView>> getServices() {
-        return ResponseEntity.ok(serviceRepository
-                .findAll()
-                .stream()
-                .map(entity -> modelMapper.map(entity, ServiceIndexView.class))
-                .collect(Collectors.toList()));
+        return ResponseEntity.ok(serviceService.getAllServicesForIndex());
     }
 }

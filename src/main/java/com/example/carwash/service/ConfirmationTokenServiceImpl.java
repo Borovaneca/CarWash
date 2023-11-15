@@ -1,5 +1,7 @@
 package com.example.carwash.service;
 
+import com.example.carwash.constants.ExceptionMessages;
+import com.example.carwash.errors.TokenNotFoundException;
 import com.example.carwash.model.entity.ConfirmationToken;
 import com.example.carwash.model.entity.User;
 import com.example.carwash.repository.ConfirmationTokenRepository;
@@ -36,5 +38,10 @@ public class ConfirmationTokenServiceImpl implements ConfirmationTokenService {
     public void confirmEmail(User user) {
         user.setActive(true);
         userRepository.save(user);
+        confirmationTokenRepository.delete(confirmationTokenRepository.findByUserId(user.getId()).get());
+    }
+    @Override
+    public void deleteToken(ConfirmationToken valid) {
+        confirmationTokenRepository.delete(valid);
     }
 }

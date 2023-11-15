@@ -66,6 +66,7 @@ public class InitDB implements CommandLineRunner {
         admin.setEmail("borovaneca@abv.bg");
         admin.setFirstName("Petyo");
         admin.setLastName("Veselinov");
+        admin.setBanned(false);
         admin.setRegisteredOn(LocalDate.now());
         admin.setImage(profileImage);
         admin.setSocialMedias(getSocialMedias(admin));

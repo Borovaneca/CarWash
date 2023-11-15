@@ -1,21 +1,26 @@
 package com.example.carwash.config;
 
+import com.example.carwash.interceptor.BannedUserInterceptor;
 import com.example.carwash.model.enums.RoleName;
 import com.example.carwash.repository.UserRepository;
 import com.example.carwash.service.LoginDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.context.DelegatingSecurityContextRepository;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.RequestAttributeSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 @Configuration
 public class SecurityConfiguration {
@@ -28,13 +33,15 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity,
                                            SecurityContextRepository securityContextRepository) throws Exception {
-        return httpSecurity.authorizeHttpRequests(
+        return httpSecurity
+                .csrf(c -> c.ignoringRequestMatchers("/moderator/awaiting-approval/approve/**"))
+                .authorizeHttpRequests(
                 authorizeRequests -> authorizeRequests
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                         .requestMatchers("/", "/users/forgot-password", "/users/logout", "/users/register", "/users/login", "/users/register", "/about", "/users/login-error").permitAll()
                         .requestMatchers("/api/about/", "/contact").permitAll()
                         .requestMatchers("/users/reset-password/**").permitAll()
-                        .requestMatchers("/appointments/awaiting").hasRole(RoleName.MANAGER.name())
+                        .requestMatchers("/moderator/**").hasRole(RoleName.MANAGER.name())
                         .requestMatchers("/owner").hasRole(RoleName.OWNER.name())
                         .anyRequest().authenticated()
 
@@ -54,10 +61,10 @@ public class SecurityConfiguration {
                         rememberMe
                                 .key(rememberKey)
                                 .rememberMeParameter("rememberme")
-                                .rememberMeCookieName("rememberme"))
-                .build();
+                                .rememberMeCookieName("rememberme")
+                                .tokenValiditySeconds(2628000)
+                ).build();
     }
-// .securityContext(securityContext -> securityContext.securityContextRepository(securityContextRepository)).build();
     @Bean
     public UserDetailsService userDetailsService(UserRepository userRepository) {
         return new LoginDetailsServiceImpl(userRepository);

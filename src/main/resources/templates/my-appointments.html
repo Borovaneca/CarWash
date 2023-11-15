@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+  <th:block th:replace="~{fragments/head.html}"></th:block>
+</head>
+<body onload="myAppointments()">
+<th:block th:replace="~{fragments/navbar.html}"></th:block>
+
+<section class="ftco-section">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="table-wrap">
+          <table class="table table-responsive-sm table-striped bg-white">
+            <thead>
+            <tr>
+              <th>Created</th>
+              <th>Vehicle</th>
+              <th>For Date/Time</th>
+              <th>Service</th>
+              <th>Price</th>
+              <th>Status</th>
+            </tr>
+            </thead>
+            <tbody id="tbody">
+<!--            <tr>-->
+<!--              <th scope="row">1001</th>-->
+<!--              <td>Mark Otto</td>-->
+<!--              <td>Japan</td>-->
+<!--              <td>$3000</td>-->
+<!--              <td>$1200</td>-->
+<!--              <td class="d-flex justify-content-around">-->
+<!--                <form>-->
+<!--                  <button type="submit" class="btn btn-success"><i class="fa-solid fa-thumbs-up"></i></button>-->
+<!--                </form>-->
+<!--                  <form>-->
+<!--                      <button type="submit" class="btn btn-danger"><i class="fa-solid fa-thumbs-down"></i></button>-->
+<!--                  </form>-->
+<!--              </td>-->
+<!--            </tr>-->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<th:block th:replace="~{fragments/footer.html}"></th:block>
+<script th:src="@{/js/my-appointments.js}"></script>
+</body>
+</html>

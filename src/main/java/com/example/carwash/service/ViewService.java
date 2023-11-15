@@ -1,18 +1,24 @@
 package com.example.carwash.service;
 
+import com.example.carwash.model.entity.Appointment;
 import com.example.carwash.model.entity.Role;
 import com.example.carwash.model.entity.User;
 import com.example.carwash.model.entity.Vehicle;
 import com.example.carwash.model.enums.RoleName;
-import com.example.carwash.model.view.ProfileView;
-import com.example.carwash.model.view.SocialMediaView;
-import com.example.carwash.model.view.StaffView;
-import com.example.carwash.model.view.VehicleView;
+import com.example.carwash.model.view.*;
+import com.example.carwash.repository.AppointmentRepository;
+import com.example.carwash.repository.ServiceRepository;
 import com.example.carwash.repository.UserRepository;
 import com.example.carwash.repository.VehicleRepository;
+import com.example.carwash.service.interfaces.ServiceService;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -24,10 +30,19 @@ public class ViewService {
 
     private final UserRepository userRepository;
     private final VehicleRepository vehicleRepository;
+    private final ServiceRepository serviceRepository;
+    private final ServiceService serviceService;
+    private final ModelMapper modelMapper;
+    private final AppointmentRepository appointmentRepository;
 
-    public ViewService(UserRepository userRepository, VehicleRepository vehicleRepository) {
+    @Autowired
+    public ViewService(UserRepository userRepository, VehicleRepository vehicleRepository, ServiceRepository serviceRepository, ServiceService serviceService, ModelMapper modelMapper, AppointmentRepository appointmentRepository) {
         this.userRepository = userRepository;
         this.vehicleRepository = vehicleRepository;
+        this.serviceRepository = serviceRepository;
+        this.serviceService = serviceService;
+        this.modelMapper = modelMapper;
+        this.appointmentRepository = appointmentRepository;
     }
 
 
@@ -112,5 +127,51 @@ public class ViewService {
         vehicleView.setModel(vehicle.getModel());
         vehicleView.setColor(vehicle.getColor());
         return vehicleView;
+    }
+
+
+    public List<ServiceView> getServices() {
+        return serviceService.getAllServicesForServices();
+    }
+
+    public List<MyAppointmentView> getMyAppointments(String username) {
+        return appointmentRepository.findAllByUserUsername(username)
+                .stream()
+                .map(appointment -> modelMapper.map(appointment, MyAppointmentView.class))
+                .peek(appointment -> {
+                    LocalDateTime createOn = LocalDateTime.parse(appointment.getCreateOn());
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy/HH:mm");
+                    appointment.setCreateOn(createOn.format(formatter));})
+                .peek(appointment -> {
+                    LocalDateTime madeFor = LocalDateTime.parse(appointment.getMadeFor(), DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"));
+                    appointment.setMadeFor(madeFor.format(DateTimeFormatter.ofPattern("dd.MM.yyyy/HH:mm")));})
+                .peek(appointment -> {
+                    appointment.setStatus(switch (appointment.getStatus()) {
+                                case "1" -> "APPROVED";
+                                case "0" -> "PENDING";
+                                case "-1" -> "REJECTED";
+                                default -> "Unknown";
+                    });
+                })
+                .collect(Collectors.toList());
+    }
+
+    public List<AppointmentAwaitingApprovalView> getAwaitingApproval() {
+        return appointmentRepository.findAllByStatus(0)
+                .stream()
+                .map(this::toAppointmentAwaitingApprovalView)
+                .collect(Collectors.toList());
+    }
+
+    private AppointmentAwaitingApprovalView toAppointmentAwaitingApprovalView(Appointment appointment) {
+        AppointmentAwaitingApprovalView appointmentAwaitingApprovalView = new AppointmentAwaitingApprovalView();
+        appointmentAwaitingApprovalView.setCreateBy(appointment.getUser().getUsername());
+        appointmentAwaitingApprovalView.setCreateOn(DateTimeFormatter.ofPattern("dd.MM.yyyy/HH:mm").format(appointment.getCreateOn()));
+        appointmentAwaitingApprovalView.setMadeFor(DateTimeFormatter.ofPattern("dd.MM.yyyy/HH:mm").format(appointment.getMadeFor()));
+        appointmentAwaitingApprovalView.setVehicle(appointment.getVehicle().getFullCarInfo());
+        appointmentAwaitingApprovalView.setService(appointment.getService().getName());
+        appointmentAwaitingApprovalView.setPrice("$" + appointment.getService().getPrice());
+        appointmentAwaitingApprovalView.setId(appointment.getId().toString());
+        return appointmentAwaitingApprovalView;
     }
 }

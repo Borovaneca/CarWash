@@ -124,7 +124,6 @@ public class ProfileController {
 
         if (isValidUser(profileUpdateImageDTO.getUsername())) {
             userService.updateImage(profileUpdateImageDTO);
-            Thread.sleep(4000);
             return "redirect:/users/view/" + profileUpdateImageDTO.getUsername();
         } else {
             return "redirect:/";
@@ -170,7 +169,7 @@ public class ProfileController {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(UserNotFoundException.class)
     public ModelAndView onProfileNotFound(UserNotFoundException unfe) {
-        ModelAndView modelAndView = new ModelAndView("user-not-found");
+        ModelAndView modelAndView = new ModelAndView("error/user-not-found");
         modelAndView.addObject("username", unfe.getUsername());
         return modelAndView;
     }

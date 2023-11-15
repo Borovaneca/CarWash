@@ -52,6 +52,9 @@ public class User extends BaseEntity {
     @Column
     private boolean isActive;
 
+    @Column
+    private boolean isBanned;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_roles",
@@ -63,7 +66,7 @@ public class User extends BaseEntity {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL)
     private List<Vehicle> vehicles;
 
-    @OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Appointment> appointments;
 
     @OneToOne(fetch = FetchType.EAGER)
@@ -78,12 +81,11 @@ public class User extends BaseEntity {
         return firstName + " " + lastName;
     }
 
-
     @Override
     public String toString() {
         return "User{" +
                 "username='" + username + '\'' +
-                ", password='" + password + '\'' +
+                ", password='" + "[***]" + '\'' +
                 ", bio='" + bio + '\'' +
                 ", age=" + age +
                 ", firstName='" + firstName + '\'' +
@@ -92,6 +94,7 @@ public class User extends BaseEntity {
                 ", city='" + city + '\'' +
                 ", registeredOn=" + registeredOn +
                 ", isActive=" + isActive +
+                ", isBanned=" + isBanned +
                 ", roles=" + roles +
                 ", vehicles=" + vehicles +
                 ", appointments=" + appointments +

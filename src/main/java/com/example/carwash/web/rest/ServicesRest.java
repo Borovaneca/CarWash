@@ -1,8 +1,8 @@
 package com.example.carwash.web.rest;
 
 import com.example.carwash.model.view.ServiceView;
-import com.example.carwash.repository.ServiceRepository;
-import org.modelmapper.ModelMapper;
+import com.example.carwash.service.ViewService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,21 +14,16 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/services")
 public class ServicesRest {
 
-    private final ServiceRepository serviceRepository;
-    private final ModelMapper modelMapper;
+    private final ViewService viewService;
 
-    public ServicesRest(ServiceRepository serviceRepository, ModelMapper modelMapper) {
-        this.serviceRepository = serviceRepository;
-        this.modelMapper = modelMapper;
+    @Autowired
+    public ServicesRest(ViewService viewService) {
+        this.viewService = viewService;
     }
 
     @GetMapping("/")
     public ResponseEntity<List<ServiceView>> getServices() {
-        return ResponseEntity.ok(serviceRepository
-                .findAll()
-                .stream()
-                .map(service -> modelMapper.map(service, ServiceView.class))
-                .collect(Collectors.toList()));
+        return ResponseEntity.ok(viewService.getServices());
     }
 
 }

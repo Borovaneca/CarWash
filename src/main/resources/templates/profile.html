@@ -72,7 +72,7 @@
                    th:href="@{/users/edit/{username}(username=${user.username})}"
                    class="btn btn-outline-info profile-edit-btn">Edit Profile</a>
                 <a th:if="${isAuthorized}"
-                   onclick="showForm('container-update-photo')" class="btn btn-outline-dark profile-edit-btn">Change
+                   onclick="showForm('container-update-photo')" class="btn btn-outline-dark profile-edit-btn btn-sm">Change
                     Photo</a>
                 <a th:if="${isAuthorized}"
                    onclick="showForm('container-add-social')" class="btn btn-outline-success profile-edit-btn">Add

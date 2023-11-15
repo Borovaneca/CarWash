@@ -13,7 +13,7 @@ function getServices() {
                 video.width = "300";
                 video.height = "169";
                 video.src = 'https://www.youtube.com/embed/' + service.urlVideo;
-                video.title = "Video";
+                video.title = service.name;
                 let text = video.src;
                 videoContainer.appendChild(video).classList.add("video-container");
 
@@ -29,7 +29,7 @@ function getServices() {
                 cardDescription.classList.add("card-description")
 
                 let cardPrice = document.createElement('p');
-                cardPrice.textContent = '$' + service.price;
+                cardPrice.textContent = '$' + service.price + '0';
                 cardPrice.classList.add("card-price");
 
                 cardBody.appendChild(cardTitle)

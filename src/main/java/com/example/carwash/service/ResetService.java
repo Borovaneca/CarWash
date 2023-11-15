@@ -46,7 +46,7 @@ public class ResetService {
        return resetPasswordRepository.save(resetPassword);
     }
 
-    public void resetPasswordForUserAndDeleteToken(String username, String password, String token) {
+    public void resetPasswordForUserAndDeleteToken(String username, String password) {
         userRepository.findByUsername(username).ifPresent(us -> {
             us.setPassword(passwordEncoder.encode(password));
             userRepository.save(us);
@@ -56,7 +56,7 @@ public class ResetService {
     }
 
     public boolean isValid(String token, String username) {
-        Optional<ResetPassword> tokenFromDB = resetPasswordRepository.findByUsername(username);
-        return tokenFromDB.map(resetPassword -> resetPassword.getUsername().equals(username)).orElse(false);
+        Optional<ResetPassword> tokenFromDB = resetPasswordRepository.findByTokenAndUsername(token, username);
+        return tokenFromDB.map(resetPassword -> resetPassword.getUsername().equals(username) && resetPassword.getToken().equals(token)).orElse(false);
     }
 }

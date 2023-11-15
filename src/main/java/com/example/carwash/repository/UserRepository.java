@@ -17,4 +17,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByUsername(String username);
 
     Optional<User> findByEmail(String value);
+
+    @Query("SELECT u FROM User u WHERE u.isActive = :active and day(now()) - day(u.registeredOn) > 15")
+    Optional<List<User>> findByActive(boolean active);
 }

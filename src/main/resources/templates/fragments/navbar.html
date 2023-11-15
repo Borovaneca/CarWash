@@ -34,8 +34,8 @@
                             Appointments
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" sec:authorize="!hasRole('MANAGER')" href="/appointments/make">Make Appointment</a>
-                            <a class="dropdown-item" href="/appointments/view">My Appointments</a>
+                            <a class="dropdown-item" sec:authorize="!hasRole('MANAGER')" href="/appointments/make-appointment">Make Appointment</a>
+                            <a class="dropdown-item" href="/appointments/my-appointments">My Appointments</a>
                         </div>
                     </li>
                     <li class="nav-item" sec:authorize="isAuthenticated()">
@@ -59,7 +59,7 @@
                             Manager
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#">Action</a>
+                            <a class="dropdown-item" href="/moderator/awaiting-approval">Appointment Wait..</a>
                             <a class="dropdown-item" href="#">Another action</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="#">Something else here</a>

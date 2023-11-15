@@ -10,4 +10,6 @@ public interface ConfirmationTokenService {
     ConfirmationToken findByToken(String token);
 
     void confirmEmail(User user);
+
+    void deleteToken(ConfirmationToken valid);
 }

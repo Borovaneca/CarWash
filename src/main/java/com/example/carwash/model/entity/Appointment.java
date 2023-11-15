@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "appointments")
@@ -22,15 +23,18 @@ public class Appointment extends BaseEntity {
     @Future
     private LocalDateTime madeFor;
 
-    @OneToOne
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Service service;
 
     @Column(nullable = false)
     private Integer status = 0;
 
-    @OneToOne
+    @Column
+    private boolean expired;
+
+    @ManyToOne(fetch = FetchType.EAGER)
     private Vehicle vehicle;
 
-    @ManyToOne
-    private User client;
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    private User user;
 }

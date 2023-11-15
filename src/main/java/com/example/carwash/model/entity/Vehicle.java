@@ -1,12 +1,11 @@
 package com.example.carwash.model.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @Table(name = "vehicles")
@@ -27,6 +26,9 @@ public class Vehicle extends BaseEntity {
     @ManyToOne
     private User user;
 
+    @OneToMany(mappedBy = "vehicle")
+    private List<Appointment> appointments;
+
     @Override
     public String toString() {
         return "Vehicle{" +
@@ -34,5 +36,9 @@ public class Vehicle extends BaseEntity {
                 ", model='" + model + '\'' +
                 ", color='" + color + '\'' +
                 '}';
+    }
+
+    public String getFullCarInfo() {
+        return String.format("%s - %s - %s", brand, model, color);
     }
 }
