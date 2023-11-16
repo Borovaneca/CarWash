@@ -35,7 +35,7 @@ public class InitDB implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         if (this.userRepository.count() == 0) {
-            profileImage = profileImageRepository.save(new ProfileImage().setLocatedOn("http://localhost:8080/images/Borovaneca/69713466_3289830984390387_2336911265034665984_n.jpg"));
+            profileImage = profileImageRepository.save(new ProfileImage("https://statusneo.com/wp-content/uploads/2023/02/MicrosoftTeams-image551ad57e01403f080a9df51975ac40b6efba82553c323a742b42b1c71c1e45f1.jpg"));
             List<Role> roles = new ArrayList<>();
 
             Arrays.stream(RoleName.values())

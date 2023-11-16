@@ -1,5 +1,6 @@
 package com.example.carwash.service;
 
+import com.cloudinary.Cloudinary;
 import com.example.carwash.model.entity.ProfileImage;
 import com.example.carwash.repository.ProfileImageRepository;
 import com.example.carwash.repository.UserRepository;
@@ -13,38 +14,37 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Map;
+import java.util.UUID;
 
 @Service
 public class ProfileImageServiceImpl implements ProfileImageService {
 
     private final ProfileImageRepository profileImageRepository;
     private final UserRepository userRepository;
-    public static final String IMAGE_PATH = "C:/Users/borot/IdeaProjects/CarWash/src/main/resources/static/images/";
-    public static final String PATH_FOR_DB = "http://localhost:8080/images/";
+    private final Cloudinary cloudinary;
+
 
     @Autowired
-    public ProfileImageServiceImpl(ProfileImageRepository profileImageRepository, UserRepository userRepository) {
+    public ProfileImageServiceImpl(ProfileImageRepository profileImageRepository, UserRepository userRepository, Cloudinary cloudinary) {
         this.profileImageRepository = profileImageRepository;
         this.userRepository = userRepository;
+        this.cloudinary = cloudinary;
     }
 
     @Override
     public ProfileImage saveProfileImage(MultipartFile multipartFile, String username) {
 
         try {
-            String fileName = multipartFile.getOriginalFilename();
-            String fileDirectory = IMAGE_PATH + username;
-            String filePath = fileDirectory + "/" + fileName;
-            Path path = Path.of(fileDirectory);
-            boolean exists = Files.exists(path);
-            if (exists) {
-                File directory = new File(fileDirectory);
-                FileUtils.deleteDirectory(directory);
-            }
-            Files.createDirectories(path);
-            multipartFile.transferTo(new File(filePath));
+            String url = cloudinary
+                    .uploader()
+                    .upload(multipartFile.getBytes(), Map.of("public_id", UUID.randomUUID().toString()))
+                    .get("url").toString();
+
+            boolean exists = userRepository.findByUsername(username).isPresent();
+
             ProfileImage profileImage = exists ? userRepository.findByUsername(username).get().getImage() : new ProfileImage();
-            profileImage.setLocatedOn(PATH_FOR_DB + username + "/" + fileName);
+            profileImage.setLocatedOn(url);
             return profileImageRepository.save(profileImage);
         } catch (IOException e) {
             throw new RuntimeException(e);
