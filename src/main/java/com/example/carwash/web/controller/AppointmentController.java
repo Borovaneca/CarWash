@@ -1,7 +1,7 @@
 package com.example.carwash.web.controller;
 
 import com.example.carwash.model.dtos.AppointmentAddDTO;
-import com.example.carwash.service.ViewService;
+import com.example.carwash.service.interfaces.ViewService;
 import com.example.carwash.service.interfaces.AppointmentService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

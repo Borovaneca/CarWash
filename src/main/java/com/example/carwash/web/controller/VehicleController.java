@@ -1,9 +1,8 @@
 package com.example.carwash.web.controller;
 
 import com.example.carwash.model.dtos.VehicleAddDTO;
-import com.example.carwash.service.UserService;
+import com.example.carwash.service.interfaces.UserService;
 import jakarta.validation.Valid;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;

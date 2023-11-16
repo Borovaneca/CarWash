@@ -6,6 +6,7 @@ import com.example.carwash.events.events.ForgotPasswordEvent;
 import com.example.carwash.repository.ResetPasswordRepository;
 import com.example.carwash.repository.UserRepository;
 import com.example.carwash.service.interfaces.EmailService;
+import com.example.carwash.service.interfaces.ResetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,7 +16,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class ResetService {
+public class ResetServiceImpl implements ResetService {
 
 
     private final EmailService emailService;
@@ -24,7 +25,7 @@ public class ResetService {
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public ResetService(EmailService emailService, ResetPasswordRepository resetPasswordRepository, UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public ResetServiceImpl(EmailService emailService, ResetPasswordRepository resetPasswordRepository, UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.emailService = emailService;
         this.resetPasswordRepository = resetPasswordRepository;
         this.userRepository = userRepository;
@@ -33,11 +34,13 @@ public class ResetService {
 
 
 
+    @Override
     @EventListener(ForgotPasswordEvent.class)
     public void userResetPassword(ForgotPasswordEvent event) {
         emailService.sendResetPasswordEmail(event.getUsername(), event.getEmail(),  event.getToken());
     }
 
+    @Override
     public ResetPassword makeTokenAndSaveIt(User user) {
         ResetPassword resetPassword = new ResetPassword();
         resetPassword.setToken(UUID.randomUUID().toString());
@@ -46,6 +49,7 @@ public class ResetService {
        return resetPasswordRepository.save(resetPassword);
     }
 
+    @Override
     public void resetPasswordForUserAndDeleteToken(String username, String password) {
         userRepository.findByUsername(username).ifPresent(us -> {
             us.setPassword(passwordEncoder.encode(password));
@@ -55,6 +59,7 @@ public class ResetService {
 
     }
 
+    @Override
     public boolean isValid(String token, String username) {
         Optional<ResetPassword> tokenFromDB = resetPasswordRepository.findByTokenAndUsername(token, username);
         return tokenFromDB.map(resetPassword -> resetPassword.getUsername().equals(username) && resetPassword.getToken().equals(token)).orElse(false);

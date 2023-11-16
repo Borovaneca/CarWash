@@ -6,12 +6,11 @@ import com.example.carwash.model.entity.User;
 import com.example.carwash.repository.AppointmentRepository;
 import com.example.carwash.repository.ServiceRepository;
 import com.example.carwash.service.interfaces.AppointmentService;
+import com.example.carwash.service.interfaces.UserService;
 import jakarta.persistence.Transient;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class AppointmentServiceImpl implements AppointmentService {

@@ -3,6 +3,7 @@ package com.example.carwash.service;
 import com.example.carwash.model.entity.ProfileImage;
 import com.example.carwash.repository.ProfileImageRepository;
 import com.example.carwash.repository.UserRepository;
+import com.example.carwash.service.interfaces.ProfileImageService;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 @Service
-public class ProfileImageService {
+public class ProfileImageServiceImpl implements ProfileImageService {
 
     private final ProfileImageRepository profileImageRepository;
     private final UserRepository userRepository;
@@ -22,11 +23,12 @@ public class ProfileImageService {
     public static final String PATH_FOR_DB = "http://localhost:8080/images/";
 
     @Autowired
-    public ProfileImageService(ProfileImageRepository profileImageRepository, UserRepository userRepository) {
+    public ProfileImageServiceImpl(ProfileImageRepository profileImageRepository, UserRepository userRepository) {
         this.profileImageRepository = profileImageRepository;
         this.userRepository = userRepository;
     }
 
+    @Override
     public ProfileImage saveProfileImage(MultipartFile multipartFile, String username) {
 
         try {

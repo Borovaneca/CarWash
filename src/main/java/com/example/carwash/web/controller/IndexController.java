@@ -1,7 +1,7 @@
 package com.example.carwash.web.controller;
 
 import com.example.carwash.model.entity.User;
-import com.example.carwash.service.UserService;
+import com.example.carwash.service.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;

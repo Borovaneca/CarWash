@@ -19,12 +19,10 @@ import java.util.stream.Collectors;
 public class RemovingRejectedAppointments {
 
     private final AppointmentRepository appointmentRepository;
-    private final UserRepository userRepository;
     private final Logger logger = LoggerFactory.getLogger(RemovingRejectedAppointments.class);
 
-    public RemovingRejectedAppointments(AppointmentRepository appointmentRepository, UserRepository userRepository) {
+    public RemovingRejectedAppointments(AppointmentRepository appointmentRepository) {
         this.appointmentRepository = appointmentRepository;
-        this.userRepository = userRepository;
     }
 
 

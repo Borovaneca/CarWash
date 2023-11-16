@@ -3,16 +3,12 @@ package com.example.carwash.web.controller;
 import com.example.carwash.constants.ExceptionMessages;
 import com.example.carwash.errors.TokenNotFoundException;
 import com.example.carwash.model.entity.ConfirmationToken;
-import com.example.carwash.service.UserService;
 import com.example.carwash.service.interfaces.ConfirmationTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import java.time.LocalDateTime;
 
 @Controller
 public class ConfirmEmailController {

@@ -13,39 +13,40 @@ import com.example.carwash.events.events.ForgotPasswordEvent;
 import com.example.carwash.model.enums.RoleName;
 import com.example.carwash.repository.RoleRepository;
 import com.example.carwash.repository.UserRepository;
+import com.example.carwash.service.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.Optional;
 
 @Service
-public class UserService {
+public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final SocialMediaService socialMediaService;
+    private final SocialMediaServiceImpl socialMediaServiceImpl;
     private final PasswordEncoder passwordEncoder;
-    private final ProfileImageService profileImageService;
-    private final ResetService resetService;
+    private final ProfileImageServiceImpl profileImageServiceImpl;
+    private final ResetServiceImpl resetServiceImpl;
     private final ApplicationEventPublisher applicationEventPublisher;
-    private final VehicleService vehicleService;
+    private final VehicleServiceImpl vehicleServiceImpl;
     private final RoleRepository roleRepository;
     @Autowired
-    public UserService(UserRepository userRepository, SocialMediaService socialMediaService, PasswordEncoder passwordEncoder, ProfileImageService profileImageService, ResetService resetService, ApplicationEventPublisher applicationEventPublisher, VehicleService vehicleService, RoleRepository roleRepository) {
+    public UserServiceImpl(UserRepository userRepository, SocialMediaServiceImpl socialMediaServiceImpl, PasswordEncoder passwordEncoder, ProfileImageServiceImpl profileImageServiceImpl, ResetServiceImpl resetServiceImpl, ApplicationEventPublisher applicationEventPublisher, VehicleServiceImpl vehicleServiceImpl, RoleRepository roleRepository) {
         this.userRepository = userRepository;
-        this.socialMediaService = socialMediaService;
+        this.socialMediaServiceImpl = socialMediaServiceImpl;
         this.passwordEncoder = passwordEncoder;
-        this.profileImageService = profileImageService;
-        this.resetService = resetService;
+        this.profileImageServiceImpl = profileImageServiceImpl;
+        this.resetServiceImpl = resetServiceImpl;
         this.applicationEventPublisher = applicationEventPublisher;
-        this.vehicleService = vehicleService;
+        this.vehicleServiceImpl = vehicleServiceImpl;
         this.roleRepository = roleRepository;
     }
 
 
 
+    @Override
     public void update(ProfileEditDTO profileEditDTO) {
         userRepository.findById(profileEditDTO.getId()).ifPresent(user -> {
             user.setFirstName(profileEditDTO.getFirstName());
@@ -57,6 +58,7 @@ public class UserService {
             userRepository.save(user);
         });
     }
+    @Override
     public ProfileEditDTO getUserAndMapToProfileEditDTO(String username) {
         Optional<User> user = userRepository.findByUsername(username);
         return user.map(this::mapToProfileEditDTO).orElseThrow(() -> new UserNotFoundException("Username: " + username + " not found", username));
@@ -77,45 +79,52 @@ public class UserService {
         return profileEditDTO;
     }
 
+    @Override
     public User findByUsername(String username) {
         return userRepository.findByUsername(username).orElse(null);
     }
 
+    @Override
     public void updateImage(ProfileUpdateImageDTO profileUpdateImageDTO) {
-        profileImageService.saveProfileImage(profileUpdateImageDTO.getImage(), profileUpdateImageDTO.getUsername());
+        profileImageServiceImpl.saveProfileImage(profileUpdateImageDTO.getImage(), profileUpdateImageDTO.getUsername());
     }
 
+    @Override
     public void addSocialMedia(String username, SocialMediaAddDTO socialMediaAddDTO) {
         userRepository
                 .findByUsername(username)
                 .ifPresent(
                         user -> {
-                            user.getSocialMedias().add(socialMediaService.addSocialMediaToUser(socialMediaAddDTO, user
+                            user.getSocialMedias().add(socialMediaServiceImpl.addSocialMediaToUser(socialMediaAddDTO, user
                             ));
                             userRepository.save(user);
                         });
     }
 
+    @Override
     public void confirmEmail(User user) {
         userRepository.save(user);
     }
 
+    @Override
     public User findByEmail(String email) {
        return userRepository.findByEmail(email).orElse(null);
     }
 
+    @Override
     public void sendResetPasswordEmail(User user) {
-        ResetPassword reset = resetService.makeTokenAndSaveIt(user);
+        ResetPassword reset = resetServiceImpl.makeTokenAndSaveIt(user);
         applicationEventPublisher.publishEvent(new ForgotPasswordEvent(user, user.getEmail(), reset.getToken(), user.getUsername()));
     }
 
+    @Override
     public void deleteSocialMedia(String username, String socialName) {
         User user = userRepository.findByUsername(username).orElse(null);
         if (user != null) {
-            SocialMedia media = socialMediaService.getByNameAndUser(socialName, user);
+            SocialMedia media = socialMediaServiceImpl.getByNameAndUser(socialName, user);
             user.getSocialMedias().remove(media);
             userRepository.save(user);
-            socialMediaService.delete(media);
+            socialMediaServiceImpl.delete(media);
         }
     }
 
@@ -127,33 +136,37 @@ public class UserService {
         return vehicle;
     }
 
+    @Override
     public void addVehicleToUser(String username, VehicleAddDTO vehicleAddDTO) {
         Vehicle vehicle = mapToVehicleFromDTO(vehicleAddDTO);
         User user = findByUsername(username);
         user.getVehicles().add(vehicle);
         vehicle.setUser(user);
         userRepository.save(user);
-        vehicleService.save(vehicle);
+        vehicleServiceImpl.save(vehicle);
 
     }
 
+    @Override
     public boolean removeVehicleFromUser(String username, Long id) {
         User user = findByUsername(username);
-        Vehicle vehicle = vehicleService.findById(id);
+        Vehicle vehicle = vehicleServiceImpl.findById(id);
         if (vehicle == null) {
             return false;
         }
 
         user.getVehicles().remove(vehicle);
-        vehicleService.delete(vehicle);
+        vehicleServiceImpl.delete(vehicle);
         userRepository.save(user);
         return true;
     }
 
+    @Override
     public void save(User user) {
         userRepository.save(user);
     }
 
+    @Override
     public void addRoleToUserId(String role, Long userId) {
         roleRepository.findByName(RoleName.valueOf(role)).ifPresent(ro -> {
             userRepository.findById(userId).ifPresent(user -> {
@@ -164,6 +177,7 @@ public class UserService {
         });
     }
 
+    @Override
     public void banUserById(Long userId) {
         userRepository.findById(userId).ifPresent(user -> {
             user.setBanned(true);

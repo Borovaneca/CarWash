@@ -7,8 +7,8 @@ import com.example.carwash.model.dtos.ProfileEditDTO;
 import com.example.carwash.model.dtos.ProfileUpdateImageDTO;
 import com.example.carwash.model.dtos.SocialMediaAddDTO;
 import com.example.carwash.model.view.ProfileView;
-import com.example.carwash.service.UserService;
-import com.example.carwash.service.ViewService;
+import com.example.carwash.service.interfaces.ViewService;
+import com.example.carwash.service.interfaces.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -105,21 +105,15 @@ public class ProfileController {
         return "redirect:/users/view/" + username;
     }
 
-    private static void checkIfAuthorized(UserDetails userDetails, String username) {
-        if (!isAuthorized(userDetails, username)) {
-            throw new UnauthorizedException(ExceptionMessages.ACCESS_DENIED);
-        }
-    }
 
     @PostMapping("/change/image")
     public String editImage(
-            ProfileUpdateImageDTO profileUpdateImageDTO,
+            @Valid ProfileUpdateImageDTO profileUpdateImageDTO,
+            BindingResult bindingResult,
             @AuthenticationPrincipal UserDetails userDetails,
-            RedirectAttributes redirectAttributes) throws InterruptedException {
+            RedirectAttributes redirectAttributes) {
 
-        if (profileUpdateImageDTO.getImage().getOriginalFilename().isEmpty() ||
-                           !profileUpdateImageDTO.getImage().getOriginalFilename().endsWith(".jpg") &&
-                            !profileUpdateImageDTO.getImage().getOriginalFilename().endsWith(".png")) {
+        if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("invalidImage", true);
             return "redirect:/users/view/" + profileUpdateImageDTO.getUsername();
         }
@@ -130,7 +124,7 @@ public class ProfileController {
             userService.updateImage(profileUpdateImageDTO);
             return "redirect:/users/view/" + profileUpdateImageDTO.getUsername();
         } else {
-            return "redirect:/";
+            throw new UnauthorizedException("Not authorized for this action!");
         }
     }
 
@@ -138,7 +132,7 @@ public class ProfileController {
     public String addSocial(@PathVariable String username,
                             @Valid SocialMediaAddDTO socialMediaAddDTO,
                             BindingResult bindingResult,
-                            @AuthenticationPrincipal UserDetails userDetails) throws InterruptedException {
+                            @AuthenticationPrincipal UserDetails userDetails) {
 
         if (bindingResult.hasErrors()) {
             return "redirect:/users/view/" + socialMediaAddDTO.getUsername();
@@ -157,8 +151,7 @@ public class ProfileController {
     @PostMapping("/social/delete/{username}/{type}")
     public String deleteSocial(@PathVariable String username,
                             @PathVariable String type,
-                            @AuthenticationPrincipal UserDetails userDetails) throws InterruptedException {
-
+                            @AuthenticationPrincipal UserDetails userDetails) {
 
         if (isValidUser(username)) {
             checkIfAuthorized(userDetails, username);
@@ -185,25 +178,19 @@ public class ProfileController {
     }
 
     private boolean isValidUser(String username) {
-        if (userNotFound(username)) {
+        if (userService.findByUsername(username) == null) {
             throw new UserNotFoundException(ExceptionMessages.USER_NOT_FOUND, username);
         }
         return true;
     }
 
-
-    private boolean userNotFound(String username) {
-        return userService.findByUsername(username) == null;
+    private static void checkIfAuthorized(UserDetails userDetails, String username) {
+        if (!isAuthorized(userDetails, username)) {
+            throw new UnauthorizedException(ExceptionMessages.ACCESS_DENIED);
+        }
     }
 
     private static boolean isAuthorized(UserDetails userDetails, String username) {
-        boolean admin = !userDetails.getAuthorities().
-                stream().
-                filter(a -> a.getAuthority().equals("ROLE_OWNER")).
-                collect(Collectors.toSet()).isEmpty();
-
-        boolean user = username.equals(userDetails.getUsername());
-
         return !userDetails.getAuthorities().
                 stream().
                 filter(a -> a.getAuthority().equals("ROLE_OWNER")).

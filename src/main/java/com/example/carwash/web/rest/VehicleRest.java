@@ -1,7 +1,7 @@
 package com.example.carwash.web.rest;
 
 import com.example.carwash.model.view.VehicleView;
-import com.example.carwash.service.ViewService;
+import com.example.carwash.service.interfaces.ViewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

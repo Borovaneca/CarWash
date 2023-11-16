@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = ValidImageValidator.class)
 public @interface ValidImage {
 
-    String message() default "Image can't be null, please select one!";
+    String message() default "Image is not selected or is not valid!";
 
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};

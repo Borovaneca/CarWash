@@ -10,6 +10,7 @@ import com.example.carwash.model.view.*;
 import com.example.carwash.repository.AppointmentRepository;
 import com.example.carwash.repository.UserRepository;
 import com.example.carwash.service.interfaces.ServiceService;
+import com.example.carwash.service.interfaces.ViewService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -23,24 +24,25 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
-public class ViewService {
+public class ViewServiceImpl implements ViewService {
 
     private final UserRepository userRepository;
-    private final VehicleService vehicleService;
+    private final VehicleServiceImpl vehicleServiceImpl;
     private final ServiceService serviceService;
     private final ModelMapper modelMapper;
     private final AppointmentRepository appointmentRepository;
 
     @Autowired
-    public ViewService(UserRepository userRepository, VehicleService vehicleService, ServiceService serviceService, ModelMapper modelMapper, AppointmentRepository appointmentRepository) {
+    public ViewServiceImpl(UserRepository userRepository, VehicleServiceImpl vehicleServiceImpl, ServiceService serviceService, ModelMapper modelMapper, AppointmentRepository appointmentRepository) {
         this.userRepository = userRepository;
-        this.vehicleService = vehicleService;
+        this.vehicleServiceImpl = vehicleServiceImpl;
         this.serviceService = serviceService;
         this.modelMapper = modelMapper;
         this.appointmentRepository = appointmentRepository;
     }
 
 
+    @Override
     public ProfileView getProfileView(String username) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Username not found"));
@@ -67,6 +69,7 @@ public class ViewService {
         }).collect(Collectors.toSet());
     }
 
+    @Override
     public List<StaffView> getAllStaffViews() {
         return userRepository.findAll()
                 .stream()
@@ -98,15 +101,18 @@ public class ViewService {
         return majorRole.getName().name();
     }
 
+    @Override
     public List<VehicleView> getVehiclesViewByUsername(String username) {
-        return vehicleService.getVehiclesViewByUsernameAndGetVehicleView(username);
+        return vehicleServiceImpl.getVehiclesViewByUsernameAndGetVehicleView(username);
     }
 
 
+    @Override
     public List<ServiceView> getServices() {
         return serviceService.getAllServicesForServices();
     }
 
+    @Override
     public List<MyAppointmentView> getMyAppointments(String username) {
         return appointmentRepository.findAllByUserUsername(username)
                 .stream()
@@ -131,6 +137,7 @@ public class ViewService {
                 .collect(Collectors.toList());
     }
 
+    @Override
     public List<AppointmentAwaitingApprovalView> getAwaitingApproval() {
         return appointmentRepository.findAllByStatus(0)
                 .stream()
@@ -150,14 +157,17 @@ public class ViewService {
         return appointmentAwaitingApprovalView;
     }
 
+    @Override
     public List<AppointmentServiceDTO> getAllServices() {
         return serviceService.getAllServices();
     }
 
+    @Override
     public List<AppointmentVehicleDTO> getAllVehiclesByUserUsername(String username) {
-    return vehicleService.getAllVehiclesByUserUsername(username);
+    return vehicleServiceImpl.getAllVehiclesByUserUsername(username);
     }
 
+    @Override
     public List<AllUsersView> getAllUsers() {
         return userRepository.findAll()
                 .stream()
@@ -171,6 +181,7 @@ public class ViewService {
                 .collect(Collectors.toList());
     }
 
+    @Override
     public AllUsersView banUser(Long id) {
         return userRepository.findById(id).map(user -> {
             user.setBanned(true);
@@ -183,6 +194,7 @@ public class ViewService {
         }).orElse(null);
     }
 
+    @Override
     public List<AppointmentTodayView> getAppointmentsForToday() {
         List<AppointmentTodayView> views = appointmentRepository.findAllAppointmentsForToday()
                 .stream()

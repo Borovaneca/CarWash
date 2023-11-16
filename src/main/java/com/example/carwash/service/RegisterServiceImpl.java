@@ -27,17 +27,17 @@ public class RegisterServiceImpl implements RegisterService {
     private final PasswordEncoder passwordEncoder;
     private final UserDetailsService userDetailsService;
     private final ModelMapper modelMapper;
-    private final ProfileImageService profileImageService;
+    private final ProfileImageServiceImpl profileImageServiceImpl;
     private final RoleRepository roleRepository;
     private final ApplicationEventPublisher applicationEventPublisher;
     private final ConfirmationTokenService confirmationTokenService;
 
-    public RegisterServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, UserDetailsService userDetailsService, ModelMapper modelMapper, ProfileImageService profileImageService, RoleRepository roleRepository, ApplicationEventPublisher applicationEventPublisher, ConfirmationTokenService confirmationTokenService) {
+    public RegisterServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, UserDetailsService userDetailsService, ModelMapper modelMapper, ProfileImageServiceImpl profileImageServiceImpl, RoleRepository roleRepository, ApplicationEventPublisher applicationEventPublisher, ConfirmationTokenService confirmationTokenService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.userDetailsService = userDetailsService;
         this.modelMapper = modelMapper;
-        this.profileImageService = profileImageService;
+        this.profileImageServiceImpl = profileImageServiceImpl;
         this.roleRepository = roleRepository;
         this.applicationEventPublisher = applicationEventPublisher;
         this.confirmationTokenService = confirmationTokenService;
@@ -73,7 +73,7 @@ public class RegisterServiceImpl implements RegisterService {
         User user = modelMapper.map(dto, User.class);
         user.setPassword(passwordEncoder.encode(dto.getPassword()));
         user.getRoles().add(roleRepository.findByName(RoleName.USER).get());
-        user.setImage(profileImageService.saveProfileImage(dto.getImage(), dto.getUsername()));
+        user.setImage(profileImageServiceImpl.saveProfileImage(dto.getImage(), dto.getUsername()));
         return user;
     }
 }

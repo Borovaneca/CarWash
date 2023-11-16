@@ -82,7 +82,7 @@ public class EmailServiceImpl implements EmailService {
             mimeMessageHelper.setReplyTo(carWash);
             mimeMessageHelper.setTo(carWash);
             mimeMessageHelper.setSubject(String.format(CONTACT, contactDTO.getName()));
-            mimeMessageHelper.setText(generateContactBody(contactDTO.getName(), contactDTO.getEmail(), contactDTO.getMessage()), true);
+            mimeMessageHelper.setText(generateContactBodyForComment(contactDTO.getName(), contactDTO.getEmail(), contactDTO.getMessage()), true);
 
             javaMailSender.send(mimeMessageHelper.getMimeMessage());
         } catch (MessagingException e) {
@@ -90,7 +90,7 @@ public class EmailServiceImpl implements EmailService {
         }
     }
 
-    private String generateContactBody(String name, String email, String message) {
+    private String generateContactBodyForComment(String name, String email, String message) {
         Context context = new Context();
         context.setVariable("name", name);
         context.setVariable("email", email);

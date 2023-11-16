@@ -14,6 +14,7 @@ public class ResetPassword extends BaseEntity {
 
     @Column
     private String token;
+
     @Column(unique = true)
     private String username;
 

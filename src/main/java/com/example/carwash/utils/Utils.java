@@ -4,23 +4,17 @@ import com.example.carwash.model.dtos.AppointmentAddDTO;
 import com.example.carwash.model.dtos.UserRegisterDTO;
 import com.example.carwash.model.entity.Appointment;
 import com.example.carwash.model.entity.User;
-import com.example.carwash.model.view.AppointmentTodayView;
 import com.example.carwash.model.view.MyAppointmentView;
-import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeMap;
-import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 @Component
 public class Utils {
-
 
     @Bean
     public ModelMapper modelMapper() {

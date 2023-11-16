@@ -1,13 +1,12 @@
 package com.example.carwash.web.rest;
 
 import com.example.carwash.model.view.ServiceView;
-import com.example.carwash.service.ViewService;
+import com.example.carwash.service.interfaces.ViewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @CrossOrigin("*")
 @RestController
