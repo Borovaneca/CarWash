@@ -23,7 +23,7 @@ public class Appointment extends BaseEntity {
     @Future
     private LocalDateTime madeFor;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Service service;
 
     @Column(nullable = false)
@@ -35,6 +35,6 @@ public class Appointment extends BaseEntity {
     @ManyToOne(fetch = FetchType.EAGER)
     private Vehicle vehicle;
 
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     private User user;
 }

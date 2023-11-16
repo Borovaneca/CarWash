@@ -27,7 +27,7 @@ public class RemovingInactiveUsersTask {
     private void performTask() {
         logger.info("Starting removing inactive users task.");
 
-        Optional<List<User>> inActiveUsers = userRepository.findByActive(false);
+        Optional<List<User>> inActiveUsers = userRepository.findInactiveUsersMoreThan7Days();
         int inactiveUsersCount = inActiveUsers.map(List::size).orElse(0);
         if (inactiveUsersCount == 0) {
             logger.info("No inactive users found.");

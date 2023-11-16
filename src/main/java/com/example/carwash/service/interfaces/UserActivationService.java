@@ -1,6 +1,6 @@
 package com.example.carwash.service.interfaces;
 
-import com.example.carwash.model.events.UserRegisteredEvent;
+import com.example.carwash.events.events.UserRegisteredEvent;
 
 public interface UserActivationService {
 

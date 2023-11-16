@@ -57,13 +57,33 @@ function getAllAwaitingApprovalAppointments() {
 }
 
 async function approved(id) {
-    await fetch(`http://localhost:8080/moderator/awaiting-approval/approve/${id}`, {
-        method: 'POST'
-    })
+    const csrfToken = document.querySelector("meta[name='_csrf']").getAttribute("content");
+    const csrfHeader = document.querySelector("meta[name='_csrf_header']").getAttribute("content");
+
+    const headers = {
+        'Content-Type': 'application/json',
+        [csrfHeader]: csrfToken
+    };
+
+    await fetch(`http://localhost:8080/manager/awaiting-approval/approve/${id}`, {
+        method: 'POST',
+        headers: headers
+    });
+    location.reload();
 }
 
 async function declined(id) {
-    await fetch(`http://localhost:8080/moderator/awaiting-approval/decline/${id}`, {
-        method: 'POST'
-    })
+    const csrfToken = document.querySelector("meta[name='_csrf']").getAttribute("content");
+    const csrfHeader = document.querySelector("meta[name='_csrf_header']").getAttribute("content");
+
+    const headers = {
+        'Content-Type': 'application/json',
+        [csrfHeader]: csrfToken
+    };
+
+    await fetch(`http://localhost:8080/manager/awaiting-approval/decline/${id}`, {
+        method: 'POST',
+        headers: headers
+    });
+    location.reload();
 }

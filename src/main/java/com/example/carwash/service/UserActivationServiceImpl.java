@@ -1,7 +1,6 @@
 package com.example.carwash.service;
 
-import com.example.carwash.model.events.ForgotPasswordEvent;
-import com.example.carwash.model.events.UserRegisteredEvent;
+import com.example.carwash.events.events.UserRegisteredEvent;
 import com.example.carwash.service.interfaces.EmailService;
 import com.example.carwash.service.interfaces.UserActivationService;
 import org.springframework.beans.factory.annotation.Autowired;

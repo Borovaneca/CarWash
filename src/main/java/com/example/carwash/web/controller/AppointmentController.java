@@ -1,10 +1,8 @@
 package com.example.carwash.web.controller;
 
 import com.example.carwash.model.dtos.AppointmentAddDTO;
-import com.example.carwash.service.VehicleService;
 import com.example.carwash.service.ViewService;
 import com.example.carwash.service.interfaces.AppointmentService;
-import com.example.carwash.service.interfaces.ServiceService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -24,15 +22,11 @@ public class AppointmentController {
 
     private final ViewService viewService;
     private final AppointmentService appointmentService;
-    private final VehicleService vehicleService;
-    private final ServiceService serviceService;
 
     @Autowired
-    public AppointmentController(ViewService viewService, AppointmentService appointmentService, VehicleService vehicleService, ServiceService serviceService) {
+    public AppointmentController(ViewService viewService, AppointmentService appointmentService) {
         this.viewService = viewService;
         this.appointmentService = appointmentService;
-        this.vehicleService = vehicleService;
-        this.serviceService = serviceService;
     }
 
     @ModelAttribute("appointmentAddDTO")
@@ -47,8 +41,8 @@ public class AppointmentController {
 
     @GetMapping("/make-appointment")
     public String makeAppointment(Model model, @AuthenticationPrincipal UserDetails userDetails) {
-        model.addAttribute("services", serviceService.getAllServices());
-        model.addAttribute("vehicles", vehicleService.getAllVehiclesByUserUsername(userDetails.getUsername()));
+        model.addAttribute("services", viewService.getAllServices());
+        model.addAttribute("vehicles", viewService.getAllVehiclesByUserUsername(userDetails.getUsername()));
         return "make-appointment";
     }
 

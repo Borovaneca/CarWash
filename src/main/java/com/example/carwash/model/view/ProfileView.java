@@ -1,15 +1,11 @@
 package com.example.carwash.model.view;
 
-import com.example.carwash.model.entity.Appointment;
-import com.example.carwash.model.entity.ProfileImage;
-import com.example.carwash.model.entity.Role;
-import com.example.carwash.model.entity.Vehicle;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Set;
 
 @NoArgsConstructor
@@ -35,9 +31,9 @@ public class ProfileView {
 
     private String role;
 
-    private Integer vehicles;
+    private String vehicles;
 
-    private Integer appointments;
+    private String appointments;
 
     private String locatedOn;
 

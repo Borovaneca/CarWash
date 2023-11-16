@@ -16,12 +16,12 @@ import java.util.List;
 @CrossOrigin("*")
 @RestController
 @RequestMapping("/api/appointments")
-public class AppointmentsRest {
+public class AppointmentsUserRest {
 
     private final ViewService viewService;
 
     @Autowired
-    public AppointmentsRest(ViewService viewService) {
+    public AppointmentsUserRest(ViewService viewService) {
         this.viewService = viewService;
     }
 

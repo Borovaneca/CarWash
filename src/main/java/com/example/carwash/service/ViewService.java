@@ -1,19 +1,18 @@
 package com.example.carwash.service;
 
+import com.example.carwash.model.dtos.AppointmentServiceDTO;
+import com.example.carwash.model.dtos.AppointmentVehicleDTO;
 import com.example.carwash.model.entity.Appointment;
 import com.example.carwash.model.entity.Role;
 import com.example.carwash.model.entity.User;
-import com.example.carwash.model.entity.Vehicle;
 import com.example.carwash.model.enums.RoleName;
 import com.example.carwash.model.view.*;
 import com.example.carwash.repository.AppointmentRepository;
 import com.example.carwash.repository.ServiceRepository;
 import com.example.carwash.repository.UserRepository;
-import com.example.carwash.repository.VehicleRepository;
 import com.example.carwash.service.interfaces.ServiceService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +20,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -29,17 +27,15 @@ import java.util.stream.Collectors;
 public class ViewService {
 
     private final UserRepository userRepository;
-    private final VehicleRepository vehicleRepository;
-    private final ServiceRepository serviceRepository;
+    private final VehicleService vehicleService;
     private final ServiceService serviceService;
     private final ModelMapper modelMapper;
     private final AppointmentRepository appointmentRepository;
 
     @Autowired
-    public ViewService(UserRepository userRepository, VehicleRepository vehicleRepository, ServiceRepository serviceRepository, ServiceService serviceService, ModelMapper modelMapper, AppointmentRepository appointmentRepository) {
+    public ViewService(UserRepository userRepository, VehicleService vehicleService, ServiceService serviceService, ModelMapper modelMapper, AppointmentRepository appointmentRepository) {
         this.userRepository = userRepository;
-        this.vehicleRepository = vehicleRepository;
-        this.serviceRepository = serviceRepository;
+        this.vehicleService = vehicleService;
         this.serviceService = serviceService;
         this.modelMapper = modelMapper;
         this.appointmentRepository = appointmentRepository;
@@ -53,21 +49,13 @@ public class ViewService {
     }
 
     private ProfileView toProfileView(User user) {
-        ProfileView profileView = new ProfileView();
-        profileView.setUsername(user.getUsername());
-        profileView.setFirstName(user.getFirstName());
-        profileView.setLastName(user.getLastName());
-        profileView.setEmail(user.getEmail());
-        profileView.setCity(user.getCity());
-        profileView.setAge(user.getAge());
+        ProfileView profileView = modelMapper.map(user, ProfileView.class);
+        profileView.setSocials(user.getSocialMedias().stream().map(social -> modelMapper.map(social, SocialMediaView.class))
+                        .collect(Collectors.toSet()));
         profileView.setRole(getMajorRole(user.getRoles()));
         profileView.setLocatedOn(user.getImage().getLocatedOn());
-        profileView.setVehicles(user.getVehicles().size());
-        profileView.setRegisteredOn(user.getRegisteredOn());
-        profileView.setAppointments(user.getAppointments().size());
-        profileView.setBio(user.getBio());
-        profileView.setActive(user.isActive());
-        profileView.setSocials(getSocials(user));
+        profileView.setVehicles(String.valueOf(user.getVehicles().size()));
+        profileView.setAppointments(String.valueOf(user.getAppointments().size()));
         return profileView;
     }
 
@@ -81,18 +69,15 @@ public class ViewService {
     }
 
     public List<StaffView> getAllStaffViews() {
-        List<StaffView> views = userRepository.findAll()
+        return userRepository.findAll()
                 .stream()
                 .filter(user -> user.getRoles().size() > 1)
                 .map(this::toStaffView)
                 .toList();
-        return views;
     }
 
     private StaffView toStaffView(User user) {
-        StaffView staff = new StaffView();
-        staff.setFullName(user.getFullName());
-        staff.setAge(user.getAge());
+        StaffView staff = modelMapper.map(user, StaffView.class);
         staff.setPosition(getMajorRole(user.getRoles()));
         staff.setImage(user.getImage().getLocatedOn());
         return staff;
@@ -105,7 +90,6 @@ public class ViewService {
                 RoleName.MANAGER, 2,
                 RoleName.OWNER, 3
         );
-
         Role majorRole = roles.get(0);
         for (Role role : roles) {
             if (rolePriorityMap.get(role.getName()) > rolePriorityMap.get(majorRole.getName())) {
@@ -116,17 +100,7 @@ public class ViewService {
     }
 
     public List<VehicleView> getVehiclesViewByUsername(String username) {
-        Optional<List<Vehicle>> vehicles = vehicleRepository.findByUserUsername(username);
-        return vehicles.map(vehicleList -> vehicleList.stream().map(this::toVehicleView).toList()).orElse(null);
-    }
-
-    private VehicleView toVehicleView(Vehicle vehicle) {
-        VehicleView vehicleView = new VehicleView();
-        vehicleView.setId(vehicle.getId());
-        vehicleView.setBrand(vehicle.getBrand());
-        vehicleView.setModel(vehicle.getModel());
-        vehicleView.setColor(vehicle.getColor());
-        return vehicleView;
+        return vehicleService.getVehiclesViewByUsernameAndGetVehicleView(username);
     }
 
 
@@ -141,16 +115,18 @@ public class ViewService {
                 .peek(appointment -> {
                     LocalDateTime createOn = LocalDateTime.parse(appointment.getCreateOn());
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy/HH:mm");
-                    appointment.setCreateOn(createOn.format(formatter));})
+                    appointment.setCreateOn(createOn.format(formatter));
+                })
                 .peek(appointment -> {
                     LocalDateTime madeFor = LocalDateTime.parse(appointment.getMadeFor(), DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"));
-                    appointment.setMadeFor(madeFor.format(DateTimeFormatter.ofPattern("dd.MM.yyyy/HH:mm")));})
+                    appointment.setMadeFor(madeFor.format(DateTimeFormatter.ofPattern("dd.MM.yyyy/HH:mm")));
+                })
                 .peek(appointment -> {
                     appointment.setStatus(switch (appointment.getStatus()) {
-                                case "1" -> "APPROVED";
-                                case "0" -> "PENDING";
-                                case "-1" -> "REJECTED";
-                                default -> "Unknown";
+                        case "1" -> "APPROVED";
+                        case "0" -> "PENDING";
+                        case "-1" -> "REJECTED";
+                        default -> "Unknown";
                     });
                 })
                 .collect(Collectors.toList());
@@ -173,5 +149,38 @@ public class ViewService {
         appointmentAwaitingApprovalView.setPrice("$" + appointment.getService().getPrice());
         appointmentAwaitingApprovalView.setId(appointment.getId().toString());
         return appointmentAwaitingApprovalView;
+    }
+
+    public List<AppointmentServiceDTO> getAllServices() {
+        return serviceService.getAllServices();
+    }
+
+    public List<AppointmentVehicleDTO> getAllVehiclesByUserUsername(String username) {
+    return vehicleService.getAllVehiclesByUserUsername(username);
+    }
+
+    public List<AllUsersView> getAllUsers() {
+        return userRepository.findAll()
+                .stream()
+                .map(u -> {
+                    AllUsersView userView = modelMapper.map(u, AllUsersView.class);
+                    userView.setIsBanned(u.isBanned() ? "Yes" : "No");
+                    userView.setLocatedOn(u.getImage().getLocatedOn());
+                    userView.setRole(getMajorRole(u.getRoles()));
+                    return userView;
+                })
+                .collect(Collectors.toList());
+    }
+
+    public AllUsersView banUser(Long id) {
+        return userRepository.findById(id).map(user -> {
+            user.setBanned(true);
+            userRepository.save(user);
+            AllUsersView allUsersView = modelMapper.map(user, AllUsersView.class);
+            allUsersView.setIsBanned(user.isBanned() ? "true" : "false");
+            allUsersView.setLocatedOn(user.getImage().getLocatedOn());
+            allUsersView.setRole(getMajorRole(user.getRoles()));
+            return allUsersView;
+        }).orElse(null);
     }
 }

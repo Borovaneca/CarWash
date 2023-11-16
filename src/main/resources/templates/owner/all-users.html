@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <th:block th:replace="~{fragments/head.html}"></th:block>
+    <meta name="_csrf" th:content="${_csrf.token}" />
+    <meta name="_csrf_header" th:content="${_csrf.headerName}" />
+</head>
+<body onload="getAllUsers()">
+<th:block th:replace="~{fragments/navbar.html}"></th:block>
+
+<div class="container">
+
+    <h2 class="text-center text-light">All users</h2>
+
+
+    <div class="row">
+
+        <table id="datatable" class="text-light table table-bordered table-responsive-sm table-striped bg-dark">
+            <thead>
+            <tr>
+                <th>Picture</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Higher Role</th>
+                <th>Age</th>
+                <th>Registered</th>
+                <th>Banned</th>
+                <th>Add Role</th>
+                <th>Ban</th>
+            </tr>
+            </thead>
+            <tbody id="tbody">
+<!--            <tr>-->
+<!--                    <form>-->
+<!--                        <label for="addRoleSelect"></label>-->
+<!--                        <select id="addRoleSelect"></select>-->
+<!--                        <button id="submitRole" type="submit" class="btn btn-primary btn-xs" title="Add Role"-->
+<!--                                data-target="#edit">Add Role-->
+<!--                        </button>-->
+<!--                    </form>-->
+<!--                </td>-->
+<!--                <td id="banTd">-->
+<!--                    <button id="buttonBan" type="submit" class="btn btn-danger btn-xs" title="Ban"-->
+<!--                            >Ban-->
+<!--                    </button>-->
+<!--                </td>-->
+<!--            </tr>-->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<th:block th:replace="~{fragments/footer.html}"></th:block>
+<script th:src="@{/js/all-users.js}"></script>
+</body>
+</html>

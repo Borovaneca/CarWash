@@ -9,13 +9,16 @@ import com.example.carwash.model.entity.ResetPassword;
 import com.example.carwash.model.entity.SocialMedia;
 import com.example.carwash.model.entity.User;
 import com.example.carwash.model.entity.Vehicle;
-import com.example.carwash.model.events.ForgotPasswordEvent;
+import com.example.carwash.events.events.ForgotPasswordEvent;
+import com.example.carwash.model.enums.RoleName;
+import com.example.carwash.repository.RoleRepository;
 import com.example.carwash.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 @Service
@@ -28,8 +31,9 @@ public class UserService {
     private final ResetService resetService;
     private final ApplicationEventPublisher applicationEventPublisher;
     private final VehicleService vehicleService;
+    private final RoleRepository roleRepository;
     @Autowired
-    public UserService(UserRepository userRepository, SocialMediaService socialMediaService, PasswordEncoder passwordEncoder, ProfileImageService profileImageService, ResetService resetService, ApplicationEventPublisher applicationEventPublisher, VehicleService vehicleService) {
+    public UserService(UserRepository userRepository, SocialMediaService socialMediaService, PasswordEncoder passwordEncoder, ProfileImageService profileImageService, ResetService resetService, ApplicationEventPublisher applicationEventPublisher, VehicleService vehicleService, RoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.socialMediaService = socialMediaService;
         this.passwordEncoder = passwordEncoder;
@@ -37,6 +41,7 @@ public class UserService {
         this.resetService = resetService;
         this.applicationEventPublisher = applicationEventPublisher;
         this.vehicleService = vehicleService;
+        this.roleRepository = roleRepository;
     }
 
 
@@ -147,5 +152,22 @@ public class UserService {
 
     public void save(User user) {
         userRepository.save(user);
+    }
+
+    public void addRoleToUserId(String role, Long userId) {
+        roleRepository.findByName(RoleName.valueOf(role)).ifPresent(ro -> {
+            userRepository.findById(userId).ifPresent(user -> {
+                if (user.getRoles().contains(ro)) return;
+                user.getRoles().add(ro);
+                userRepository.save(user);
+            });
+        });
+    }
+
+    public void banUserById(Long userId) {
+        userRepository.findById(userId).ifPresent(user -> {
+            user.setBanned(true);
+            userRepository.save(user);
+        });
     }
 }

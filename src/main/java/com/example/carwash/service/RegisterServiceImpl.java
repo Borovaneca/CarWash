@@ -4,7 +4,7 @@ import com.example.carwash.model.dtos.UserRegisterDTO;
 import com.example.carwash.model.entity.ConfirmationToken;
 import com.example.carwash.model.entity.User;
 import com.example.carwash.model.enums.RoleName;
-import com.example.carwash.model.events.UserRegisteredEvent;
+import com.example.carwash.events.events.UserRegisteredEvent;
 import com.example.carwash.repository.RoleRepository;
 import com.example.carwash.repository.UserRepository;
 import com.example.carwash.service.interfaces.ConfirmationTokenService;
@@ -17,8 +17,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.UUID;
 import java.util.function.Consumer;
 

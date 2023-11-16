@@ -1,27 +1,34 @@
-function fetchAbout() {
-let about = document.getElementById('team-member-container');
+async function fetchAbout() {
+    let employees = document.querySelector('#staff');
 
-fetch('http://localhost:8080/api/about/').then(response => response.json())
-    .then(staff => staff.forEach(member => {
-        let teamContainer = document.createElement('div');
-        teamContainer.classList.add('team-member');
-        let image = document.createElement('img');
-        image.src = member.image;
-        image.alt = member.fullName;
-        teamContainer.appendChild(image);
-
-        let memberDetails = document.createElement('div');
-        memberDetails.classList.add('member-details');
-        let name = document.createElement('h3');
-        name.textContent = member.fullName;
-        memberDetails.appendChild(name);
-        let age = document.createElement('p');
-        age.textContent = 'Age: ' + member.age;
-        memberDetails.appendChild(age);
-        let role = document.createElement('p');
-        role.textContent = 'Position: ' + member.position;
-        memberDetails.appendChild(role);
-        teamContainer.appendChild(memberDetails);
-        about.appendChild(teamContainer);
-    }))
+    await fetch('http://localhost:8080/api/about/').then(response => response.json())
+        .then(staff => staff.forEach(member => {
+            let employeeContainer = document.createElement('div');
+            employeeContainer.classList.add('col-xl-3', 'col-sm-6', 'mb-5');
+            let infoContainer = document.createElement('div');
+            infoContainer.classList.add('bg-white', 'rounded', 'shadow-sm', 'py-5', 'px-4');
+            let image = document.createElement('img');
+            image.alt = '';
+            image.width = 100;
+            image.classList.add('img-fluid', 'rounded-circle', 'mb-3','img-thumbnail', 'shadow-sm');
+            image.src = member.image;
+            let anchor = document.createElement('a');
+            anchor.href = `/users/view/${member.username}`;
+            anchor.appendChild(image);
+            infoContainer.appendChild(anchor);
+            let fullName = document.createElement('h5');
+            fullName.classList.add('mb-0');
+            fullName.textContent = member.fullName;
+            infoContainer.appendChild(fullName);
+            let position = document.createElement('h6');
+            position.textContent = member.position;
+            position.classList.add('mb-0');
+            infoContainer.appendChild(position)
+            let age = document.createElement('small');
+            age.textContent = `Age: ${member.age}`;
+            age.classList.add('small', 'text-uppercase', 'text-muted');
+            infoContainer.appendChild(age);
+            employeeContainer.appendChild(infoContainer);
+            employees.appendChild(employeeContainer);
+        }))
 }

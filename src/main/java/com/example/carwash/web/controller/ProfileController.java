@@ -45,7 +45,7 @@ public class ProfileController {
         return profileEditDTO;
     }
 
-    @CrossOrigin(value = "*")
+
     @GetMapping("/view/{username}")
     public String getProfile(@PathVariable String username, Model model,
                              @AuthenticationPrincipal UserDetails userDetails) {
@@ -114,9 +114,13 @@ public class ProfileController {
     @PostMapping("/change/image")
     public String editImage(
             ProfileUpdateImageDTO profileUpdateImageDTO,
-            @AuthenticationPrincipal UserDetails userDetails) throws InterruptedException {
+            @AuthenticationPrincipal UserDetails userDetails,
+            RedirectAttributes redirectAttributes) throws InterruptedException {
 
-        if (profileUpdateImageDTO.getImage() == null) {
+        if (profileUpdateImageDTO.getImage().getOriginalFilename().isEmpty() ||
+                           !profileUpdateImageDTO.getImage().getOriginalFilename().endsWith(".jpg") &&
+                            !profileUpdateImageDTO.getImage().getOriginalFilename().endsWith(".png")) {
+            redirectAttributes.addFlashAttribute("invalidImage", true);
             return "redirect:/users/view/" + profileUpdateImageDTO.getUsername();
         }
 
@@ -177,7 +181,7 @@ public class ProfileController {
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(UnauthorizedException.class)
     public ModelAndView notAuthorized(UnauthorizedException uae) {
-        return new ModelAndView("unauthorized");
+        return new ModelAndView("error/unauthorized");
     }
 
     private boolean isValidUser(String username) {

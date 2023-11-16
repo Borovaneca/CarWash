@@ -16,7 +16,7 @@
             Close
         </button>
         <input type="hidden" th:value="${user.getUsername()}" name="username"/>
-        <input id="input-file" type="file" name="image" accept="image/png, image/jpeg"/>
+        <input id="input-file" type="file" name="image" accept="image/png, image/jpeg" is required/>
         <p></p>
         <button type="submit" id="upload-btn" class="btn btn-outline-danger" onclick="submit('container-update-photo')">
             Submit
@@ -52,6 +52,7 @@
             </div>
             <div class="col-md-6">
                 <div class="profile-head">
+                    <div th:if="${invalidImage}" class="alert alert-danger">Invalid/Missing image!</div>
                     <h5 th:text="*{getFullName()}"></h5>
                     <h6 th:text="'From: ' + *{city}"></h6>
                     <p class="proile-rating">APPOINTMENTS : <span th:text="*{appointments}"></span></p>
@@ -173,6 +174,5 @@
     </div>
 </div>
 <th:block th:replace="~{fragments/footer.html}"></th:block>
-
 </body>
 </html>

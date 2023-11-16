@@ -33,6 +33,13 @@ function validateForm() {
         return false;
     }
 
+    const selectedFile = image.files[0];
+    const fileType = selectedFile.type;
+    if (!fileType.startsWith('image/')) {
+        alert('Please select a valid image file (PNG or JPEG).');
+        return false;
+    }
+
     if (username.value.length < 3) {
         alert('Username must be at least 3 characters.');
         return false;

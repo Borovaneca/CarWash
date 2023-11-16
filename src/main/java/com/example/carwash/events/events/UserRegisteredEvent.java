@@ -1,4 +1,4 @@
-package com.example.carwash.model.events;
+package com.example.carwash.events.events;
 
 import lombok.Getter;
 import org.springframework.context.ApplicationEvent;

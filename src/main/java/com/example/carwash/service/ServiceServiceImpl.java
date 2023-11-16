@@ -26,10 +26,11 @@ public class ServiceServiceImpl implements ServiceService {
 
     @Override
     public List<AppointmentServiceDTO> getAllServices() {
-        return serviceRepository.findAll()
+        List<AppointmentServiceDTO> collect = serviceRepository.findAll()
                 .stream()
                 .map(entity -> modelMapper.map(entity, AppointmentServiceDTO.class))
                 .collect(Collectors.toList());
+        return collect;
     }
 
     @Override

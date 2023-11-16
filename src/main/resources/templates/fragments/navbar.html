@@ -34,36 +34,26 @@
                             Appointments
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" sec:authorize="!hasRole('MANAGER')" href="/appointments/make-appointment">Make Appointment</a>
+                            <a class="dropdown-item" href="/appointments/make-appointment">Make Appointment</a>
                             <a class="dropdown-item" href="/appointments/my-appointments">My Appointments</a>
                         </div>
                     </li>
-                    <li class="nav-item" sec:authorize="isAuthenticated()">
-                        <form th:action="@{/users/logout}" th:method="post">
-                        <input class="nav-link border-0 bg-transparent" type="submit" value="Logout"/>
-                        </form>
-                    </li>
-                    <li class="nav-item dropdown" sec:authorize="hasRole('OWNER')">
-                        <a class="nav-link dropdown-toggle" href="#" id="ownerNavbar" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Admin
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#">Action</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Something else here</a>
-                        </div>
-                    </li>
-                    <li class="nav-item dropdown" sec:authorize="hasRole('MANAGER')">
+                    <li class="nav-item dropdown" sec:authorize="hasRole('EMPLOYEE')">
                         <a class="nav-link dropdown-toggle" href="#" id="managerNavbar" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Manager
+                            Staff Menu
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="/moderator/awaiting-approval">Appointment Wait..</a>
-                            <a class="dropdown-item" href="#">Another action</a>
+                            <a class="dropdown-item" sec:authorize="hasRole('OWNER')" href="/owner/users/all">All Users</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Something else here</a>
+                            <a class="dropdown-item" sec:authorize="hasRole('MANAGER')" href="/manager/awaiting-approval">Appointments Wait...</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Appointments for today</a>
                         </div>
+                    </li>
+                    <li class="nav-item btn-outline-danger rounded" sec:authorize="isAuthenticated()">
+                        <form th:action="@{/users/logout}" th:method="post">
+                            <input class="nav-link border-0 bg-transparent" type="submit" value="Logout"/>
+                        </form>
                     </li>
                 </ul>
             </div>

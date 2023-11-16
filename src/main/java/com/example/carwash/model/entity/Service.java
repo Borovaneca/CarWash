@@ -11,10 +11,13 @@ public class Service extends BaseEntity {
 
     @Column(unique = true, nullable = false)
     private String name;
+
     @Column
     private String description;
     @Column(unique = true, nullable = false)
+
     private String urlVideo;
+
     @Column(nullable = false)
     @Positive
     private Double price;

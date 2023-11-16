@@ -9,6 +9,8 @@ import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -21,6 +23,7 @@ import org.springframework.security.web.context.HttpSessionSecurityContextReposi
 import org.springframework.security.web.context.RequestAttributeSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.csrf.CsrfTokenRepository;
 
 @Configuration
 public class SecurityConfiguration {
@@ -34,15 +37,16 @@ public class SecurityConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity,
                                            SecurityContextRepository securityContextRepository) throws Exception {
         return httpSecurity
-                .csrf(c -> c.ignoringRequestMatchers("/moderator/awaiting-approval/approve/**"))
                 .authorizeHttpRequests(
                 authorizeRequests -> authorizeRequests
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                         .requestMatchers("/", "/users/forgot-password", "/users/logout", "/users/register", "/users/login", "/users/register", "/about", "/users/login-error").permitAll()
-                        .requestMatchers("/api/about/", "/contact").permitAll()
+                        .requestMatchers("/api/**", "/contact").permitAll()
                         .requestMatchers("/users/reset-password/**").permitAll()
-                        .requestMatchers("/moderator/**").hasRole(RoleName.MANAGER.name())
-                        .requestMatchers("/owner").hasRole(RoleName.OWNER.name())
+                        .requestMatchers("/manager/**").hasRole(RoleName.MANAGER.name())
+                        .requestMatchers(HttpMethod.POST, "/manager/awaiting-approval/approve/**").hasRole(RoleName.MANAGER.name())
+                        .requestMatchers(HttpMethod.POST, "/manager/awaiting-approval/decline/**").hasRole(RoleName.MANAGER.name())
+                        .requestMatchers("/owner/**").hasRole(RoleName.OWNER.name())
                         .anyRequest().authenticated()
 
         ).formLogin(

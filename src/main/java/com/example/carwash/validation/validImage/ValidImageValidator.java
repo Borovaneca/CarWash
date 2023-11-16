@@ -4,6 +4,8 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Objects;
+
 public class ValidImageValidator implements ConstraintValidator<ValidImage, MultipartFile> {
 
     private String message;
@@ -15,7 +17,7 @@ public class ValidImageValidator implements ConstraintValidator<ValidImage, Mult
 
     @Override
     public boolean isValid(MultipartFile value, ConstraintValidatorContext context) {
-        return !value.isEmpty() && value.getContentType().startsWith("image");
+        return !value.isEmpty() && Objects.requireNonNull(value.getContentType()).startsWith("image");
     }
 
 }

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/moderator/awaiting-approval")
+@RequestMapping("/manager/awaiting-approval")
 public class AppointmentAwaitingApprovalController {
 
     private final AppointmentService appointmentService;
@@ -22,19 +22,19 @@ public class AppointmentAwaitingApprovalController {
 
     @GetMapping()
     public String awaitingApproval(){
-        return "moderator/awaiting-approval";
+        return "manager/awaiting-approval";
     }
 
 
     @PostMapping("/approve/{id}")
     public String approveAppointment(@PathVariable Long id){
         appointmentService.approveAppointmentById(id);
-        return "redirect:/moderator/awaiting-approval";
+        return "redirect:/manager/awaiting-approval";
     }
 
     @PostMapping("/decline/{id}")
     public String declineAppointment(@PathVariable Long id){
         appointmentService.declineAppointmentById(id);
-        return "redirect:/moderator/awaiting-approval";
+        return "redirect:/manager/awaiting-approval";
     }
 }

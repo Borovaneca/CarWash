@@ -15,7 +15,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 
     Optional<List<Appointment>> findAllByMadeForBefore(LocalDateTime now);
 
-    void deleteAllByExpiredTrue();
+    void deleteAllByStatus(Integer status);
 
     List<Appointment> findAllByUserUsername(String username);
 
