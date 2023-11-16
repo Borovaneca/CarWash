@@ -43,9 +43,8 @@ public class SecurityConfiguration {
                         .requestMatchers("/", "/users/forgot-password", "/users/logout", "/users/register", "/users/login", "/users/register", "/about", "/users/login-error").permitAll()
                         .requestMatchers("/api/**", "/contact").permitAll()
                         .requestMatchers("/users/reset-password/**").permitAll()
+                        .requestMatchers("/employee/**").hasRole(RoleName.EMPLOYEE.name())
                         .requestMatchers("/manager/**").hasRole(RoleName.MANAGER.name())
-                        .requestMatchers(HttpMethod.POST, "/manager/awaiting-approval/approve/**").hasRole(RoleName.MANAGER.name())
-                        .requestMatchers(HttpMethod.POST, "/manager/awaiting-approval/decline/**").hasRole(RoleName.MANAGER.name())
                         .requestMatchers("/owner/**").hasRole(RoleName.OWNER.name())
                         .anyRequest().authenticated()
 

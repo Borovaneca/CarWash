@@ -8,7 +8,6 @@ import com.example.carwash.model.entity.User;
 import com.example.carwash.model.enums.RoleName;
 import com.example.carwash.model.view.*;
 import com.example.carwash.repository.AppointmentRepository;
-import com.example.carwash.repository.ServiceRepository;
 import com.example.carwash.repository.UserRepository;
 import com.example.carwash.service.interfaces.ServiceService;
 import org.modelmapper.ModelMapper;
@@ -182,5 +181,23 @@ public class ViewService {
             allUsersView.setRole(getMajorRole(user.getRoles()));
             return allUsersView;
         }).orElse(null);
+    }
+
+    public List<AppointmentTodayView> getAppointmentsForToday() {
+        List<AppointmentTodayView> views = appointmentRepository.findAllAppointmentsForToday()
+                .stream()
+                .map(this::toAppointmentTodayView)
+                .collect(Collectors.toList());
+        return views;
+    }
+
+    private AppointmentTodayView toAppointmentTodayView(Appointment appointment) {
+        AppointmentTodayView view = new AppointmentTodayView();
+        view.setVehicle(appointment.getVehicle().getFullCarInfo());
+        view.setPrice(appointment.getService().getPrice().toString());
+        view.setMadeBy(appointment.getUser().getUsername());
+        view.setService(appointment.getService().getName());
+        view.setCreateOn(DateTimeFormatter.ofPattern("dd.MM.yyyy").format(appointment.getCreateOn()));
+        return view;
     }
 }

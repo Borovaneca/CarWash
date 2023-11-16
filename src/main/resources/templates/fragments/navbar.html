@@ -47,7 +47,7 @@
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" sec:authorize="hasRole('MANAGER')" href="/manager/awaiting-approval">Appointments Wait...</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Appointments for today</a>
+                            <a class="dropdown-item" sec:authorize="hasRole('EMPLOYEE')" href="/employee/appointments-today">Appointments for today</a>
                         </div>
                     </li>
                     <li class="nav-item btn-outline-danger rounded" sec:authorize="isAuthenticated()">

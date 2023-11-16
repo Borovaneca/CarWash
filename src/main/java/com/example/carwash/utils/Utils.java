@@ -4,10 +4,12 @@ import com.example.carwash.model.dtos.AppointmentAddDTO;
 import com.example.carwash.model.dtos.UserRegisterDTO;
 import com.example.carwash.model.entity.Appointment;
 import com.example.carwash.model.entity.User;
-import com.example.carwash.model.view.AppointmentAwaitingApprovalView;
+import com.example.carwash.model.view.AppointmentTodayView;
 import com.example.carwash.model.view.MyAppointmentView;
-import com.example.carwash.model.view.ProfileView;
+import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeMap;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
@@ -60,16 +62,6 @@ public class Utils {
                    mapper.map(src -> src.getVehicle().getFullCarInfo(), MyAppointmentView::setVehicle);
                 });
 
-//        modelMapper.typeMap(Appointment.class, AppointmentAwaitingApprovalView.class)
-//                .addMappings(mapper -> {
-//                   mapper.map(Appointment::getCreateOn, AppointmentAwaitingApprovalView::setCreateOn);
-//                   mapper.map(Appointment::getMadeFor, AppointmentAwaitingApprovalView::setMadeFor);
-//                   mapper.map(src -> src.getService().getName() == null ? "" : src.getService().getName(), AppointmentAwaitingApprovalView::setService);
-//                    mapper.map(src -> src.getService().getPrice() == null ? "" : src.getService().getPrice(), AppointmentAwaitingApprovalView::setPrice);
-//                    mapper.map(src -> src.getVehicle().getFullCarInfo() == null ? "" : src.getVehicle().getFullCarInfo(), AppointmentAwaitingApprovalView::setVehicle);
-//                   mapper.map(src -> src.getVehicle().getId() == null ? "" : src.getVehicle().getId(), AppointmentAwaitingApprovalView::setVehicle);
-//                   mapper.map(src -> src.getUser().getUsername() == null ? "" : src.getUser().getUsername(), AppointmentAwaitingApprovalView::setCreateBy);
-//                });
 
         return modelMapper;
     }
