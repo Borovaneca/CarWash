@@ -1,7 +1,5 @@
 package com.example.carwash.service;
 
-import com.example.carwash.constants.ExceptionMessages;
-import com.example.carwash.errors.TokenNotFoundException;
 import com.example.carwash.model.entity.ConfirmationToken;
 import com.example.carwash.model.entity.User;
 import com.example.carwash.repository.ConfirmationTokenRepository;

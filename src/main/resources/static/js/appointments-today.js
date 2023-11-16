@@ -17,7 +17,7 @@ async function getAllAppointmentsForToday() {
                 let td4 = document.createElement('td');
                 td4.textContent = appointment.service;
                 let td5 = document.createElement('td');
-                td5.textContent = appointment.price;
+                td5.textContent = '$' + appointment.price + '0';
 
                 tr.appendChild(td1);
                 tr.appendChild(td2);

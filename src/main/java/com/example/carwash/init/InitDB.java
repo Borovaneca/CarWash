@@ -56,14 +56,17 @@ public class InitDB implements CommandLineRunner {
     }
 
     private void addAdmin() {
+        Scanner scanner = new Scanner(System.in);
         User admin = new User();
-        admin.setUsername("Borovaneca");
-        admin.setPassword(passwordEncoder.encode("Borovaneca1"));
+        System.out.println("Please insert admin username:");
+        admin.setUsername(scanner.nextLine());
+        System.out.println("Please insert admin password:");
+        admin.setPassword(passwordEncoder.encode(scanner.nextLine()));
         admin.setRoles(roleRepository.findAll());
         admin.setCity("Vratsa");
         admin.setActive(true);
         admin.setAge(23);
-        admin.setEmail("borovaneca@abv.bg");
+        admin.setEmail("borovaneca@softuni.bg");
         admin.setFirstName("Petyo");
         admin.setLastName("Veselinov");
         admin.setBanned(false);
