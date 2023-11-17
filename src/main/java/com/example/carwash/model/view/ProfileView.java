@@ -50,7 +50,7 @@ public class ProfileView {
     public String toString() {
         return "ProfileView{" +
                 "username='" + username + '\'' +
-                ", age=" + age +
+                ", age=" + age + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +

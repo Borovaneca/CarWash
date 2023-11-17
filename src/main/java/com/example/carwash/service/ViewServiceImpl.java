@@ -1,5 +1,6 @@
 package com.example.carwash.service;
 
+import com.example.carwash.mapper.CustomMapper;
 import com.example.carwash.model.dtos.AppointmentServiceDTO;
 import com.example.carwash.model.dtos.AppointmentVehicleDTO;
 import com.example.carwash.model.entity.Appointment;
@@ -31,14 +32,16 @@ public class ViewServiceImpl implements ViewService {
     private final ServiceService serviceService;
     private final ModelMapper modelMapper;
     private final AppointmentRepository appointmentRepository;
+    private final CustomMapper customMapper;
 
     @Autowired
-    public ViewServiceImpl(UserRepository userRepository, VehicleServiceImpl vehicleServiceImpl, ServiceService serviceService, ModelMapper modelMapper, AppointmentRepository appointmentRepository) {
+    public ViewServiceImpl(UserRepository userRepository, VehicleServiceImpl vehicleServiceImpl, ServiceService serviceService, ModelMapper modelMapper, AppointmentRepository appointmentRepository, CustomMapper customMapper) {
         this.userRepository = userRepository;
         this.vehicleServiceImpl = vehicleServiceImpl;
         this.serviceService = serviceService;
         this.modelMapper = modelMapper;
         this.appointmentRepository = appointmentRepository;
+        this.customMapper = customMapper;
     }
 
 
@@ -53,20 +56,12 @@ public class ViewServiceImpl implements ViewService {
         ProfileView profileView = modelMapper.map(user, ProfileView.class);
         profileView.setSocials(user.getSocialMedias().stream().map(social -> modelMapper.map(social, SocialMediaView.class))
                         .collect(Collectors.toSet()));
+        profileView.setAge(user.getAge());
         profileView.setRole(getMajorRole(user.getRoles()));
         profileView.setLocatedOn(user.getImage().getLocatedOn());
         profileView.setVehicles(String.valueOf(user.getVehicles().size()));
         profileView.setAppointments(String.valueOf(user.getAppointments().size()));
         return profileView;
-    }
-
-    private Set<SocialMediaView> getSocials(User user) {
-        return user.getSocialMedias().stream().map(social -> {
-            SocialMediaView socialMediaView = new SocialMediaView();
-            socialMediaView.setType(social.getType());
-            socialMediaView.setLink(social.getLink());
-            return socialMediaView;
-        }).collect(Collectors.toSet());
     }
 
     @Override
@@ -141,20 +136,8 @@ public class ViewServiceImpl implements ViewService {
     public List<AppointmentAwaitingApprovalView> getAwaitingApproval() {
         return appointmentRepository.findAllByStatus(0)
                 .stream()
-                .map(this::toAppointmentAwaitingApprovalView)
+                .map(customMapper::AppointmentToAppointmentAwaitingApprovalView)
                 .collect(Collectors.toList());
-    }
-
-    private AppointmentAwaitingApprovalView toAppointmentAwaitingApprovalView(Appointment appointment) {
-        AppointmentAwaitingApprovalView appointmentAwaitingApprovalView = new AppointmentAwaitingApprovalView();
-        appointmentAwaitingApprovalView.setCreateBy(appointment.getUser().getUsername());
-        appointmentAwaitingApprovalView.setCreateOn(DateTimeFormatter.ofPattern("dd.MM.yyyy/HH:mm").format(appointment.getCreateOn()));
-        appointmentAwaitingApprovalView.setMadeFor(DateTimeFormatter.ofPattern("dd.MM.yyyy/HH:mm").format(appointment.getMadeFor()));
-        appointmentAwaitingApprovalView.setVehicle(appointment.getVehicle().getFullCarInfo());
-        appointmentAwaitingApprovalView.setService(appointment.getService().getName());
-        appointmentAwaitingApprovalView.setPrice("$" + appointment.getService().getPrice());
-        appointmentAwaitingApprovalView.setId(appointment.getId().toString());
-        return appointmentAwaitingApprovalView;
     }
 
     @Override

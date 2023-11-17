@@ -53,8 +53,8 @@
             <div class="col-md-6">
                 <div class="profile-head">
                     <div th:if="${invalidImage}" class="alert alert-danger">Invalid/Missing image!</div>
-                    <h5 th:text="*{getFullName()}"></h5>
-                    <h6 th:text="'From: ' + *{city}"></h6>
+                    <h5 th:text="*{getFullName()} == 'null null' ? '[N/A]' : *{getFullName()}"></h5>
+                    <h6 th:if="*{city != null}" th:text="'From: ' + *{city}"></h6>
                     <p class="proile-rating">APPOINTMENTS : <span th:text="*{appointments}"></span></p>
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
                         <li class="nav-item">
@@ -108,7 +108,15 @@
                                 <label>Full Name</label>
                             </div>
                             <div class="col-md-6">
-                                <p th:text="*{getFullName()}"></p>
+                                <p th:text="*{fullName} == 'null null' ? '[N/A]' : *{fullName}"></p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Age</label>
+                            </div>
+                            <div class="col-md-6">
+                                <p th:text="*{age} == null ? '[N/A]' : *{age}"></p>
                             </div>
                         </div>
                         <div class="row">

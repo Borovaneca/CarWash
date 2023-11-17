@@ -31,7 +31,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(
                 authorizeRequests -> authorizeRequests
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                        .requestMatchers("/", "/users/forgot-password", "/users/logout", "/users/register", "/users/login", "/users/register", "/about", "/users/login-error").permitAll()
+                        .requestMatchers("/","/confirm-email/token/**", "/users/forgot-password", "/users/logout", "/users/register", "/users/login", "/users/register", "/about", "/users/login-error").permitAll()
                         .requestMatchers("/api/**", "/contact").permitAll()
                         .requestMatchers("/users/reset-password/**").permitAll()
                         .requestMatchers("/employee/**").hasRole(RoleName.EMPLOYEE.name())

@@ -14,6 +14,6 @@ public class ValidServiceValidator implements ConstraintValidator<ValidService, 
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
-        return serviceRepository.findAll().stream().anyMatch(service -> service.getName().equals(value));
+        return serviceRepository.findAll().stream().noneMatch(service -> service.getName().equals(value));
     }
 }

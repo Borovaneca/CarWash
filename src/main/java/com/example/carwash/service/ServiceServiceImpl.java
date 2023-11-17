@@ -26,11 +26,10 @@ public class ServiceServiceImpl implements ServiceService {
 
     @Override
     public List<AppointmentServiceDTO> getAllServices() {
-        List<AppointmentServiceDTO> collect = serviceRepository.findAll()
+        return serviceRepository.findAll()
                 .stream()
                 .map(entity -> modelMapper.map(entity, AppointmentServiceDTO.class))
                 .collect(Collectors.toList());
-        return collect;
     }
 
     @Override
@@ -46,7 +45,6 @@ public class ServiceServiceImpl implements ServiceService {
     @Override
     @Cacheable("servicesForServices")
     public List<ServiceView> getAllServicesForServices() {
-        System.out.println("HELLO WORLD!");
         return serviceRepository
                 .findAll()
                 .stream()
