@@ -184,7 +184,7 @@ public class ViewServiceImpl implements ViewService {
     @Override
     public AllUsersView banUser(Long id) {
         return userRepository.findById(id).map(user -> {
-            user.setBanned(true);
+            user.setBanned(!user.isBanned());
             userRepository.save(user);
             AllUsersView allUsersView = modelMapper.map(user, AllUsersView.class);
             allUsersView.setIsBanned(user.isBanned() ? "true" : "false");

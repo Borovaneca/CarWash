@@ -12,6 +12,7 @@ async function getAllUsers() {
 
                 let tr = document.createElement('tr');
                 let picture = document.createElement('td');
+                let profileUrl = document.createElement('a');
                 let username = document.createElement('td');
                 let email = document.createElement('td');
                 let higherRole = document.createElement('td');
@@ -22,8 +23,10 @@ async function getAllUsers() {
                 let img = document.createElement('img');
                 img.src = user.locatedOn;
                 img.width = 100;
-                img.alt = '';
-                picture.appendChild(img);
+                img.alt = `${user.username}`;
+                profileUrl.href = `http://localhost:8080/users/view/${user.username}`;
+                profileUrl.appendChild(img);
+                picture.appendChild(profileUrl);
                 username.textContent = user.username;
                 email.textContent = user.email;
                 higherRole.textContent = user.role;
@@ -32,10 +35,7 @@ async function getAllUsers() {
                 status.textContent = user.isBanned;
 
                 let changeRole = document.createElement('td');
-
-                let form = document.createElement('form');
-                form.id = 'changeRoleForm';
-
+                changeRole.classList.add('text-center', 'wrap');
                 let select = document.createElement('select');
                 select.id = 'role';
                 let option3 = document.createElement('option');
@@ -54,14 +54,18 @@ async function getAllUsers() {
                     let roleSelect = document.getElementById('role');
                     let roleValue = roleSelect.value;
                 });
-                form.appendChild(select);
 
-                let changeButton = document.createElement('button');
-                changeButton.type = 'button'
-                changeButton.classList.add('btn',  'btn-primary', 'btn-sm');
-                changeButton.textContent = 'Change role';
-                changeButton.onclick = () => addRole(user.id, select);
-                form.appendChild(changeButton);
+                let addRoleButton = document.createElement('button');
+                addRoleButton.type = 'button'
+                addRoleButton.classList.add('btn',  'btn-primary', 'btn-sm');
+                addRoleButton.textContent = 'Add Role';
+                addRoleButton.onclick = () => addRole(user.id, select);
+
+                let removeRoleButton = document.createElement('button');
+                removeRoleButton.type = 'button'
+                removeRoleButton.classList.add('btn',  'btn-danger', 'btn-sm');
+                removeRoleButton.textContent = 'Remove Role';
+                removeRoleButton.onclick = () => removeRole(user.id, select);
 
                 let ban = document.createElement('td');
                 let banButton = document.createElement('button');
@@ -71,7 +75,9 @@ async function getAllUsers() {
                 banButton.onclick = () => banUser(user.id);
                 ban.appendChild(banButton);
 
-                changeRole.appendChild(form);
+                changeRole.appendChild(select)
+                changeRole.appendChild(addRoleButton)
+                changeRole.appendChild(removeRoleButton);
                 tr.appendChild(picture);
                 tr.appendChild(username);
                 tr.appendChild(email);
@@ -104,7 +110,27 @@ async function addRole(userId, selectElement) {
     })
 
     location.reload();
-    alert('Role changed successfully!');
+    alert('Role added successfully!');
+    return false;
+}
+
+async function removeRole(id, select) {
+    const csrfToken = document.querySelector("meta[name='_csrf']").getAttribute("content");
+    const csrfHeader = document.querySelector("meta[name='_csrf_header']").getAttribute("content");
+
+    const headers = {
+        [csrfHeader]: csrfToken
+    };
+
+    let roleValue = select.value;
+
+    await fetch(`http://localhost:8080/owner/users/remove-role/${id}/${roleValue}`, {
+        method: 'POST',
+        headers: headers
+    })
+
+    location.reload();
+    alert('Role removed successfully!');
     return false;
 }
 
@@ -126,7 +152,7 @@ async function banUser(id) {
         })
         let promise = response.json();
         promise.then(data => {
-            if (data.isBanned) {
+            if (data.isBanned === 'true') {
                 alert('User banned successfully!');
             } else {
                 alert('User unbanned successfully!');

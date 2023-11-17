@@ -26,8 +26,14 @@ public class AllUsersController {
     }
 
     @PostMapping("/users/add-role/{userId}/{role}")
-    public String allUsersPost(@PathVariable Long userId, @PathVariable String role){
+    public String addRole(@PathVariable Long userId, @PathVariable String role){
         userService.addRoleToUserId(role,  userId);
+        return "owner/all-users";
+    }
+
+    @PostMapping("/users/remove-role/{userId}/{role}")
+    public String removeRole(@PathVariable Long userId, @PathVariable String role){
+        userService.removeRoleToUserId(role,  userId);
         return "owner/all-users";
     }
 

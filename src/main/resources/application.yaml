@@ -21,14 +21,14 @@ spring:
         enabled: true
 
   mail:
-    carwash: ${EMAIL}
+    carwash: ${EMAIL:carwash1303@gmail.com}
     host: smtp.gmail.com
     port: 587
-    username: ${EMAIL}
-    password: ${EMAIL_PASSWORD}
+    username: ${EMAIL:carwash1303@gmail.com}
+    password: ${EMAIL_PASSWORD:nbmpndmvsjofuvqv}
 
   remember:
-    key: ${REMEMBER_KEY}
+    key: ${REMEMBER_KEY:carwash}
 
 logging:
   level:

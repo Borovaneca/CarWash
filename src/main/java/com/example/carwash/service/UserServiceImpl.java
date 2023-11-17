@@ -184,4 +184,16 @@ public class UserServiceImpl implements UserService {
             userRepository.save(user);
         });
     }
+
+    @Override
+    public void removeRoleToUserId(String role, Long userId) {
+        roleRepository.findByName(RoleName.valueOf(role)).ifPresent(ro -> {
+            userRepository.findById(userId).ifPresent(user -> {
+                if (user.getRoles().contains(ro)) {
+                    user.getRoles().remove(ro);
+                    userRepository.save(user);
+                }
+            });
+        });
+    }
 }
