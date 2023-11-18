@@ -1,1 +1,1 @@
-# <center> CarWash </center>
+# CarWash
