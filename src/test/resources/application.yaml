@@ -1,0 +1,21 @@
+spring:
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
+
+  mail:
+    carwash: carwash1303@test.com
+    host: localhost
+    port: 1025
+    username: carwash1303@test.com
+    password: 234
+
+  remember:
+    key: ${REMEMBER_KEY:carwash}
+
+#logging:
+#  level:
+#    org:
+#      springframework:
+#        security: DEBUG

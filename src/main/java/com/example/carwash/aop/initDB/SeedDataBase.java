@@ -58,10 +58,10 @@ public class SeedDataBase {
     private void addAdmin() {
         Scanner scanner = new Scanner(System.in);
         User admin = new User();
-        System.out.println("Please insert admin username:");
-        admin.setUsername(scanner.nextLine());
-        System.out.println("Please insert admin password:");
-        admin.setPassword(passwordEncoder.encode(scanner.nextLine()));
+//        System.out.println("Please insert admin username:");
+        admin.setUsername("Admin");
+//        System.out.println("Please insert admin password:");
+        admin.setPassword(passwordEncoder.encode("Adminov1"));
         admin.setRoles(roleRepository.findAll());
         admin.setCity("Vratsa");
         admin.setActive(true);
