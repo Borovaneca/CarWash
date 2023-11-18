@@ -179,20 +179,9 @@ public class ViewServiceImpl implements ViewService {
 
     @Override
     public List<AppointmentTodayView> getAppointmentsForToday() {
-        List<AppointmentTodayView> views = appointmentRepository.findAllAppointmentsForToday()
+        return appointmentRepository.findAllAppointmentsForToday()
                 .stream()
-                .map(this::toAppointmentTodayView)
+                .map(customMapper::AppointmentToAppointmentTodayView)
                 .collect(Collectors.toList());
-        return views;
-    }
-
-    private AppointmentTodayView toAppointmentTodayView(Appointment appointment) {
-        AppointmentTodayView view = new AppointmentTodayView();
-        view.setVehicle(appointment.getVehicle().getFullCarInfo());
-        view.setPrice(appointment.getService().getPrice().toString());
-        view.setMadeBy(appointment.getUser().getUsername());
-        view.setService(appointment.getService().getName());
-        view.setCreateOn(DateTimeFormatter.ofPattern("dd.MM.yyyy").format(appointment.getCreateOn()));
-        return view;
     }
 }

@@ -30,8 +30,8 @@ spring:
   remember:
     key: ${REMEMBER_KEY:carwash}
 
-logging:
-  level:
-    org:
-      springframework:
-        security: DEBUG
+#logging:
+#  level:
+#    org:
+#      springframework:
+#        security: DEBUG

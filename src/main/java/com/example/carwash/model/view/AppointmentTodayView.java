@@ -11,6 +11,8 @@ public class AppointmentTodayView {
 
     private String createOn;
 
+    private String appointmentHour;
+
     private String madeBy;
 
     private String service;

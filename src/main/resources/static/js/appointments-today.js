@@ -13,6 +13,8 @@ async function getAllAppointmentsForToday() {
                 let td2 = document.createElement('td');
                 td2.textContent = appointment.createOn;
                 let td3 = document.createElement('td');
+                let td6 = document.createElement('td');
+                td6.textContent = appointment.appointmentHour;
                 td3.textContent = appointment.vehicle;
                 let td4 = document.createElement('td');
                 td4.textContent = appointment.service;
@@ -21,6 +23,7 @@ async function getAllAppointmentsForToday() {
 
                 tr.appendChild(td1);
                 tr.appendChild(td2);
+                tr.appendChild(td6);
                 tr.appendChild(td3);
                 tr.appendChild(td4);
                 tr.appendChild(td5);

@@ -71,7 +71,7 @@ async function getAllUsers() {
                 let banButton = document.createElement('button');
                 banButton.type = 'button';
                 banButton.classList.add('btn', 'btn-danger', 'btn-sm');
-                banButton.textContent = 'Ban';
+                banButton.textContent = 'Ban/Unban';
                 banButton.onclick = () => banUser(user.id);
                 ban.appendChild(banButton);
 
