@@ -49,7 +49,7 @@ Please make sure you follow the steps, steo by step!
 
 * JDK 17
 * Apache Tomcat/10.1.15
-* Depending on the features you want to use, you may need some third-party software, such as DataGrip (payed) or MySQL Workbench (free) for data modeling, SQL development, and comprehensive administration for the system data.
+* Depending on the features you want to use, you may need some third-party software, such as <a href="https://www.jetbrains.com/datagrip/download/#section=windows">DataGrip</a> (payed) or <a href="https://dev.mysql.com/downloads/workbench/">MySQL Workbench</a> (free) for data modeling, SQL development, and comprehensive administration for the system data.
 
 ### Installation
 
