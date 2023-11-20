@@ -29,6 +29,8 @@
       <a href="#about-the-project">About The Project</a>
       <ul>
         <li><a href="#built-with">Built With</a></li>
+        <li><a href="#front-end">Front End</a></li>
+        <li><a href="#back-end">Back End</a></li>
       </ul>
     </li>
     <li><a href="#usage">Usage</a>
@@ -95,6 +97,20 @@ _The CarWash project is a Spring Boot-based application designed to streamline c
 * ![SpringBoot](https://img.shields.io/badge/Spring-Boot-%236BB13D)
 * ![SpringDataJPA](https://img.shields.io/badge/Spring-DataJPA-%236BB13D)
 
+### Front End
+
+_Thymeleaf View Engine
+Thymeleaf is a modern server-side Java template engine used for web and standalone environments. It is commonly used in Spring Boot applications for server-side rendering of HTML templates. Thymeleaf allows seamless integration of data into HTML templates and supports features like expressions, iteration, conditionals, and more._
+
+Thymeleaf is utilized in this project for rendering dynamic HTML content by binding data from the backend to the frontend templates.
+
+### Back End
+
+_The project incorporates a bit of Aspect-Oriented Programming (AOP) to modularize cross-cutting concerns. AOP helps in separating concerns such as logging, security, or transaction management from the main application logic, enhancing modularity and maintainability._
+
+* Scheduled Tasks :
+
+1. **`Removing Inactive Users`**: Users who haven't confirmed their emails within 7 days are considered inactive and are automatically removed from the system.
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Usage
