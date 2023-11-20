@@ -1,5 +1,5 @@
 <a name="readme-top"></a>
-# CarWash - Semi RESTful/Thymeleaf site.
+# CarWash - Semi RESTful/Thymeleaf WEB Application.
 
 <br />
 <div align="center">
