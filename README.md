@@ -1,6 +1,6 @@
 <a name="readme-top"></a>
 # CarWash - Semi RESTful/Thymeleaf WEB Application.
-<div style="margin 0 auto">[![Typing SVG](https://readme-typing-svg.demolab.com?font=Fira+Code&pause=1000&random=false&width=435&lines=Best+place+to+wash+your+car!;It%60s+called+CarWas!)](https://git.io/typing-svg)</div>
+<div style="margin 0 auto"> [![Typing SVG](https://readme-typing-svg.demolab.com?font=Fira+Code&pause=1000&random=false&width=435&lines=Best+place+to+wash+your+car!;It%60s+called+CarWas!)](https://git.io/typing-svg) </div>
 <br />
 <div align="center">
   <a href="https://github.com/Borovaneca/CarWash">
