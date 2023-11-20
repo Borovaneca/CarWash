@@ -60,7 +60,7 @@ Please make sure you follow the steps, step by step!
 ### Prerequisites
 
 * JDK 17
-* Apache Tomcat/10.1.15
+* Apache Maven 4.0.0+
 * Depending on the features you want to use, you may need some third-party software, such as [DataGrip](https://www.jetbrains.com/datagrip/download/#section=windows) (payed) or [MySQL](https://dev.mysql.com/downloads/workbench/) Workbench (free) for data modeling, SQL development, and comprehensive administration for the system data.
 
 ### Installation
