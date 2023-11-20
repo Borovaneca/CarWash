@@ -106,7 +106,7 @@ Thymeleaf is utilized in this project for rendering dynamic HTML content by bind
 
 _The project incorporates a bit of Aspect-Oriented Programming (AOP) to modularize cross-cutting concerns._
 
-* Scheduled Tasks :
+* **`Scheduled Tasks`** :
 
 1. **`Removing Inactive Users`**: Users who haven't confirmed their emails within 7 days are considered inactive and are automatically removed from the system.
 
@@ -114,38 +114,38 @@ _The project incorporates a bit of Aspect-Oriented Programming (AOP) to modulari
 
 ---
 
-* Events Handling
+* **`Events Handling`**
 
 1. **`User Registration Activation Email`**: An event triggers the sending of an activation email upon user registration.
 2. **`Password Reset Email`**: Another event allows users to reset their passwords if they forget them.
 
 ---
 
-* Custom Exceptions
+* **`Custom Exceptions`**
 
 Custom exceptions are used to handle specific errors or exceptional cases in the application, improving error handling and providing meaningful feedback to users or clients.
 
 ---
 
-* Interceptor for Banned Users
+* **`Interceptor for Banned Users`**
 
 An interceptor is implemented to handle access control for banned users within the application. When a user attempts to access restricted resources or endpoints, this interceptor checks whether the user has been banned. If the user is identified as banned, access to the requested resource is denied.
 
 ---
 
-* Custom Exception Handling
+* **`Custom Exception Handling`**
 
 Custom exception handling is implemented within the application to manage and respond to exceptional situations or errors that occur during the runtime of the system. These exceptions are designed to capture specific scenarios and provide appropriate responses to users or client applications.
 
 ---
 
-* Integration of External Services
+* **`Integration of External Services`**
 
 The project integrates with services like Cloudinary for managing and serving images or media assets.
 
 ---
 
-* Testing
+* **`Testing`**
 
 The project includes JUnit for unit testing and integration tests, ensuring the reliability and correctness of various components within the application.
 This structure provides a clear and organized overview of both the frontend and backend aspects of the project, detailing the technologies, functionalities, and methodologies utilized. Adjust the descriptions as needed to accurately represent the specifics of your project.
