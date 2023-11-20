@@ -21,6 +21,7 @@
     <li>
       <a href="#getting-started">Getting Started</a>
       <ul>
+        <li><a href="#perequisites">Prerequisites</a>
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
@@ -44,6 +45,12 @@
 
 Please make sure you follow the steps, steo by step!
 
+### Prerequisites
+
+* JDK 17
+* Apache Tomcat/10.1.15
+* Depending on the features you want to use, you may need some third-party software, such as DataGrip (payed) or MySQL Workbench (free) for data modeling, SQL development, and comprehensive administration for the system data.
+
 ### Installation
 
 _In order to run CarWash you need to:_
@@ -52,11 +59,11 @@ _In order to run CarWash you need to:_
 2. Set up environment variable `${MYYSQL_PORT}` 
    ```yaml
    spring.datasource.url: jdbc:mysql://localhost:${MYSQL_PORT}/carwash?allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true&serverTimezone=UTC
-   ```
-3. Do the same for those variables too:
-   ```yaml
+   spring.datasource.username: ${MYSQL_USER}
+   spring.datasource.password: ${MYSQL_PASSWORD}
    admin.username: ${ADMIN_USERNAME}
    admin.password: ${ADMIN_PASSWORD}
    ```
+3. Enjoy the application!
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
