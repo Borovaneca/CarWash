@@ -172,3 +172,22 @@ GET http://localhost:8080/api/owner/users/all
     }
 ]
 ```
+
+* Request:
+```
+POST http://localhost:8080/api/owner/users/ban/4
+```
+* Response:
+```json
+{
+   "id=""4",
+   "locatedOn=""http://res.cloudinary.com/dy2y8i2de/image/upload/v1700502883/ac334b18-74f8-44dd-8e9f-51d606049e4a.png",
+   "username=""Petyo",
+   "email=""borovaneca@abv.bg",
+   "role=""USER",
+   "age=""null",
+   "registeredOn=""2023-11-20",
+   "isBanned=""true"
+}
+```
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
