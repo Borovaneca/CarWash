@@ -100,7 +100,7 @@ _The CarWash project is a Spring Boot-based application designed to streamline c
 ### Front End
 
 _Thymeleaf View Engine
-Thymeleaf is utilized in this project for rendering dynamic HTML content by binding data from the backend to the frontend templates.
+Thymeleaf is utilized in this project for rendering dynamic HTML content by binding data from the backend to the frontend templates._
 
 ### Back End
 
