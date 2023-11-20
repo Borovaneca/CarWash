@@ -97,3 +97,26 @@ _The CarWash project is a Spring Boot-based application designed to streamline c
 * ![SpringDataJPA](https://img.shields.io/badge/Spring-DataJPA-%236BB13D)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+## Usage
+_Here you can find all the information about the roles in the applicaтion and what they can do._
+
+### Admin
+
+_Only the users with role Admin can change others users roles ban them!_
+
+![admin-view](src/main/resources/static/images/project/admin.png)
+
+### Manager
+
+_This role has the authority to approve/decline the appointments requested by users._
+
+![manager-view](src/main/resources/static/images/project/manager.png)
+
+### Employee
+
+_The role of the Employee is basically a permission to see the approved appointments by the manager, wich are for the current day!_
+
+![employee-view](src/main/resources/static/images/project/employee.png)
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
