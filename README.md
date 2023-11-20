@@ -133,7 +133,7 @@ An interceptor is implemented to handle access control for banned users within t
 
 ---
 
-* **Custom Exception Handling**
+* **Exception Handling**
 
 Custom exception handling is implemented within the application to manage and respond to exceptional situations or errors that occur during the runtime of the system. These exceptions are designed to capture specific scenarios and provide appropriate responses to users or client applications.
 
