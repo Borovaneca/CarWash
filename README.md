@@ -238,7 +238,7 @@ POST http://localhost:8080/api/owner/users/ban/4
 
 ## License
 <center><details>
-<summary>Click read the MIT License</summary>
+<summary>Click to read the MIT License</summary>
 
 <div style="overflow-x: auto; max-height: 300px;">
   
