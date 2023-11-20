@@ -100,13 +100,11 @@ _The CarWash project is a Spring Boot-based application designed to streamline c
 ### Front End
 
 _Thymeleaf View Engine
-Thymeleaf is a modern server-side Java template engine used for web and standalone environments. It is commonly used in Spring Boot applications for server-side rendering of HTML templates. Thymeleaf allows seamless integration of data into HTML templates and supports features like expressions, iteration, conditionals, and more._
-
 Thymeleaf is utilized in this project for rendering dynamic HTML content by binding data from the backend to the frontend templates.
 
 ### Back End
 
-_The project incorporates a bit of Aspect-Oriented Programming (AOP) to modularize cross-cutting concerns. AOP helps in separating concerns such as logging, security, or transaction management from the main application logic, enhancing modularity and maintainability._
+_The project incorporates a bit of Aspect-Oriented Programming (AOP) to modularize cross-cutting concerns._
 
 * Scheduled Tasks :
 
