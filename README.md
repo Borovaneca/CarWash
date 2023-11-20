@@ -76,5 +76,10 @@ _The CarWash project is a Spring Boot-based application designed to streamline c
 ### Built With
 
 * ![JavaScript](https://img.shields.io/badge/JavaScript-ECDB6F)
+* ![Bootstrap](https://img.shields.io/badge/Bootstrap-850EF6)
+* ![HTML](https://img.shields.io/badge/HTML-F17545)
+* ![CSS](https://img.shields.io/badge/CSS-2964F2)
+* ![Java](https://img.shields.io/badge/Java-ED4236)
+* ![MySQL](https://img.shields.io/badge/My-SQL-F5921B)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
