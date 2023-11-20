@@ -45,7 +45,7 @@
         <li><a href="#user">Employee</a></li>
       </ul>
     </li>
-    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#roadmap">REST Tests</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
   </ol>
@@ -120,3 +120,5 @@ _The role of the Employee is basically a permission to see the approved appointm
 ![employee-view](src/main/resources/static/images/project/employee.png)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+## REST Tests
