@@ -70,4 +70,4 @@ _In order to run CarWash you need to:_
 
 ## About The Project
 
-<img src="src/main/resources/static/images/project/index.png" alt="Logo" width="100%" height="100%">
+[project-index](src/main/resources/static/images/project/index.png)
