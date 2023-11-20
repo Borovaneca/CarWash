@@ -3,8 +3,8 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <th:block th:replace="~{fragments/head.html}"></th:block>
-    <meta name="_csrf" th:content="${_csrf.token}" />
-    <meta name="_csrf_header" th:content="${_csrf.headerName}" />
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 </head>
 <body onload="getAllUsers()">
 <th:block th:replace="~{fragments/navbar.html}"></th:block>
@@ -15,39 +15,42 @@
 
 
     <div class="row">
-
-        <table id="datatable" class="table table-responsive-sm table-striped bg-white table-bordered">
-            <thead>
-            <tr class="text-center">
-                <th>Picture</th>
-                <th>Username</th>
-                <th>Email</th>
-                <th>Higher Role</th>
-                <th>Age</th>
-                <th>Registered</th>
-                <th>Banned</th>
-                <th>Add Role</th>
-                <th>Ban</th>
-            </tr>
-            </thead>
-            <tbody id="tbody">
-<!--            <tr>-->
-<!--                    <form>-->
-<!--                        <label for="addRoleSelect"></label>-->
-<!--                        <select id="addRoleSelect"></select>-->
-<!--                        <button id="submitRole" type="submit" class="btn btn-primary btn-xs" title="Add Role"-->
-<!--                                data-target="#edit">Add Role-->
-<!--                        </button>-->
-<!--                    </form>-->
-<!--                </td>-->
-<!--                <td id="banTd">-->
-<!--                    <button id="buttonBan" type="submit" class="btn btn-danger btn-xs" title="Ban"-->
-<!--                            >Ban-->
-<!--                    </button>-->
-<!--                </td>-->
-<!--            </tr>-->
-            </tbody>
-        </table>
+        <div class="col-md-12">
+            <div class="table-wrap">
+                <table id="datatable" class="table table-responsive-sm table-striped bg-white">
+                    <thead>
+                    <tr class="text-center">
+                        <th>Picture</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Higher Role</th>
+                        <th>Age</th>
+                        <th>Registered</th>
+                        <th>Banned</th>
+                        <th>Add Role</th>
+                        <th>Ban</th>
+                    </tr>
+                    </thead>
+                    <tbody id="tbody">
+                    <!--            <tr>-->
+                    <!--                    <form>-->
+                    <!--                        <label for="addRoleSelect"></label>-->
+                    <!--                        <select id="addRoleSelect"></select>-->
+                    <!--                        <button id="submitRole" type="submit" class="btn btn-primary btn-xs" title="Add Role"-->
+                    <!--                                data-target="#edit">Add Role-->
+                    <!--                        </button>-->
+                    <!--                    </form>-->
+                    <!--                </td>-->
+                    <!--                <td id="banTd">-->
+                    <!--                    <button id="buttonBan" type="submit" class="btn btn-danger btn-xs" title="Ban"-->
+                    <!--                            >Ban-->
+                    <!--                    </button>-->
+                    <!--                </td>-->
+                    <!--            </tr>-->
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
 
