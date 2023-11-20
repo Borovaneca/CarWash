@@ -68,7 +68,7 @@ Please make sure you follow the steps, step by step!
 _In order to run CarWash you need to:_
 
 1. <a href="https://github.com/Borovaneca/CarWash/archive/refs/heads/master.zip">DOWNLOAD</a> the repo.
-2. Set up environment variable `${MYYSQL_PORT}` 
+2. Set up environment variables `${MYYSQL_PORT}, ${MYSQL_USER}.. etc...` 
    ```yaml
    spring.datasource.url: jdbc:mysql://localhost:${MYSQL_PORT}/carwash?allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true&serverTimezone=UTC
    spring.datasource.username: ${MYSQL_USER}
