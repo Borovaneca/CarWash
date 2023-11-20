@@ -122,3 +122,53 @@ _The role of the Employee is basically a permission to see the approved appointm
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## REST Tests
+
+* Request:
+```
+GET http://localhost:8080/api/owner/users/all
+```
+* Response:
+```json
+[
+    {
+        "id": "1",
+        "locatedOn": "https://statusneo.com/wp-content/uploads/2023/02/MicrosoftTeams-image551ad57e01403f080a9df51975ac40b6efba82553c323a742b42b1c71c1e45f1.jpg",
+        "username": "Admin",
+        "email": "borovaneca@softuni.bg",
+        "role": "OWNER",
+        "age": "23",
+        "registeredOn": "2023-11-20",
+        "isBanned": "No"
+    },
+    {
+        "id": "2",
+        "locatedOn": "http://res.cloudinary.com/dy2y8i2de/image/upload/v1700497506/f0b394ae-ac21-449f-8c48-2281b8417aa0.png",
+        "username": "Borovaneca",
+        "email": "boroto_vr@abv.bg",
+        "role": "USER",
+        "age": null,
+        "registeredOn": "2023-11-20",
+        "isBanned": "No"
+    },
+    {
+        "id": "3",
+        "locatedOn": "http://res.cloudinary.com/dy2y8i2de/image/upload/v1700502854/4dbb9200-b048-4790-9c6d-2db5ec94be7d.png",
+        "username": "PetyoVeselinov",
+        "email": "borovaneca@virgilio.it",
+        "role": "USER",
+        "age": null,
+        "registeredOn": "2023-11-20",
+        "isBanned": "No"
+    },
+    {
+        "id": "4",
+        "locatedOn": "http://res.cloudinary.com/dy2y8i2de/image/upload/v1700502883/ac334b18-74f8-44dd-8e9f-51d606049e4a.png",
+        "username": "Petyo",
+        "email": "borovaneca@abv.bg",
+        "role": "USER",
+        "age": null,
+        "registeredOn": "2023-11-20",
+        "isBanned": "No"
+    }
+]
+```
