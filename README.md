@@ -43,7 +43,7 @@
 
 ## Getting Started
 
-Please make sure you follow the steps, steo by step!
+Please make sure you follow the steps, step by step!
 
 ### Prerequisites
 
@@ -67,3 +67,7 @@ _In order to run CarWash you need to:_
 3. Enjoy the application!
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+## About The Project
+
+<img src="src/main/resources/static/images/logo.png" alt="Logo" width="80" height="80">
