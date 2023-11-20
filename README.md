@@ -192,7 +192,7 @@ POST http://localhost:8080/api/owner/users/ban/4
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## License
-<details>
+<center><details>
 <summary>Click read the MIT License</summary>
 
 <div style="overflow-x: auto; max-height: 300px;">
@@ -219,7 +219,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 </div>
 
-</details>
+</details></center>
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
