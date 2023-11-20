@@ -147,7 +147,7 @@ The project integrates with services like Cloudinary for managing and serving im
 
 * **Testing**
 
-The project includes JUnit for unit testing and integration tests, ensuring the reliability and correctness of various components within the application.
+The project includes JUnit and Mockito for unit testing and integration tests, ensuring the reliability and correctness of various components within the application.
 This structure provides a clear and organized overview of both the frontend and backend aspects of the project, detailing the technologies, functionalities, and methodologies utilized. Adjust the descriptions as needed to accurately represent the specifics of your project.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
