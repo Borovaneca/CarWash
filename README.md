@@ -53,13 +53,10 @@ _In order to run CarWash you need to:_
    ```yaml
    spring.datasource.url: jdbc:mysql://localhost:${MYSQL_PORT}/carwash?allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true&serverTimezone=UTC
    ```
-3. Install NPM packages
-   ```sh
-   npm install
-   ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = 'ENTER YOUR API';
+3. Do the same for those variables too:
+   ```yaml
+   admin.username: ${ADMIN_USERNAME}
+   admin.password: ${ADMIN_PASSWORD}
    ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
