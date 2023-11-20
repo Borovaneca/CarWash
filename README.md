@@ -70,4 +70,4 @@ _In order to run CarWash you need to:_
 
 ## About The Project
 
-[project-index](src/main/resources/static/images/project/index.png)
+![project-index](src/main/resources/static/images/project/index.png)
