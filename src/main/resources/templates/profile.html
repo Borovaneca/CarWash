@@ -30,7 +30,7 @@
         <button type="button" class="float-right btn-dark mr-2" onclick="hide('container-add-social')">Close</button>
         <input type="hidden" th:value="${user.getUsername()}" name="username" required/>
         <label for="type"></label>
-        <input type="text" placeholder="Ex. Facebook, Instagram, Twitter" name="type" id="type" required/>
+        <input pattern="[a-zA-Z]+" placeholder="Ex. Facebook, Instagram, Twitter" name="type" id="type" required/>
         <label for="Link"></label>
         <input type="url" placeholder="URL" name="link" id="Link" required/>
         <p></p>
@@ -53,6 +53,7 @@
             <div class="col-md-6">
                 <div class="profile-head">
                     <div th:if="${invalidImage}" class="alert alert-danger">Invalid/Missing image!</div>
+                    <div th:if="${invalidSocial}" class="alert alert-danger">Invalid Social name or URL!</div>
                     <h5 th:text="*{getFullName()} == 'null null' ? '[N/A]' : *{getFullName()}"></h5>
                     <h6 th:if="*{city != null}" th:text="'From: ' + *{city}"></h6>
                     <p class="proile-rating">APPOINTMENTS : <span th:text="*{appointments}"></span></p>

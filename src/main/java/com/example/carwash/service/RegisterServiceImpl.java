@@ -86,7 +86,7 @@ public class RegisterServiceImpl implements RegisterService {
             user.setImage(profileImageService.getDefaultProfileImage());
             return user;
         }
-        user.setImage(profileImageService.saveProfileImage(dto.getImage(), dto.getUsername()));
+        user.setImage(profileImageService.saveProfileImage(dto.getImage(), user));
         return user;
     }
 }

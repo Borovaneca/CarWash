@@ -4,11 +4,11 @@ import com.example.carwash.model.entity.ResetPassword;
 import com.example.carwash.model.entity.User;
 import com.example.carwash.events.events.ForgotPasswordEvent;
 import com.example.carwash.repository.ResetPasswordRepository;
-import com.example.carwash.repository.UserRepository;
 import com.example.carwash.service.interfaces.EmailService;
 import com.example.carwash.service.interfaces.ResetService;
 import com.example.carwash.service.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,13 +22,15 @@ public class ResetServiceImpl implements ResetService {
 
     private final EmailService emailService;
     private final ResetPasswordRepository resetPasswordRepository;
+    private final ApplicationEventPublisher applicationEventPublisher;
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public ResetServiceImpl(EmailService emailService, ResetPasswordRepository resetPasswordRepository, UserService userService, PasswordEncoder passwordEncoder) {
+    public ResetServiceImpl(EmailService emailService, ResetPasswordRepository resetPasswordRepository, ApplicationEventPublisher applicationEventPublisher, UserService userService, PasswordEncoder passwordEncoder) {
         this.emailService = emailService;
         this.resetPasswordRepository = resetPasswordRepository;
+        this.applicationEventPublisher = applicationEventPublisher;
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
     }
@@ -42,12 +44,13 @@ public class ResetServiceImpl implements ResetService {
     }
 
     @Override
-    public ResetPassword makeTokenAndSaveIt(User user) {
+    public void makeTokenAndSaveIt(User user) {
         ResetPassword resetPassword = new ResetPassword();
         resetPassword.setToken(UUID.randomUUID().toString());
         resetPassword.setUser(user);
         resetPassword.setUsername(user.getUsername());
-       return resetPasswordRepository.save(resetPassword);
+        resetPasswordRepository.save(resetPassword);
+        applicationEventPublisher.publishEvent(new ForgotPasswordEvent(user, user.getEmail(), resetPassword.getToken(), user.getUsername()));
     }
 
     @Override

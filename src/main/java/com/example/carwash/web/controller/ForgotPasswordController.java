@@ -1,7 +1,9 @@
 package com.example.carwash.web.controller;
 
+import com.example.carwash.events.events.ForgotPasswordEvent;
 import com.example.carwash.model.dtos.PasswordForgotDTO;
 import com.example.carwash.model.dtos.ResetPasswordDTO;
+import com.example.carwash.model.entity.ResetPassword;
 import com.example.carwash.model.entity.User;
 import com.example.carwash.service.interfaces.ResetService;
 import com.example.carwash.service.interfaces.UserService;
@@ -39,7 +41,8 @@ public class ForgotPasswordController {
         User user = userService.findByEmail(passwordForgotDTO.email());
         if (user == null) return "forgot-password";
 
-        userService.sendResetPasswordEmail(user);
+        resetService.makeTokenAndSaveIt(user);
+
         model.addAttribute("activationSend", true);
         return "forgot-password";
     }

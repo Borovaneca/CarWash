@@ -11,10 +11,6 @@ body {
     background-attachment: fixed;
 }
 
-header:hover {
-    background-color: whitesmoke;
-}
-
 h3 {
     text-align: center;
 }

@@ -132,9 +132,11 @@ public class ProfileController {
     public String addSocial(@PathVariable String username,
                             @Valid SocialMediaAddDTO socialMediaAddDTO,
                             BindingResult bindingResult,
+                            RedirectAttributes redirectAttributes,
                             @AuthenticationPrincipal UserDetails userDetails) {
 
         if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("invalidSocial", true);
             return "redirect:/users/view/" + socialMediaAddDTO.getUsername();
         }
 
@@ -150,8 +152,8 @@ public class ProfileController {
     @CrossOrigin("*")
     @PostMapping("/social/delete/{username}/{type}")
     public String deleteSocial(@PathVariable String username,
-                            @PathVariable String type,
-                            @AuthenticationPrincipal UserDetails userDetails) {
+                               @PathVariable String type,
+                               @AuthenticationPrincipal UserDetails userDetails) {
 
         if (isValidUser(username)) {
             checkIfAuthorized(userDetails, username);
@@ -160,7 +162,6 @@ public class ProfileController {
         }
         return "redirect:/";
     }
-
 
 
     @ResponseStatus(HttpStatus.NOT_FOUND)

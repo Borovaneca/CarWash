@@ -9,7 +9,7 @@ public interface ResetService {
     @EventListener(ForgotPasswordEvent.class)
     void userResetPassword(ForgotPasswordEvent event);
 
-    ResetPassword makeTokenAndSaveIt(User user);
+    void makeTokenAndSaveIt(User user);
 
     void resetPasswordForUserAndDeleteToken(String username, String password);
 

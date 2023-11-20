@@ -2,6 +2,7 @@ package com.example.carwash.service;
 
 import com.cloudinary.Cloudinary;
 import com.example.carwash.model.entity.ProfileImage;
+import com.example.carwash.model.entity.User;
 import com.example.carwash.repository.ProfileImageRepository;
 import com.example.carwash.repository.UserRepository;
 import com.example.carwash.service.interfaces.ProfileImageService;
@@ -19,19 +20,17 @@ import java.util.UUID;
 public class ProfileImageServiceImpl implements ProfileImageService {
 
     private final ProfileImageRepository profileImageRepository;
-    private final UserService userService;
     private final Cloudinary cloudinary;
 
 
     @Autowired
-    public ProfileImageServiceImpl(ProfileImageRepository profileImageRepository, UserService userService, Cloudinary cloudinary) {
+    public ProfileImageServiceImpl(ProfileImageRepository profileImageRepository, Cloudinary cloudinary) {
         this.profileImageRepository = profileImageRepository;
-        this.userService = userService;
         this.cloudinary = cloudinary;
     }
 
     @Override
-    public ProfileImage saveProfileImage(MultipartFile multipartFile, String username) {
+    public ProfileImage saveProfileImage(MultipartFile multipartFile, User user) {
 
         try {
             String url = cloudinary
@@ -39,9 +38,9 @@ public class ProfileImageServiceImpl implements ProfileImageService {
                     .upload(multipartFile.getBytes(), Map.of("public_id", UUID.randomUUID().toString()))
                     .get("url").toString();
 
-            boolean exists = userService.findByUsername(username) == null;
+            boolean exists = user.getImage() != null;
 
-            ProfileImage profileImage = exists ? userService.findByUsername(username).getImage() : new ProfileImage();
+            ProfileImage profileImage = exists ? user.getImage() : new ProfileImage();
             profileImage.setLocatedOn(url);
             return profileImageRepository.save(profileImage);
         } catch (IOException e) {

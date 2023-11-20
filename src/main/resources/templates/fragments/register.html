@@ -1,7 +1,7 @@
-<div class="card bg-light" style="width: 18rem; margin: 0 auto">
+<div class="card bg-light mt-2" style="width: 18rem; margin: 0 auto">
     <article class="card-body mx-auto" style="max-width: 400px;">
         <h4 class="card-title mt-3 text-center">Create Account</h4>
-        <small>Chose profile picture:</small>
+        <small>Picture is not required:</small>
         <form th:method="post" th:action="@{/users/register}" th:object="${userRegisterDTO}" enctype="multipart/form-data">
             <div class="form-group input-group">
                 <label for="image" class="h4 mb-2 text-white"></label>

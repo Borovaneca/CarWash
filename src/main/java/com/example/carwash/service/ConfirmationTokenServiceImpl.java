@@ -5,6 +5,7 @@ import com.example.carwash.model.entity.User;
 import com.example.carwash.repository.ConfirmationTokenRepository;
 import com.example.carwash.repository.UserRepository;
 import com.example.carwash.service.interfaces.ConfirmationTokenService;
+import com.example.carwash.service.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,12 +14,12 @@ public class ConfirmationTokenServiceImpl implements ConfirmationTokenService {
 
 
     private final ConfirmationTokenRepository confirmationTokenRepository;
-    private final UserRepository userRepository;
+    private final UserService userService;
 
     @Autowired
-    public ConfirmationTokenServiceImpl(ConfirmationTokenRepository confirmationTokenRepository, UserRepository userRepository) {
+    public ConfirmationTokenServiceImpl(ConfirmationTokenRepository confirmationTokenRepository, UserService userService) {
         this.confirmationTokenRepository = confirmationTokenRepository;
-        this.userRepository = userRepository;
+        this.userService = userService;
     }
 
 
@@ -35,7 +36,7 @@ public class ConfirmationTokenServiceImpl implements ConfirmationTokenService {
     @Override
     public void confirmEmail(User user) {
         user.setActive(true);
-        userRepository.save(user);
+        userService.save(user);
         confirmationTokenRepository.delete(confirmationTokenRepository.findByUserId(user.getId()).get());
     }
     @Override

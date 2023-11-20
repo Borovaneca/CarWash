@@ -28,29 +28,25 @@ public class UserServiceImpl implements UserService {
     private final SocialMediaService socialMediaService;
     private final PasswordEncoder passwordEncoder;
     private final ProfileImageServiceImpl profileImageServiceImpl;
-    private final ResetService resetService;
-    private final ApplicationEventPublisher applicationEventPublisher;
     private final VehicleService vehicleService;
     private final RoleService roleService;
     private final ServiceService serviceService;
-    @Value("${spring.admin.username}")
+    @Value("${admin.username}")
     private String adminUsername;
-    @Value("${spring.admin.password}")
+    @Value("${admin.password}")
     private String adminPassword;
     private ProfileImage profileImage;
     @Autowired
     public UserServiceImpl(UserRepository userRepository, ProfileImageService profileImageService,
                            SocialMediaServiceImpl socialMediaService, PasswordEncoder passwordEncoder,
-                           ProfileImageServiceImpl profileImageServiceImpl, ResetServiceImpl resetService,
-                           ApplicationEventPublisher applicationEventPublisher, VehicleServiceImpl vehicleService,
+                           ProfileImageServiceImpl profileImageServiceImpl,
+                            VehicleServiceImpl vehicleService,
                            RoleService roleService, ServiceService serviceService) {
         this.userRepository = userRepository;
         this.profileImageService = profileImageService;
         this.socialMediaService = socialMediaService;
         this.passwordEncoder = passwordEncoder;
         this.profileImageServiceImpl = profileImageServiceImpl;
-        this.resetService = resetService;
-        this.applicationEventPublisher = applicationEventPublisher;
         this.vehicleService = vehicleService;
         this.roleService = roleService;
         this.serviceService = serviceService;
@@ -60,7 +56,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void update(ProfileEditDTO profileEditDTO) {
-        Optional<User> userOptional = userRepository.findById(1L);
+        Optional<User> userOptional = userRepository.findById(profileEditDTO.getId());
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             if (!user.getUsername().equals(profileEditDTO.getUsername())) {
@@ -106,7 +102,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateImage(ProfileUpdateImageDTO profileUpdateImageDTO) {
-        profileImageServiceImpl.saveProfileImage(profileUpdateImageDTO.getImage(), profileUpdateImageDTO.getUsername());
+        profileImageServiceImpl.saveProfileImage(profileUpdateImageDTO.getImage(), findByUsername(profileUpdateImageDTO.getUsername()));
     }
 
     @Override
@@ -122,20 +118,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void confirmEmail(User user) {
-        userRepository.save(user);
-    }
-
-    @Override
     public User findByEmail(String email) {
        return userRepository.findByEmail(email).orElse(null);
     }
 
-    @Override
-    public void sendResetPasswordEmail(User user) {
-        ResetPassword reset = resetService.makeTokenAndSaveIt(user);
-        applicationEventPublisher.publishEvent(new ForgotPasswordEvent(user, user.getEmail(), reset.getToken(), user.getUsername()));
-    }
 
     @Override
     public void deleteSocialMedia(String username, String socialName) {

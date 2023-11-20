@@ -20,11 +20,7 @@ public interface UserService {
 
     void addSocialMedia(String username, SocialMediaAddDTO socialMediaAddDTO);
 
-    void confirmEmail(User user);
-
     User findByEmail(String email);
-
-    void sendResetPasswordEmail(User user);
 
     void deleteSocialMedia(String username, String socialName);
 
