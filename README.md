@@ -73,4 +73,8 @@ _In order to run CarWash you need to:_
 ![project-index](src/main/resources/static/images/project/index.png)
 _The CarWash project is a Spring Boot-based application designed to streamline car cleaning services. It offers users the convenience of registering, managing their vehicles, and scheduling appointments for various car cleaning services._
 
+### Built With
+
+* ![JavaScript](https://img.shields.io/badge/JavaScript-ECDB6F)
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
