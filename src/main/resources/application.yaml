@@ -27,8 +27,15 @@ spring:
     username: ${EMAIL:carwash1303@gmail.com}
     password: ${EMAIL_PASSWORD:nbmpndmvsjofuvqv}
 
+  admin:
+    username: ${ADMIN_USERNAME}
+    password: ${ADMIN_PASSWORD}
+
   remember:
     key: ${REMEMBER_KEY:carwash}
+  application:
+    admin:
+      enabled:
 
 #logging:
 #  level:

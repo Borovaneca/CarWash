@@ -14,8 +14,8 @@ public class Service extends BaseEntity {
 
     @Column
     private String description;
-    @Column(unique = true, nullable = false)
 
+    @Column(unique = true, nullable = false)
     private String urlVideo;
 
     @Column(nullable = false)

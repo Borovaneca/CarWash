@@ -7,6 +7,7 @@ import com.example.carwash.repository.ResetPasswordRepository;
 import com.example.carwash.repository.UserRepository;
 import com.example.carwash.service.interfaces.EmailService;
 import com.example.carwash.service.interfaces.ResetService;
+import com.example.carwash.service.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,14 +22,14 @@ public class ResetServiceImpl implements ResetService {
 
     private final EmailService emailService;
     private final ResetPasswordRepository resetPasswordRepository;
-    private final UserRepository userRepository;
+    private final UserService userService;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public ResetServiceImpl(EmailService emailService, ResetPasswordRepository resetPasswordRepository, UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public ResetServiceImpl(EmailService emailService, ResetPasswordRepository resetPasswordRepository, UserService userService, PasswordEncoder passwordEncoder) {
         this.emailService = emailService;
         this.resetPasswordRepository = resetPasswordRepository;
-        this.userRepository = userRepository;
+        this.userService = userService;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -51,11 +52,12 @@ public class ResetServiceImpl implements ResetService {
 
     @Override
     public void resetPasswordForUserAndDeleteToken(String username, String password) {
-        userRepository.findByUsername(username).ifPresent(us -> {
-            us.setPassword(passwordEncoder.encode(password));
-            userRepository.save(us);
-            resetPasswordRepository.findByUsername(username).ifPresent(resetPasswordRepository::delete);
-        });
+        User user = userService.findByUsername(username);
+        if (user != null) {
+                user.setPassword(passwordEncoder.encode(password));
+                userService.save(user);
+                resetPasswordRepository.findByUsername(username).ifPresent(resetPasswordRepository::delete);
+        }
 
     }
 

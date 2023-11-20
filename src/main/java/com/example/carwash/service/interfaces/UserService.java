@@ -6,6 +6,9 @@ import com.example.carwash.model.dtos.SocialMediaAddDTO;
 import com.example.carwash.model.dtos.VehicleAddDTO;
 import com.example.carwash.model.entity.User;
 
+import java.util.List;
+import java.util.Optional;
+
 public interface UserService {
     void update(ProfileEditDTO profileEditDTO);
 
@@ -36,4 +39,10 @@ public interface UserService {
     void banUserById(Long userId);
 
     void removeRoleToUserId(String role, Long userId);
+
+    void registerAdmin();
+
+    Optional<List<User>> findInactiveUsersMoreThan7Days();
+
+    void delete(User user);
 }

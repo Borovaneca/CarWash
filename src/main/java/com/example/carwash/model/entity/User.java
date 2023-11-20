@@ -68,13 +68,16 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Appointment> appointments;
 
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, mappedBy = "user")
+    private List<ConfirmationToken> confirmationToken;
+
     @OneToOne(fetch = FetchType.EAGER)
     private ProfileImage image;
 
     @OneToMany(mappedBy = "user",
             fetch = FetchType.EAGER,
             cascade = CascadeType.ALL)
-    private Set<SocialMedia> socialMedias;
+    private List<SocialMedia> socialMedias;
 
     public String getFullName() {
         return firstName + " " + lastName;

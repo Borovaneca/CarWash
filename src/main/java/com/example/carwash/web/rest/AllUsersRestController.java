@@ -20,8 +20,8 @@ public class AllUsersRestController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<AllUsersView>> getAllUsers() {
-        return ResponseEntity.ok(viewService.getAllUsers());
+    public ResponseEntity<?> getAllUsers() {
+        return ResponseEntity.status(200).body(viewService.getAllUsers());
     }
 
     @PostMapping("/ban/{id}")

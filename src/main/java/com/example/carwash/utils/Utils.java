@@ -58,30 +58,6 @@ public class Utils {
                    mapper.map(src -> src.getVehicle().getFullCarInfo(), MyAppointmentView::setVehicle);
                 });
 
-//        modelMapper.typeMap(Appointment.class, AppointmentAwaitingApprovalView.class)
-//                .addMappings(mapper -> {
-//                    mapper.map(src -> src.getUser().getUsername(), AppointmentAwaitingApprovalView::setCreateBy);
-//                    mapper.map(src -> {
-//                        if (src.getCreateOn() == null) {
-//                            return "";
-//                        }
-//                        LocalDateTime parse = LocalDateTime.parse(src.getCreateOn().toString(), DateTimeFormatter.ofPattern("dd.MM.yyyy/HH:mm"));
-//                        return parse.format(DateTimeFormatter.ofPattern("dd.MM.yyyy/HH:mm"));
-//
-//                    }, AppointmentAwaitingApprovalView::setCreateOn);
-//                    mapper.map(src -> {
-//                        if (src.getMadeFor() == null) {
-//                            return "";
-//                        }
-//                        LocalDateTime parse = LocalDateTime.parse(src.getMadeFor().toString(), DateTimeFormatter.ofPattern("dd.MM.yyyy/HH:mm"));
-//                        return parse.format(DateTimeFormatter.ofPattern("dd.MM.yyyy/HH:mm"));
-//                    }, AppointmentAwaitingApprovalView::setMadeFor);
-//                    mapper.map(src ->  src.getVehicle() == null ? "" : src.getVehicle().getFullCarInfo(), AppointmentAwaitingApprovalView::setVehicle);
-//                    mapper.map(src -> src.getService() == null ? "" : src.getService().getName(), AppointmentAwaitingApprovalView::setService);
-//                    mapper.map(src -> src.getService() == null ? "" : "$" + src.getService().getPrice(), AppointmentAwaitingApprovalView::setPrice);
-//                    mapper.map(src -> src.getId().toString(), AppointmentAwaitingApprovalView::setId);
-//                });
-
         return modelMapper;
     }
 }

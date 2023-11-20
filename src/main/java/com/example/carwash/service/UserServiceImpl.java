@@ -5,50 +5,70 @@ import com.example.carwash.model.dtos.ProfileEditDTO;
 import com.example.carwash.model.dtos.ProfileUpdateImageDTO;
 import com.example.carwash.model.dtos.SocialMediaAddDTO;
 import com.example.carwash.model.dtos.VehicleAddDTO;
-import com.example.carwash.model.entity.ResetPassword;
-import com.example.carwash.model.entity.SocialMedia;
-import com.example.carwash.model.entity.User;
-import com.example.carwash.model.entity.Vehicle;
+import com.example.carwash.model.entity.*;
 import com.example.carwash.events.events.ForgotPasswordEvent;
 import com.example.carwash.model.enums.RoleName;
-import com.example.carwash.repository.RoleRepository;
+import com.example.carwash.repository.ServiceRepository;
 import com.example.carwash.repository.UserRepository;
-import com.example.carwash.service.interfaces.UserService;
+import com.example.carwash.service.interfaces.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.time.LocalDate;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final SocialMediaServiceImpl socialMediaServiceImpl;
+    private final ProfileImageService profileImageService;
+    private final SocialMediaService socialMediaService;
     private final PasswordEncoder passwordEncoder;
     private final ProfileImageServiceImpl profileImageServiceImpl;
-    private final ResetServiceImpl resetServiceImpl;
+    private final ResetService resetService;
     private final ApplicationEventPublisher applicationEventPublisher;
-    private final VehicleServiceImpl vehicleServiceImpl;
-    private final RoleRepository roleRepository;
+    private final VehicleService vehicleService;
+    private final RoleService roleService;
+    private final ServiceService serviceService;
+    @Value("${spring.admin.username}")
+    private String adminUsername;
+    @Value("${spring.admin.password}")
+    private String adminPassword;
+    private ProfileImage profileImage;
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, SocialMediaServiceImpl socialMediaServiceImpl, PasswordEncoder passwordEncoder, ProfileImageServiceImpl profileImageServiceImpl, ResetServiceImpl resetServiceImpl, ApplicationEventPublisher applicationEventPublisher, VehicleServiceImpl vehicleServiceImpl, RoleRepository roleRepository) {
+    public UserServiceImpl(UserRepository userRepository, ProfileImageService profileImageService,
+                           SocialMediaServiceImpl socialMediaService, PasswordEncoder passwordEncoder,
+                           ProfileImageServiceImpl profileImageServiceImpl, ResetServiceImpl resetService,
+                           ApplicationEventPublisher applicationEventPublisher, VehicleServiceImpl vehicleService,
+                           RoleService roleService, ServiceService serviceService) {
         this.userRepository = userRepository;
-        this.socialMediaServiceImpl = socialMediaServiceImpl;
+        this.profileImageService = profileImageService;
+        this.socialMediaService = socialMediaService;
         this.passwordEncoder = passwordEncoder;
         this.profileImageServiceImpl = profileImageServiceImpl;
-        this.resetServiceImpl = resetServiceImpl;
+        this.resetService = resetService;
         this.applicationEventPublisher = applicationEventPublisher;
-        this.vehicleServiceImpl = vehicleServiceImpl;
-        this.roleRepository = roleRepository;
+        this.vehicleService = vehicleService;
+        this.roleService = roleService;
+        this.serviceService = serviceService;
     }
 
 
 
     @Override
     public void update(ProfileEditDTO profileEditDTO) {
-        userRepository.findById(profileEditDTO.getId()).ifPresent(user -> {
+        Optional<User> userOptional = userRepository.findById(1L);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            if (!user.getUsername().equals(profileEditDTO.getUsername())) {
+                user.setUsername(profileEditDTO.getUsername());
+            }
+            if (!user.getEmail().equals(profileEditDTO.getEmail())) {
+                user.setEmail(profileEditDTO.getEmail());
+            }
             user.setFirstName(profileEditDTO.getFirstName());
             user.setLastName(profileEditDTO.getLastName());
             user.setCity(profileEditDTO.getCity());
@@ -56,7 +76,7 @@ public class UserServiceImpl implements UserService {
             user.setBio(profileEditDTO.getBio());
             user.setPassword(passwordEncoder.encode(profileEditDTO.getPassword()));
             userRepository.save(user);
-        });
+        }
     }
     @Override
     public ProfileEditDTO getUserAndMapToProfileEditDTO(String username) {
@@ -95,7 +115,7 @@ public class UserServiceImpl implements UserService {
                 .findByUsername(username)
                 .ifPresent(
                         user -> {
-                            user.getSocialMedias().add(socialMediaServiceImpl.addSocialMediaToUser(socialMediaAddDTO, user
+                            user.getSocialMedias().add(socialMediaService.addSocialMediaToUser(socialMediaAddDTO, user
                             ));
                             userRepository.save(user);
                         });
@@ -113,7 +133,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void sendResetPasswordEmail(User user) {
-        ResetPassword reset = resetServiceImpl.makeTokenAndSaveIt(user);
+        ResetPassword reset = resetService.makeTokenAndSaveIt(user);
         applicationEventPublisher.publishEvent(new ForgotPasswordEvent(user, user.getEmail(), reset.getToken(), user.getUsername()));
     }
 
@@ -121,10 +141,10 @@ public class UserServiceImpl implements UserService {
     public void deleteSocialMedia(String username, String socialName) {
         User user = userRepository.findByUsername(username).orElse(null);
         if (user != null) {
-            SocialMedia media = socialMediaServiceImpl.getByNameAndUser(socialName, user);
+            SocialMedia media = socialMediaService.getByNameAndUser(socialName, user);
             user.getSocialMedias().remove(media);
             userRepository.save(user);
-            socialMediaServiceImpl.delete(media);
+            socialMediaService.delete(media);
         }
     }
 
@@ -143,20 +163,20 @@ public class UserServiceImpl implements UserService {
         user.getVehicles().add(vehicle);
         vehicle.setUser(user);
         userRepository.save(user);
-        vehicleServiceImpl.save(vehicle);
+        vehicleService.save(vehicle);
 
     }
 
     @Override
     public boolean removeVehicleFromUser(String username, Long id) {
         User user = findByUsername(username);
-        Vehicle vehicle = vehicleServiceImpl.findById(id);
+        Vehicle vehicle = vehicleService.findById(id);
         if (vehicle == null) {
             return false;
         }
 
         user.getVehicles().remove(vehicle);
-        vehicleServiceImpl.delete(vehicle);
+        vehicleService.delete(vehicle);
         userRepository.save(user);
         return true;
     }
@@ -168,13 +188,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void addRoleToUserId(String role, Long userId) {
-        roleRepository.findByName(RoleName.valueOf(role)).ifPresent(ro -> {
+        Role roleEntity = roleService.findByName(RoleName.valueOf(role));
+        if (roleEntity != null) {
             userRepository.findById(userId).ifPresent(user -> {
-                if (user.getRoles().contains(ro)) return;
-                user.getRoles().add(ro);
+                if (user.getRoles().contains(roleEntity)) return;
+                user.getRoles().add(roleEntity);
                 userRepository.save(user);
             });
-        });
+        }
+
     }
 
     @Override
@@ -187,13 +209,82 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void removeRoleToUserId(String role, Long userId) {
-        roleRepository.findByName(RoleName.valueOf(role)).ifPresent(ro -> {
+        Role roleEntity = roleService.findByName(RoleName.valueOf(role));
+        if (roleEntity != null) {
             userRepository.findById(userId).ifPresent(user -> {
-                if (user.getRoles().contains(ro)) {
-                    user.getRoles().remove(ro);
+                if (user.getRoles().contains(roleEntity)) {
+                    user.getRoles().remove(roleEntity);
                     userRepository.save(user);
                 }
             });
-        });
+        }
+    }
+
+    @Override
+    public void registerAdmin() {
+        if (this.userRepository.count() == 0) {
+            profileImage = profileImageService.save(new ProfileImage("https://statusneo.com/wp-content/uploads/2023/02/MicrosoftTeams-image551ad57e01403f080a9df51975ac40b6efba82553c323a742b42b1c71c1e45f1.jpg"));
+            List<Role> roles = new ArrayList<>();
+
+            Arrays.stream(RoleName.values())
+                    .forEach(name -> {
+                        Role role = new Role();
+                        role.setName(name);
+                        roles.add(role);
+                    });
+            roleService.saveAll(roles);
+            if (this.serviceService.allServices() == 0) {
+                List<com.example.carwash.model.entity.Service> services = new ArrayList<>();
+                List<String> serviceNames = List.of("Interior Detailing", "Express Wash", "The Works Wash");
+                serviceNames.forEach(name -> services.add(new com.example.carwash.model.entity.Service(name)));
+                serviceService.saveAll(services);
+            }
+            addAdmin();
+        }
+    }
+
+    @Override
+    public Optional<List<User>> findInactiveUsersMoreThan7Days() {
+        return userRepository.findInactiveUsersMoreThan7Days();
+    }
+
+    @Override
+    public void delete(User user) {
+        userRepository.delete(user);
+    }
+
+    private void addAdmin() {
+        Scanner scanner = new Scanner(System.in);
+        User admin = new User();
+        admin.setUsername(adminUsername);
+        admin.setPassword(passwordEncoder.encode(adminPassword));
+        admin.setRoles(roleService.findAll());
+        admin.setCity("Vratsa");
+        admin.setActive(true);
+        admin.setAge(23);
+        admin.setEmail("borovaneca@softuni.bg");
+        admin.setFirstName("Petyo");
+        admin.setLastName("Veselinov");
+        admin.setBanned(false);
+        admin.setRegisteredOn(LocalDate.now());
+        admin.setImage(profileImage);
+        admin.setSocialMedias(getSocialMedias(admin));
+        admin.setBio("Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis ducimus ad atque nulla. Reiciendis praesentium beatae quod cumque odit accusamus. Doloribus inventore voluptatem suscipit pariatur omnis aliquid non illo mollitia!");
+        userRepository.save(admin);
+    }
+
+    private List<SocialMedia> getSocialMedias(User admin) {
+        List<SocialMedia> socialMedias = new ArrayList<>();
+        SocialMedia facebook = new SocialMedia();
+        facebook.setType("facebook");
+        facebook.setLink("https://www.facebook.com/Borovaneca");
+        facebook.setUser(admin);
+        socialMedias.add(facebook);
+        SocialMedia github = new SocialMedia();
+        github.setType("github");
+        github.setLink("https://github.com/Borovaneca");
+        github.setUser(admin);
+        socialMedias.add(github);
+        return socialMedias;
     }
 }

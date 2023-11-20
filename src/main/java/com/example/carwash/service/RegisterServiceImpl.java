@@ -8,8 +8,11 @@ import com.example.carwash.events.events.UserRegisteredEvent;
 import com.example.carwash.repository.RoleRepository;
 import com.example.carwash.repository.UserRepository;
 import com.example.carwash.service.interfaces.ConfirmationTokenService;
+import com.example.carwash.service.interfaces.ProfileImageService;
 import com.example.carwash.service.interfaces.RegisterService;
+import com.example.carwash.service.interfaces.RoleService;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -17,6 +20,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Consumer;
 
@@ -27,18 +31,23 @@ public class RegisterServiceImpl implements RegisterService {
     private final PasswordEncoder passwordEncoder;
     private final UserDetailsService userDetailsService;
     private final ModelMapper modelMapper;
-    private final ProfileImageServiceImpl profileImageServiceImpl;
-    private final RoleRepository roleRepository;
+    private final ProfileImageService profileImageService;
+    private final RoleService roleService;
     private final ApplicationEventPublisher applicationEventPublisher;
     private final ConfirmationTokenService confirmationTokenService;
 
-    public RegisterServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, UserDetailsService userDetailsService, ModelMapper modelMapper, ProfileImageServiceImpl profileImageServiceImpl, RoleRepository roleRepository, ApplicationEventPublisher applicationEventPublisher, ConfirmationTokenService confirmationTokenService) {
+    @Autowired
+    public RegisterServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder,
+                               UserDetailsService userDetailsService, ModelMapper modelMapper,
+                               ProfileImageService profileImageService, RoleService roleService,
+                               ApplicationEventPublisher applicationEventPublisher,
+                               ConfirmationTokenService confirmationTokenService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.userDetailsService = userDetailsService;
         this.modelMapper = modelMapper;
-        this.profileImageServiceImpl = profileImageServiceImpl;
-        this.roleRepository = roleRepository;
+        this.profileImageService = profileImageService;
+        this.roleService = roleService;
         this.applicationEventPublisher = applicationEventPublisher;
         this.confirmationTokenService = confirmationTokenService;
     }
@@ -72,8 +81,12 @@ public class RegisterServiceImpl implements RegisterService {
     private User mapToUser(UserRegisterDTO dto) {
         User user = modelMapper.map(dto, User.class);
         user.setPassword(passwordEncoder.encode(dto.getPassword()));
-        user.getRoles().add(roleRepository.findByName(RoleName.USER).get());
-        user.setImage(profileImageServiceImpl.saveProfileImage(dto.getImage(), dto.getUsername()));
+        user.getRoles().add(roleService.findByName(RoleName.USER));
+        if (dto.getImage() == null || Objects.equals(dto.getImage().getOriginalFilename(), "")) {
+            user.setImage(profileImageService.getDefaultProfileImage());
+            return user;
+        }
+        user.setImage(profileImageService.saveProfileImage(dto.getImage(), dto.getUsername()));
         return user;
     }
 }

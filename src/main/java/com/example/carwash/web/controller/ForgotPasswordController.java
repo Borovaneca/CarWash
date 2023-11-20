@@ -3,7 +3,7 @@ package com.example.carwash.web.controller;
 import com.example.carwash.model.dtos.PasswordForgotDTO;
 import com.example.carwash.model.dtos.ResetPasswordDTO;
 import com.example.carwash.model.entity.User;
-import com.example.carwash.service.ResetServiceImpl;
+import com.example.carwash.service.interfaces.ResetService;
 import com.example.carwash.service.interfaces.UserService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
@@ -18,11 +18,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 public class ForgotPasswordController {
 
-    private final ResetServiceImpl resetServiceImpl;
+    private final ResetService resetService;
     private final UserService userService;
 
-    public ForgotPasswordController(ResetServiceImpl resetServiceImpl, UserService userService) {
-        this.resetServiceImpl = resetServiceImpl;
+    public ForgotPasswordController(ResetService resetService, UserService userService) {
+        this.resetService = resetService;
         this.userService = userService;
     }
 
@@ -50,7 +50,7 @@ public class ForgotPasswordController {
         if (username == null || token == null) return "redirect:/";
         User user = userService.findByUsername(username);
         if (user == null) return "redirect:/";
-        if (resetServiceImpl.isValid(token, username)) {
+        if (resetService.isValid(token, username)) {
 
             model.addAttribute("passwordChanged", false);
             model.addAttribute("username", username);
@@ -73,7 +73,7 @@ public class ForgotPasswordController {
             return "redirect:/users/reset-password/" + username + "/" + token ;
         }
 
-        resetServiceImpl.resetPasswordForUserAndDeleteToken(username, resetPasswordDTO.getPassword());
+        resetService.resetPasswordForUserAndDeleteToken(username, resetPasswordDTO.getPassword());
         model.addAttribute("passwordChanged", true);
         model.addAttribute("username", username);
         model.addAttribute("token", token);

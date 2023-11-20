@@ -10,10 +10,8 @@
                 </div>
                 <input id="image"
                        th:field="*{image}"
-                       class="form-control" type="file" accept="image/png, image/jpeg" is required
-                       th:classappend="${#fields.hasErrors('image')} ? 'is-invalid bg-danger'">
-                <small class="invalid-feedback alert alert-danger" th:each="msg : ${#fields.errors('image')}"
-                       th:text="${msg}"></small>
+                       class="form-control" type="file" accept="image/png, image/jpeg">
+
             </div>
             <div class="form-group input-group">
                 <label for="username" class="h4 mb-2 text-white"></label>

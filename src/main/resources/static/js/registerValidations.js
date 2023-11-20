@@ -22,23 +22,11 @@ function validateUsername(username) {
 }
 
 function validateForm() {
-    var image = document.getElementById('image');
     var username = document.getElementById('username');
     var email = document.getElementById('email');
     var password = document.getElementById('password');
     var confirmPassword = document.getElementById('confirmPassword');
 
-    if (!image.value.trim()) {
-        alert('Please choose a profile picture.');
-        return false;
-    }
-
-    const selectedFile = image.files[0];
-    const fileType = selectedFile.type;
-    if (!fileType.startsWith('image/')) {
-        alert('Please select a valid image file (PNG or JPEG).');
-        return false;
-    }
 
     if (username.value.length < 3) {
         alert('Username must be at least 3 characters.');

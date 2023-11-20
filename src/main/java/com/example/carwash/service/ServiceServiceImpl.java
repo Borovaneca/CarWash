@@ -51,4 +51,19 @@ public class ServiceServiceImpl implements ServiceService {
                 .map(service -> modelMapper.map(service, ServiceView.class))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public com.example.carwash.model.entity.Service getByName(String name) {
+        return serviceRepository.getByName(name);
+    }
+
+    @Override
+    public int allServices() {
+        return serviceRepository.findAll().size();
+    }
+
+    @Override
+    public void saveAll(List<com.example.carwash.model.entity.Service> services) {
+        serviceRepository.saveAll(services);
+    }
 }

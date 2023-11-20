@@ -22,8 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 )
 public class UserRegisterDTO {
 
-    @NotNull
-    @ValidImage
+
     private MultipartFile image;
 
     @NotBlank

@@ -18,6 +18,6 @@ public class RegisterAdmin {
 
     @Before("adminRegister()")
     public void alertForInitializing() {
-        log.info("PLEASE MAKE ATTENTION ON THE CONSOLE IF THIS IS FIRST TIME YOU RUN THE APP! YOU MUST INSERT USERNAME AND PASSWORD OF THE OWNER ACCOUNT!");
+        log.info("PLEASE CONFIGURE ADMIN ACCOUNT IN THE YAML!");
     }
 }
