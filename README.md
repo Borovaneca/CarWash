@@ -196,7 +196,8 @@ POST http://localhost:8080/api/owner/users/ban/4
 <summary>Click read the MIT License</summary>
 
 <div style="overflow-x: auto; max-height: 300px;">
-    ### MIT License
+  
+  <center>  # MIT License
 
 Copyright (c) 2023 Petyo Veselinov
 
@@ -216,7 +217,7 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+SOFTWARE.</center>
 </div>
 
 </details></center>
