@@ -112,6 +112,25 @@ _The project incorporates a bit of Aspect-Oriented Programming (AOP) to modulari
 
 1. **`Removing Inactive Users`**: Users who haven't confirmed their emails within 7 days are considered inactive and are automatically removed from the system.
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
+2. **`Handling Rejected Appointments`**: Scheduled task to manage rejected appointments within the system.
+
+* Events Handling
+
+1. **`User Registration Activation Email`**: An event triggers the sending of an activation email upon user registration.
+2. **`Password Reset Email`**: Another event allows users to reset their passwords if they forget them.
+
+* Custom Exceptions
+
+Custom exceptions are used to handle specific errors or exceptional cases in the application, improving error handling and providing meaningful feedback to users or clients.
+
+* Integration of External Services
+
+The project integrates with services like Cloudinary for managing and serving images or media assets.
+
+* Testing
+
+The project includes JUnit for unit testing and integration tests, ensuring the reliability and correctness of various components within the application.
+This structure provides a clear and organized overview of both the frontend and backend aspects of the project, detailing the technologies, functionalities, and methodologies utilized. Adjust the descriptions as needed to accurately represent the specifics of your project.
 
 ## Usage
 _Here you can find all the information about the roles in the applicaтion and what they can do._
