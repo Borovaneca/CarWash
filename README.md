@@ -126,6 +126,12 @@ _The project incorporates a bit of Aspect-Oriented Programming (AOP) to modulari
 
 ---
 
+* **Cacheable Implementation**
+
+Caching mechanisms are utilized within the application to improve performance by storing frequently accessed or computed data in temporary storage (cache). This reduces the need to repeatedly fetch or compute the same data, enhancing response times and overall system efficiency.
+
+---
+
 * **Custom Exceptions**
 
 Custom exceptions are used to handle specific errors or exceptional cases in the application, improving error handling and providing meaningful feedback to users or clients.
