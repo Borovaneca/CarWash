@@ -113,7 +113,7 @@ _The project incorporates a bit of Aspect-Oriented Programming (AOP) to modulari
 1. **`Removing Inactive Users`**: Users who haven't confirmed their emails within 7 days are considered inactive and are automatically removed from the system.
 
 2. **`Handling Rejected Appointments`**: Scheduled task to manage rejected appointments within the system.
-<br>
+<br />
 
 * Events Handling
 
