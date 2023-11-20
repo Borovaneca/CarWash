@@ -127,6 +127,18 @@ Custom exceptions are used to handle specific errors or exceptional cases in the
 
 ---
 
+* Interceptor for Banned Users
+
+An interceptor is implemented to handle access control for banned users within the application. When a user attempts to access restricted resources or endpoints, this interceptor checks whether the user has been banned. If the user is identified as banned, access to the requested resource is denied.
+
+---
+
+* Custom Exception Handling
+
+Custom exception handling is implemented within the application to manage and respond to exceptional situations or errors that occur during the runtime of the system. These exceptions are designed to capture specific scenarios and provide appropriate responses to users or client applications.
+
+---
+
 * Integration of External Services
 
 The project integrates with services like Cloudinary for managing and serving images or media assets.
