@@ -170,6 +170,7 @@ The project integrates with services like Cloudinary for managing and serving im
 - [x] Mockito
 - [x] GreenMail
 - [x] HSQLDB
+- [x] Integration tests
 
 The project includes JUnit and Mockito for unit testing and integration tests with inmemory database, ensuring the reliability and correctness of various components within the application.
 This structure provides a clear and organized overview of both the frontend and backend aspects of the project, detailing the technologies, functionalities, and methodologies utilized. Adjust the descriptions as needed to accurately represent the specifics of your project.
