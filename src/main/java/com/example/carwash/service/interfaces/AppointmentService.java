@@ -3,6 +3,7 @@ package com.example.carwash.service.interfaces;
 import com.example.carwash.model.dtos.AppointmentAddDTO;
 import com.example.carwash.model.entity.Appointment;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface AppointmentService {
@@ -17,4 +18,8 @@ public interface AppointmentService {
     List<Appointment> findAllByStatus(int status);
 
     void deleteAll(List<Appointment> rejected);
+
+    List<Appointment> findAllByUserUsername(String username);
+
+    List<Appointment> findAllAppointmentsForToday();
 }

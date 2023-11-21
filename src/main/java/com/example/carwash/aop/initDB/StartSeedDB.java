@@ -1,5 +1,6 @@
 package com.example.carwash.aop.initDB;
 
+import com.example.carwash.service.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -7,16 +8,16 @@ import org.springframework.stereotype.Component;
 @Component
 public class StartSeedDB implements CommandLineRunner {
 
-    private final SeedDataBase seedDataBase;
+    private final UserService userService;
 
     @Autowired
-    public StartSeedDB(SeedDataBase seedDataBase) {
-        this.seedDataBase = seedDataBase;
+    public StartSeedDB(UserService userService) {
+        this.userService = userService;
     }
 
 
     @Override
     public void run(String... args) throws Exception {
-        seedDataBase.registerAdmin();
+        userService.registerAdmin();
     }
 }

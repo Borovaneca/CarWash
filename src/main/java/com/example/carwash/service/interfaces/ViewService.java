@@ -25,7 +25,7 @@ public interface ViewService {
 
     List<AllUsersView> getAllUsers();
 
-    AllUsersView banUser(Long id);
+    AllUsersView banOrUnbanUser(Long id);
 
     List<AppointmentTodayView> getAppointmentsForToday();
 }

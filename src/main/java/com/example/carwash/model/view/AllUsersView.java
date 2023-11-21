@@ -17,6 +17,20 @@ public class AllUsersView {
 
     private String email;
 
+    @Override
+    public String toString() {
+        return "{" +
+                "id='" + id + '\'' +
+                ", locatedOn='" + locatedOn + '\'' +
+                ", username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", role='" + role + '\'' +
+                ", age='" + age + '\'' +
+                ", registeredOn='" + registeredOn + '\'' +
+                ", isBanned='" + isBanned + '\'' +
+                '}';
+    }
+
     private String role;
 
     private String age;
@@ -24,4 +38,5 @@ public class AllUsersView {
     private String registeredOn;
 
     private String isBanned;
+
 }

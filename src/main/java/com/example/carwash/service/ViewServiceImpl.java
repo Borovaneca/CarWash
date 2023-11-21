@@ -3,14 +3,15 @@ package com.example.carwash.service;
 import com.example.carwash.mapper.CustomMapper;
 import com.example.carwash.model.dtos.AppointmentServiceDTO;
 import com.example.carwash.model.dtos.AppointmentVehicleDTO;
-import com.example.carwash.model.entity.Appointment;
 import com.example.carwash.model.entity.Role;
 import com.example.carwash.model.entity.User;
 import com.example.carwash.model.enums.RoleName;
 import com.example.carwash.model.view.*;
 import com.example.carwash.repository.AppointmentRepository;
 import com.example.carwash.repository.UserRepository;
+import com.example.carwash.service.interfaces.AppointmentService;
 import com.example.carwash.service.interfaces.ServiceService;
+import com.example.carwash.service.interfaces.VehicleService;
 import com.example.carwash.service.interfaces.ViewService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,26 +22,25 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
 public class ViewServiceImpl implements ViewService {
 
     private final UserRepository userRepository;
-    private final VehicleServiceImpl vehicleServiceImpl;
+    private final VehicleService vehicleService;
     private final ServiceService serviceService;
     private final ModelMapper modelMapper;
-    private final AppointmentRepository appointmentRepository;
+    private final AppointmentService appointmentService;
     private final CustomMapper customMapper;
 
     @Autowired
-    public ViewServiceImpl(UserRepository userRepository, VehicleServiceImpl vehicleServiceImpl, ServiceService serviceService, ModelMapper modelMapper, AppointmentRepository appointmentRepository, CustomMapper customMapper) {
+    public ViewServiceImpl(UserRepository userRepository, VehicleService vehicleService, ServiceService serviceService, ModelMapper modelMapper, AppointmentService appointmentService, CustomMapper customMapper) {
         this.userRepository = userRepository;
-        this.vehicleServiceImpl = vehicleServiceImpl;
+        this.vehicleService = vehicleService;
         this.serviceService = serviceService;
         this.modelMapper = modelMapper;
-        this.appointmentRepository = appointmentRepository;
+        this.appointmentService = appointmentService;
         this.customMapper = customMapper;
     }
 
@@ -98,7 +98,7 @@ public class ViewServiceImpl implements ViewService {
 
     @Override
     public List<VehicleView> getVehiclesViewByUsername(String username) {
-        return vehicleServiceImpl.getVehiclesViewByUsernameAndGetVehicleView(username);
+        return vehicleService.getVehiclesViewByUsernameAndGetVehicleView(username);
     }
 
 
@@ -109,7 +109,7 @@ public class ViewServiceImpl implements ViewService {
 
     @Override
     public List<MyAppointmentView> getMyAppointments(String username) {
-        return appointmentRepository.findAllByUserUsername(username)
+        return appointmentService.findAllByUserUsername(username)
                 .stream()
                 .map(appointment -> modelMapper.map(appointment, MyAppointmentView.class))
                 .peek(appointment -> {
@@ -134,7 +134,7 @@ public class ViewServiceImpl implements ViewService {
 
     @Override
     public List<AppointmentAwaitingApprovalView> getAwaitingApproval() {
-        return appointmentRepository.findAllByStatus(0)
+        return appointmentService.findAllByStatus(0)
                 .stream()
                 .map(customMapper::AppointmentToAppointmentAwaitingApprovalView)
                 .collect(Collectors.toList());
@@ -147,7 +147,7 @@ public class ViewServiceImpl implements ViewService {
 
     @Override
     public List<AppointmentVehicleDTO> getAllVehiclesByUserUsername(String username) {
-    return vehicleServiceImpl.getAllVehiclesByUserUsername(username);
+    return vehicleService.getAllVehiclesByUserUsername(username);
     }
 
     @Override
@@ -165,7 +165,7 @@ public class ViewServiceImpl implements ViewService {
     }
 
     @Override
-    public AllUsersView banUser(Long id) {
+    public AllUsersView banOrUnbanUser(Long id) {
         return userRepository.findById(id).map(user -> {
             user.setBanned(!user.isBanned());
             userRepository.save(user);
@@ -179,7 +179,7 @@ public class ViewServiceImpl implements ViewService {
 
     @Override
     public List<AppointmentTodayView> getAppointmentsForToday() {
-        return appointmentRepository.findAllAppointmentsForToday()
+        return appointmentService.findAllAppointmentsForToday()
                 .stream()
                 .map(customMapper::AppointmentToAppointmentTodayView)
                 .collect(Collectors.toList());

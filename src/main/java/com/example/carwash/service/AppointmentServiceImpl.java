@@ -71,4 +71,15 @@ public class AppointmentServiceImpl implements AppointmentService {
     public void deleteAll(List<Appointment> rejected) {
         appointmentRepository.deleteAll(rejected);
     }
+
+    @Override
+    public List<Appointment> findAllByUserUsername(String username) {
+
+        return appointmentRepository.findAllByUserUsername(username);
+    }
+
+    @Override
+    public List<Appointment> findAllAppointmentsForToday() {
+        return appointmentRepository.findAllAppointmentsForToday();
+    }
 }

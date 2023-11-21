@@ -53,7 +53,6 @@ public class ProfileController {
         if (username == null) {
             return "redirect:/";
         }
-
         if (isValidUser(username)) {
             if (isAuthorized(userDetails, username)) {
                 model.addAttribute("isAuthorized", true);
