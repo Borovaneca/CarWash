@@ -1,10 +1,10 @@
 <a name="readme-top"></a>
-# CarWash - Semi RESTful/Thymeleaf site.
+# CarWash - Semi RESTful/Thymeleaf WEB Application.
 
 <br />
 <div align="center">
   <a href="https://github.com/Borovaneca/CarWash">
-    <img src="src/main/resources/static/images/logo.png" alt="Logo" width="80" height="80">
+    <img src="src/main/resources/static/images/logo.png" alt="Logo" width="120" height="120">
   </a>
     <h2>CarWash</h2>
   <p>
@@ -29,6 +29,8 @@
       <a href="#about-the-project">About The Project</a>
       <ul>
         <li><a href="#built-with">Built With</a></li>
+        <li><a href="#front-end">Front End</a></li>
+        <li><a href="#back-end">Back End</a></li>
       </ul>
     </li>
     <li><a href="#usage">Usage</a>
@@ -45,9 +47,8 @@
         <li><a href="#user">Employee</a></li>
       </ul>
     </li>
-    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#rest-tests">REST Tests</a></li>
     <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
   </ol>
 </details>
 
@@ -59,7 +60,7 @@ Please make sure you follow the steps, step by step!
 ### Prerequisites
 
 * JDK 17
-* Apache Tomcat/10.1.15
+* Apache Maven 4.0.0+
 * Depending on the features you want to use, you may need some third-party software, such as [DataGrip](https://www.jetbrains.com/datagrip/download/#section=windows) (payed) or [MySQL](https://dev.mysql.com/downloads/workbench/) Workbench (free) for data modeling, SQL development, and comprehensive administration for the system data.
 
 ### Installation
@@ -67,7 +68,7 @@ Please make sure you follow the steps, step by step!
 _In order to run CarWash you need to:_
 
 1. <a href="https://github.com/Borovaneca/CarWash/archive/refs/heads/master.zip">DOWNLOAD</a> the repo.
-2. Set up environment variable `${MYYSQL_PORT}` 
+2. Set up environment variables `${MYYSQL_PORT}, ${MYSQL_USER}.. etc...` 
    ```yaml
    spring.datasource.url: jdbc:mysql://localhost:${MYSQL_PORT}/carwash?allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true&serverTimezone=UTC
    spring.datasource.username: ${MYSQL_USER}
@@ -96,6 +97,83 @@ _The CarWash project is a Spring Boot-based application designed to streamline c
 * ![SpringBoot](https://img.shields.io/badge/Spring-Boot-%236BB13D)
 * ![SpringDataJPA](https://img.shields.io/badge/Spring-DataJPA-%236BB13D)
 
+### Front End
+
+_Thymeleaf View Engine
+Thymeleaf is utilized in this project for rendering dynamic HTML content by binding data from the backend to the frontend templates._
+
+- [x] **Exception handling**
+- [x] **Custom pages for the different types of exceptions**
+- [x] **Data validity checks**
+- [x] **Custom messages if some of the data is not valid**
+
+### Back End
+
+_The project incorporates a bit of Aspect-Oriented Programming (AOP) to modularize cross-cutting concerns._
+
+* **Scheduled Tasks** :
+
+1. **`Removing Inactive Users`**: Users who haven't confirmed their emails within 7 days are considered inactive and are automatically removed from the system.
+
+2. **`Handling Rejected Appointments`**: Scheduled task to manage rejected appointments within the system.
+
+---
+
+* **Events Handling**
+
+1. **`User Registration Activation Email`**: An event triggers the sending of an activation email upon user registration.
+2. **`Password Reset Email`**: Another event allows users to reset their passwords if they forget them.
+
+---
+
+* **Mappings**
+
+The project leverages various mapping libraries to facilitate the conversion and mapping of data between different objects or models within the application. These libraries assist in simplifying and automating the process of mapping objects, reducing manual coding effort, and enhancing code maintainability.
+
+1. **`MapStruct`**
+2. **`ModelMapper`**
+3. **`Handmade Mappings`**
+---
+
+* **Cacheable Implementation**
+
+Caching mechanisms are utilized within the application to improve performance by storing frequently accessed or computed data in temporary storage (cache). This reduces the need to repeatedly fetch or compute the same data, enhancing response times and overall system efficiency.
+
+---
+
+* **Custom Exceptions**
+
+Custom exceptions are used to handle specific errors or exceptional cases in the application, improving error handling and providing meaningful feedback to users or clients.
+
+---
+
+* **Interceptor for Banned Users**
+
+An interceptor is implemented to handle access control for banned users within the application. When a user attempts to access restricted resources or endpoints, this interceptor checks whether the user has been banned. If the user is identified as banned, access to the requested resource is denied.
+
+---
+
+* **Exception Handling**
+
+Custom exception handling is implemented within the application to manage and respond to exceptional situations or errors that occur during the runtime of the system. These exceptions are designed to capture specific scenarios and provide appropriate responses to users or client applications.
+
+---
+
+* **Integration of External Services**
+
+The project integrates with services like Cloudinary for managing and serving images or media assets.
+
+---
+
+* **Testing**
+- [x] Junit
+- [x] Mockito
+- [x] GreenMail
+- [x] HSQLDB
+
+The project includes JUnit and Mockito for unit testing and integration tests with inmemory database, ensuring the reliability and correctness of various components within the application.
+This structure provides a clear and organized overview of both the frontend and backend aspects of the project, detailing the technologies, functionalities, and methodologies utilized. Adjust the descriptions as needed to accurately represent the specifics of your project.
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Usage
@@ -118,5 +196,110 @@ _This role has the authority to approve/decline the appointments requested by us
 _The role of the Employee is basically a permission to see the approved appointments by the manager, wich are for the current day!_
 
 ![employee-view](src/main/resources/static/images/project/employee.png)
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+## REST Tests
+
+* Request:
+```
+GET http://localhost:8080/api/owner/users/all
+```
+* Response:
+```json
+[
+    {
+        "id": "1",
+        "locatedOn": "https://statusneo.com/wp-content/uploads/2023/02/MicrosoftTeams-image551ad57e01403f080a9df51975ac40b6efba82553c323a742b42b1c71c1e45f1.jpg",
+        "username": "Admin",
+        "email": "borovaneca@softuni.bg",
+        "role": "OWNER",
+        "age": "23",
+        "registeredOn": "2023-11-20",
+        "isBanned": "No"
+    },
+    {
+        "id": "2",
+        "locatedOn": "http://res.cloudinary.com/dy2y8i2de/image/upload/v1700497506/f0b394ae-ac21-449f-8c48-2281b8417aa0.png",
+        "username": "Borovaneca",
+        "email": "boroto_vr@abv.bg",
+        "role": "USER",
+        "age": null,
+        "registeredOn": "2023-11-20",
+        "isBanned": "No"
+    },
+    {
+        "id": "3",
+        "locatedOn": "http://res.cloudinary.com/dy2y8i2de/image/upload/v1700502854/4dbb9200-b048-4790-9c6d-2db5ec94be7d.png",
+        "username": "PetyoVeselinov",
+        "email": "borovaneca@virgilio.it",
+        "role": "USER",
+        "age": null,
+        "registeredOn": "2023-11-20",
+        "isBanned": "No"
+    },
+    {
+        "id": "4",
+        "locatedOn": "http://res.cloudinary.com/dy2y8i2de/image/upload/v1700502883/ac334b18-74f8-44dd-8e9f-51d606049e4a.png",
+        "username": "Petyo",
+        "email": "borovaneca@abv.bg",
+        "role": "USER",
+        "age": null,
+        "registeredOn": "2023-11-20",
+        "isBanned": "No"
+    }
+]
+```
+
+* Request:
+```
+POST http://localhost:8080/api/owner/users/ban/4
+```
+* Response:
+```json
+{
+   "id=""4",
+   "locatedOn=""http://res.cloudinary.com/dy2y8i2de/image/upload/v1700502883/ac334b18-74f8-44dd-8e9f-51d606049e4a.png",
+   "username=""Petyo",
+   "email=""borovaneca@abv.bg",
+   "role=""USER",
+   "age=""null",
+   "registeredOn=""2023-11-20",
+   "isBanned=""true"
+}
+```
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+## License
+<center><details>
+<summary>Click to read the MIT License</summary>
+
+<div style="overflow-x: auto; max-height: 300px;">
+  
+  <center>  # MIT License
+
+Copyright (c) 2023 Petyo Veselinov
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.</center>
+</div>
+
+</details></center>
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
