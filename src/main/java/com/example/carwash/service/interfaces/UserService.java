@@ -5,6 +5,9 @@ import com.example.carwash.model.dtos.ProfileUpdateImageDTO;
 import com.example.carwash.model.dtos.SocialMediaAddDTO;
 import com.example.carwash.model.dtos.VehicleAddDTO;
 import com.example.carwash.model.entity.User;
+import com.example.carwash.model.view.AllUsersView;
+import com.example.carwash.model.view.ProfileView;
+import com.example.carwash.model.view.StaffView;
 
 import java.util.List;
 import java.util.Optional;
@@ -41,4 +44,12 @@ public interface UserService {
     Optional<List<User>> findInactiveUsersMoreThan7Days();
 
     void delete(User user);
+
+    List<StaffView> getAllStaffViews();
+
+    ProfileView getProfileView(String username);
+
+    List<AllUsersView> getAllUsers();
+
+    AllUsersView banOrUnbanUser(Long id);
 }

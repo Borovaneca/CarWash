@@ -90,7 +90,7 @@ public class ForgotPasswordControllerIT {
 
     @Test
     public void testGetResetPasswordShouldNotFoundAndRedirect() throws Exception {
-        mockMvc.perform(get("/users/reset-password/{username}/{token}", "test", "test"))
+        mockMvc.perform(get("/users/reset-password/test/test"))
                 .andExpect(status().isFound()).andExpect(redirectedUrl("/"));
     }
 

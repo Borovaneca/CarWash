@@ -149,7 +149,7 @@ async function banUser(id) {
         })
         let promise = response.json();
         promise.then(data => {
-            if (data.isBanned === 'true') {
+            if (data.isBanned === 'Yes') {
                 alert('User banned successfully!');
             } else {
                 alert('User unbanned successfully!');

@@ -2,9 +2,8 @@ package com.example.carwash.config;
 
 import com.example.carwash.repository.UserRepository;
 import com.example.carwash.service.LoginDetailsServiceImpl;
-import com.example.carwash.utils.jwt.JwtService;
+import com.example.carwash.service.interfaces.JwtService;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;

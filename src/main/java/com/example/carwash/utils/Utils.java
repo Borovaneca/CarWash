@@ -36,17 +36,10 @@ public class Utils {
                     mapper.map(src -> new ArrayList<>(), User::setRoles);
                     mapper.map(src -> new ArrayList<>(), User::setVehicles);
                     mapper.map(src -> new ArrayList<>(), User::setAppointments);
-                    mapper.map(src -> LocalDate.now(), User::setRegisteredOn);
+                    mapper.map(src -> LocalDate.now().format(DateTimeFormatter.ofPattern("")), User::setRegisteredOn);
                     mapper.map(src -> null, User::setImage);
                 });
 
-        modelMapper.typeMap(AppointmentAddDTO.class, Appointment.class)
-                .addMappings(mapper -> {
-                    mapper.map(AppointmentAddDTO::getMadeFor, Appointment::setMadeFor);
-                    mapper.map(src -> LocalDateTime.now(), Appointment::setCreateOn);
-                    mapper.map(src -> false, Appointment::setExpired);
-                    mapper.map(src -> 0, Appointment::setStatus);
-                });
 
         modelMapper.typeMap(Appointment.class, MyAppointmentView.class)
                 .addMappings(mapper -> {

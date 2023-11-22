@@ -1,8 +1,12 @@
 package com.example.carwash.service;
 
+import com.example.carwash.mapper.CustomMapper;
 import com.example.carwash.model.dtos.AppointmentAddDTO;
 import com.example.carwash.model.entity.Appointment;
 import com.example.carwash.model.entity.User;
+import com.example.carwash.model.view.AppointmentAwaitingApprovalView;
+import com.example.carwash.model.view.AppointmentTodayView;
+import com.example.carwash.model.view.MyAppointmentView;
 import com.example.carwash.repository.AppointmentRepository;
 import com.example.carwash.repository.ServiceRepository;
 import com.example.carwash.service.interfaces.AppointmentService;
@@ -13,22 +17,25 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class AppointmentServiceImpl implements AppointmentService {
 
-    private final ModelMapper modelMapper;
     private final UserService userService;
     private final AppointmentRepository appointmentRepository;
     private final ServiceService serviceService;
+    private final CustomMapper customMapper;
 
     @Autowired
-    public AppointmentServiceImpl(ModelMapper modelMapper, UserService userService, AppointmentRepository appointmentRepository, ServiceRepository serviceRepository, ServiceService serviceService) {
-        this.modelMapper = modelMapper;
+    public AppointmentServiceImpl(UserService userService, AppointmentRepository appointmentRepository, ServiceService serviceService, CustomMapper customMapper) {
         this.userService = userService;
         this.appointmentRepository = appointmentRepository;
         this.serviceService = serviceService;
+        this.customMapper = customMapper;
     }
 
 
@@ -36,9 +43,8 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Override
     public void addAppointmentToUserWithUsername(AppointmentAddDTO appointmentAddDTO, String username) {
         User user = userService.findByUsername(username);
-        Appointment appointment = modelMapper.map(appointmentAddDTO, Appointment.class);
+        Appointment appointment = customMapper.appointmentAddDTOToAppointment(appointmentAddDTO);
         appointment.setVehicle(user.getVehicles().stream().filter(vehicle -> vehicle.getId().equals(appointmentAddDTO.getVehicleId())).findAny().orElse(null));
-        appointment.setId(null);
         appointment.setUser(user);
         appointment.setService(serviceService.getByName(appointmentAddDTO.getService()));
         appointmentRepository.save(appointment);
@@ -74,12 +80,28 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     public List<Appointment> findAllByUserUsername(String username) {
-
         return appointmentRepository.findAllByUserUsername(username);
     }
 
     @Override
-    public List<Appointment> findAllAppointmentsForToday() {
-        return appointmentRepository.findAllAppointmentsForToday();
+    public List<AppointmentTodayView> findAllAppointmentsForToday() {
+        return appointmentRepository.findAllAppointmentsForToday().stream()
+                .map(customMapper::appointmentToAppointmentTodayView)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<AppointmentAwaitingApprovalView> findAllAppointmentsWaitingApproval() {
+        return appointmentRepository.findAllByStatus(0).stream()
+                .map(customMapper::appointmentToAppointmentAwaitingApprovalView)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<MyAppointmentView> getAppointmentsOfUser(String username) {
+        return appointmentRepository.findAllByUserUsername(username)
+                .stream()
+                .map(customMapper::appointmentToMyAppointmentView)
+                .collect(Collectors.toList());
     }
 }

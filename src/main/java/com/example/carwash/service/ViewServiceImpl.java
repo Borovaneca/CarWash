@@ -1,99 +1,39 @@
 package com.example.carwash.service;
 
-import com.example.carwash.mapper.CustomMapper;
 import com.example.carwash.model.dtos.AppointmentServiceDTO;
 import com.example.carwash.model.dtos.AppointmentVehicleDTO;
-import com.example.carwash.model.entity.Role;
-import com.example.carwash.model.entity.User;
-import com.example.carwash.model.enums.RoleName;
 import com.example.carwash.model.view.*;
-import com.example.carwash.repository.AppointmentRepository;
-import com.example.carwash.repository.UserRepository;
-import com.example.carwash.service.interfaces.AppointmentService;
-import com.example.carwash.service.interfaces.ServiceService;
-import com.example.carwash.service.interfaces.VehicleService;
-import com.example.carwash.service.interfaces.ViewService;
-import org.modelmapper.ModelMapper;
+import com.example.carwash.service.interfaces.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 public class ViewServiceImpl implements ViewService {
 
-    private final UserRepository userRepository;
+    private final UserService userService;
     private final VehicleService vehicleService;
     private final ServiceService serviceService;
-    private final ModelMapper modelMapper;
     private final AppointmentService appointmentService;
-    private final CustomMapper customMapper;
 
     @Autowired
-    public ViewServiceImpl(UserRepository userRepository, VehicleService vehicleService, ServiceService serviceService, ModelMapper modelMapper, AppointmentService appointmentService, CustomMapper customMapper) {
-        this.userRepository = userRepository;
+    public ViewServiceImpl(UserService userService, VehicleService vehicleService, ServiceService serviceService, AppointmentService appointmentService) {
+        this.userService = userService;
         this.vehicleService = vehicleService;
         this.serviceService = serviceService;
-        this.modelMapper = modelMapper;
         this.appointmentService = appointmentService;
-        this.customMapper = customMapper;
     }
 
 
     @Override
     public ProfileView getProfileView(String username) {
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("Username not found"));
-        return toProfileView(user);
-    }
-
-    private ProfileView toProfileView(User user) {
-        ProfileView profileView = modelMapper.map(user, ProfileView.class);
-        profileView.setSocials(user.getSocialMedias().stream().map(social -> modelMapper.map(social, SocialMediaView.class))
-                        .collect(Collectors.toSet()));
-        profileView.setAge(user.getAge());
-        profileView.setRole(getMajorRole(user.getRoles()));
-        profileView.setLocatedOn(user.getImage().getLocatedOn());
-        profileView.setVehicles(String.valueOf(user.getVehicles().size()));
-        profileView.setAppointments(String.valueOf(user.getAppointments().size()));
-        return profileView;
+        return userService.getProfileView(username);
     }
 
     @Override
     public List<StaffView> getAllStaffViews() {
-        return userRepository.findAll()
-                .stream()
-                .filter(user -> user.getRoles().size() > 1)
-                .map(this::toStaffView)
-                .toList();
-    }
-
-    private StaffView toStaffView(User user) {
-        StaffView staff = modelMapper.map(user, StaffView.class);
-        staff.setPosition(getMajorRole(user.getRoles()));
-        staff.setImage(user.getImage().getLocatedOn());
-        return staff;
-    }
-
-    private String getMajorRole(List<Role> roles) {
-        Map<RoleName, Integer> rolePriorityMap = Map.of(
-                RoleName.USER, 0,
-                RoleName.EMPLOYEE, 1,
-                RoleName.MANAGER, 2,
-                RoleName.OWNER, 3
-        );
-        Role majorRole = roles.get(0);
-        for (Role role : roles) {
-            if (rolePriorityMap.get(role.getName()) > rolePriorityMap.get(majorRole.getName())) {
-                majorRole = role;
-            }
-        }
-        return majorRole.getName().name();
+        return userService.getAllStaffViews();
     }
 
     @Override
@@ -109,35 +49,12 @@ public class ViewServiceImpl implements ViewService {
 
     @Override
     public List<MyAppointmentView> getMyAppointments(String username) {
-        return appointmentService.findAllByUserUsername(username)
-                .stream()
-                .map(appointment -> modelMapper.map(appointment, MyAppointmentView.class))
-                .peek(appointment -> {
-                    LocalDateTime createOn = LocalDateTime.parse(appointment.getCreateOn());
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy/HH:mm");
-                    appointment.setCreateOn(createOn.format(formatter));
-                })
-                .peek(appointment -> {
-                    LocalDateTime madeFor = LocalDateTime.parse(appointment.getMadeFor(), DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"));
-                    appointment.setMadeFor(madeFor.format(DateTimeFormatter.ofPattern("dd.MM.yyyy/HH:mm")));
-                })
-                .peek(appointment -> {
-                    appointment.setStatus(switch (appointment.getStatus()) {
-                        case "1" -> "APPROVED";
-                        case "0" -> "PENDING";
-                        case "-1" -> "REJECTED";
-                        default -> "Unknown";
-                    });
-                })
-                .collect(Collectors.toList());
+        return appointmentService.getAppointmentsOfUser(username);
     }
 
     @Override
     public List<AppointmentAwaitingApprovalView> getAwaitingApproval() {
-        return appointmentService.findAllByStatus(0)
-                .stream()
-                .map(customMapper::AppointmentToAppointmentAwaitingApprovalView)
-                .collect(Collectors.toList());
+        return appointmentService.findAllAppointmentsWaitingApproval();
     }
 
     @Override
@@ -152,36 +69,16 @@ public class ViewServiceImpl implements ViewService {
 
     @Override
     public List<AllUsersView> getAllUsers() {
-        return userRepository.findAll()
-                .stream()
-                .map(u -> {
-                    AllUsersView userView = modelMapper.map(u, AllUsersView.class);
-                    userView.setIsBanned(u.isBanned() ? "Yes" : "No");
-                    userView.setLocatedOn(u.getImage().getLocatedOn());
-                    userView.setRole(getMajorRole(u.getRoles()));
-                    return userView;
-                })
-                .collect(Collectors.toList());
+        return userService.getAllUsers();
     }
 
     @Override
     public AllUsersView banOrUnbanUser(Long id) {
-        return userRepository.findById(id).map(user -> {
-            user.setBanned(!user.isBanned());
-            userRepository.save(user);
-            AllUsersView allUsersView = modelMapper.map(user, AllUsersView.class);
-            allUsersView.setIsBanned(user.isBanned() ? "true" : "false");
-            allUsersView.setLocatedOn(user.getImage().getLocatedOn());
-            allUsersView.setRole(getMajorRole(user.getRoles()));
-            return allUsersView;
-        }).orElse(null);
+        return userService.banOrUnbanUser(id);
     }
 
     @Override
     public List<AppointmentTodayView> getAppointmentsForToday() {
-        return appointmentService.findAllAppointmentsForToday()
-                .stream()
-                .map(customMapper::AppointmentToAppointmentTodayView)
-                .collect(Collectors.toList());
+        return appointmentService.findAllAppointmentsForToday();
     }
 }

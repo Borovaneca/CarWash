@@ -3,6 +3,7 @@ package com.example.carwash.service;
 import com.example.carwash.model.entity.Appointment;
 import com.example.carwash.model.view.MyAppointmentView;
 import com.example.carwash.service.interfaces.AppointmentService;
+import com.example.carwash.service.interfaces.UserService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -27,41 +28,38 @@ public class ViewServiceTest {
     @Mock
     private ModelMapper modelMapper;
 
+    @Mock
+    private UserService userService;
+
     @InjectMocks
     private ViewServiceImpl viewService;
 
     @Test
     public void testGetMyAppointments() {
-        // Given
+
         String username = "testUser";
 
-        // Mocking data
         Appointment appointment1 = new Appointment(); // Replace with your Appointment entity
         appointment1.setCreateOn(LocalDateTime.parse("2023-11-20T08:00"));
         appointment1.setMadeFor(LocalDateTime.parse("2023-11-21T10:00"));
         appointment1.setStatus(1);
 
-        Appointment appointment2 = new Appointment(); // Replace with your Appointment entity
+        Appointment appointment2 = new Appointment();
         appointment2.setCreateOn(LocalDateTime.parse("2023-11-21T09:00"));
         appointment2.setMadeFor(LocalDateTime.parse("2023-11-22T12:00"));
         appointment2.setStatus(0);
 
-        when(appointmentService.findAllByUserUsername(username)).thenReturn(List.of(appointment1, appointment2));
-
-        // Mocking model mapper
         MyAppointmentView appointmentView1 = new MyAppointmentView();
-        appointmentView1.setCreateOn("2023-11-20T08:00");
-        appointmentView1.setMadeFor("2023-11-21T10:00");
-        appointmentView1.setStatus("1");
+        appointmentView1.setCreateOn("20.11.2023/08:00");
+        appointmentView1.setMadeFor("21.11.2023/10:00");
+        appointmentView1.setStatus("APPROVED");
 
         MyAppointmentView appointmentView2 = new MyAppointmentView();
-        appointmentView2.setCreateOn("2023-11-21T09:00");
-        appointmentView2.setMadeFor("2023-11-22T12:00");
-        appointmentView2.setStatus("0");
+        appointmentView2.setCreateOn("21.11.2023/09:00");
+        appointmentView2.setMadeFor("22.11.2023/12:00");
+        appointmentView2.setStatus("PENDING");
 
-        when(modelMapper.map(any(Appointment.class), eq(MyAppointmentView.class)))
-                .thenReturn(appointmentView1, appointmentView2);
-
+        when(appointmentService.getAppointmentsOfUser(username)).thenReturn(List.of(appointmentView1, appointmentView2));
         // When
         List<MyAppointmentView> result = viewService.getMyAppointments(username);
 
@@ -74,11 +72,5 @@ public class ViewServiceTest {
         assertEquals("21.11.2023/09:00", result.get(1).getCreateOn());
         assertEquals("22.11.2023/12:00", result.get(1).getMadeFor());
         assertEquals("PENDING", result.get(1).getStatus());
-
-        // Verify that appointmentService's findAllByUserUsername method was called once with the correct username
-        verify(appointmentService, times(1)).findAllByUserUsername(username);
-
-        // Verify that modelMapper's map method was called twice with the correct Appointment class and MyAppointmentView class
-        verify(modelMapper, times(2)).map(any(Appointment.class), eq(MyAppointmentView.class));
     }
 }

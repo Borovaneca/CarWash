@@ -1,24 +1,29 @@
 package com.example.carwash.service;
 
 import com.example.carwash.errors.UserNotFoundException;
+import com.example.carwash.mapper.CustomMapper;
 import com.example.carwash.model.dtos.ProfileEditDTO;
 import com.example.carwash.model.dtos.ProfileUpdateImageDTO;
 import com.example.carwash.model.dtos.SocialMediaAddDTO;
 import com.example.carwash.model.dtos.VehicleAddDTO;
 import com.example.carwash.model.entity.*;
-import com.example.carwash.events.events.ForgotPasswordEvent;
 import com.example.carwash.model.enums.RoleName;
-import com.example.carwash.repository.ServiceRepository;
+import com.example.carwash.model.view.AllUsersView;
+import com.example.carwash.model.view.ProfileView;
+import com.example.carwash.model.view.SocialMediaView;
+import com.example.carwash.model.view.StaffView;
 import com.example.carwash.repository.UserRepository;
 import com.example.carwash.service.interfaces.*;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -26,6 +31,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final ProfileImageService profileImageService;
     private final SocialMediaService socialMediaService;
+    private final CustomMapper customMapper;
     private final PasswordEncoder passwordEncoder;
     private final ProfileImageServiceImpl profileImageServiceImpl;
     private final VehicleService vehicleService;
@@ -36,15 +42,17 @@ public class UserServiceImpl implements UserService {
     @Value("${admin.password}")
     private String adminPassword;
     private ProfileImage profileImage;
+
     @Autowired
     public UserServiceImpl(UserRepository userRepository, ProfileImageService profileImageService,
-                           SocialMediaServiceImpl socialMediaService, PasswordEncoder passwordEncoder,
+                           SocialMediaServiceImpl socialMediaService, CustomMapper customMapper, PasswordEncoder passwordEncoder,
                            ProfileImageServiceImpl profileImageServiceImpl,
-                            VehicleServiceImpl vehicleService,
+                           VehicleServiceImpl vehicleService,
                            RoleService roleService, ServiceService serviceService) {
         this.userRepository = userRepository;
         this.profileImageService = profileImageService;
         this.socialMediaService = socialMediaService;
+        this.customMapper = customMapper;
         this.passwordEncoder = passwordEncoder;
         this.profileImageServiceImpl = profileImageServiceImpl;
         this.vehicleService = vehicleService;
@@ -53,18 +61,14 @@ public class UserServiceImpl implements UserService {
     }
 
 
-
     @Override
     public void update(ProfileEditDTO profileEditDTO) {
         Optional<User> userOptional = userRepository.findById(profileEditDTO.getId());
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-            if (!user.getUsername().equals(profileEditDTO.getUsername())) {
-                user.setUsername(profileEditDTO.getUsername());
-            }
-            if (!user.getEmail().equals(profileEditDTO.getEmail())) {
-                user.setEmail(profileEditDTO.getEmail());
-            }
+
+            user.setUsername(profileEditDTO.getUsername());
+            user.setEmail(profileEditDTO.getEmail());
             user.setFirstName(profileEditDTO.getFirstName());
             user.setLastName(profileEditDTO.getLastName());
             user.setCity(profileEditDTO.getCity());
@@ -74,6 +78,7 @@ public class UserServiceImpl implements UserService {
             userRepository.save(user);
         }
     }
+
     @Override
     public ProfileEditDTO getUserAndMapToProfileEditDTO(String username) {
         Optional<User> user = userRepository.findByUsername(username);
@@ -119,7 +124,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findByEmail(String email) {
-       return userRepository.findByEmail(email).orElse(null);
+        return userRepository.findByEmail(email).orElse(null);
     }
 
 
@@ -239,6 +244,59 @@ public class UserServiceImpl implements UserService {
         userRepository.delete(user);
     }
 
+    @Override
+    public List<StaffView> getAllStaffViews() {
+        return userRepository.findAll()
+                .stream()
+                .filter(user -> user.getRoles().size() > 1)
+                .map(this::toStaffView)
+                .toList();
+    }
+
+    @Override
+    public ProfileView getProfileView(String username) {
+        return userRepository.findByUsername(username)
+                .map(this::toProfileView)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    }
+
+    @Override
+    public List<AllUsersView> getAllUsers() {
+        return userRepository.findAll()
+                .stream()
+                .map(u -> {
+                    AllUsersView userView = customMapper.userToAllUsersView(u);
+                    userView.setRole(getMajorRole(u.getRoles()));
+                    return userView;
+                })
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public AllUsersView banOrUnbanUser(Long id) {
+        return userRepository.findById(id).map(user -> {
+            user.setBanned(!user.isBanned());
+            userRepository.save(user);
+            AllUsersView allUsersView = customMapper.userToAllUsersView(user);
+            allUsersView.setRole(getMajorRole(user.getRoles()));
+            return allUsersView;
+        }).orElse(null);
+    }
+
+    private ProfileView toProfileView(User user) {
+        ProfileView profileView = customMapper.userToProfileView(user);
+        profileView.setSocials(user.getSocialMedias().stream().map(customMapper::socialToSocialMediaView)
+                .collect(Collectors.toSet()));
+        profileView.setRole(getMajorRole(user.getRoles()));
+        return profileView;
+    }
+
+    private StaffView toStaffView(User user) {
+        StaffView staff = customMapper.userToStaffView(user);
+        staff.setPosition(getMajorRole(user.getRoles()));
+        return staff;
+    }
+
     private void addAdmin() {
         Scanner scanner = new Scanner(System.in);
         User admin = new User();
@@ -272,5 +330,21 @@ public class UserServiceImpl implements UserService {
         github.setUser(admin);
         socialMedias.add(github);
         return socialMedias;
+    }
+
+    private String getMajorRole(List<Role> roles) {
+        Map<RoleName, Integer> rolePriorityMap = Map.of(
+                RoleName.USER, 0,
+                RoleName.EMPLOYEE, 1,
+                RoleName.MANAGER, 2,
+                RoleName.OWNER, 3
+        );
+        Role majorRole = roles.get(0);
+        for (Role role : roles) {
+            if (rolePriorityMap.get(role.getName()) > rolePriorityMap.get(majorRole.getName())) {
+                majorRole = role;
+            }
+        }
+        return majorRole.getName().name();
     }
 }

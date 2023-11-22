@@ -2,6 +2,9 @@ package com.example.carwash.service.interfaces;
 
 import com.example.carwash.model.dtos.AppointmentAddDTO;
 import com.example.carwash.model.entity.Appointment;
+import com.example.carwash.model.view.AppointmentAwaitingApprovalView;
+import com.example.carwash.model.view.AppointmentTodayView;
+import com.example.carwash.model.view.MyAppointmentView;
 
 import java.util.Collection;
 import java.util.List;
@@ -21,5 +24,9 @@ public interface AppointmentService {
 
     List<Appointment> findAllByUserUsername(String username);
 
-    List<Appointment> findAllAppointmentsForToday();
+    List<AppointmentTodayView> findAllAppointmentsForToday();
+
+    List<AppointmentAwaitingApprovalView> findAllAppointmentsWaitingApproval();
+
+    List<MyAppointmentView> getAppointmentsOfUser(String username);
 }

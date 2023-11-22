@@ -29,9 +29,6 @@ public class Appointment extends BaseEntity {
     @Column(nullable = false)
     private Integer status = 0;
 
-    @Column
-    private boolean expired;
-
     @ManyToOne(fetch = FetchType.EAGER)
     private Vehicle vehicle;
 

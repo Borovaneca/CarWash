@@ -31,9 +31,9 @@ public class ProfileView {
 
     private String role;
 
-    private String vehicles;
+    private int vehicles;
 
-    private String appointments;
+    private int appointments;
 
     private String locatedOn;
 

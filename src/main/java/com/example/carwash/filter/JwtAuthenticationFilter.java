@@ -1,6 +1,6 @@
 package com.example.carwash.filter;
 
-import com.example.carwash.utils.jwt.JwtService;
+import com.example.carwash.service.interfaces.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -33,9 +33,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     @Override
-    protected void doFilterInternal(@NonNull HttpServletRequest request,
-                                    @NonNull HttpServletResponse response,
-                                    @NonNull FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
+
+        if (request.getRequestURI().equals("/users/login")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+        if (request.getCookies() == null) {
+            filterChain.doFilter(request, response);
+            return;
+        }
         Cookie jwtCookie = Arrays.stream(request.getCookies()).filter(cookie -> cookie.getName().equals("jwt")).findFirst().orElse(null);
         String authorizationHeader = jwtCookie != null ? jwtCookie.getValue() : null;
         final String jtw;

@@ -17,6 +17,14 @@ public class AllUsersView {
 
     private String email;
 
+    private String role;
+
+    private String age;
+
+    private String registeredOn;
+
+    private String isBanned;
+
     @Override
     public String toString() {
         return "{" +
@@ -30,13 +38,5 @@ public class AllUsersView {
                 ", isBanned='" + isBanned + '\'' +
                 '}';
     }
-
-    private String role;
-
-    private String age;
-
-    private String registeredOn;
-
-    private String isBanned;
 
 }
