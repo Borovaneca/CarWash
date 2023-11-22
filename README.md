@@ -131,7 +131,6 @@ _The project incorporates a bit of Aspect-Oriented Programming (AOP) to modulari
 The project leverages various mapping libraries to facilitate the conversion and mapping of data between different objects or models within the application. These libraries assist in simplifying and automating the process of mapping objects, reducing manual coding effort, and enhancing code maintainability.
 
 1. **`MapStruct`**
-2. **`ModelMapper`**
 3. **`Handmade Mappings`**
 ---
 
