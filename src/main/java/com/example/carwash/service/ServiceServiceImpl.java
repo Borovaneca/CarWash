@@ -1,11 +1,11 @@
 package com.example.carwash.service;
 
+import com.example.carwash.mapper.CustomMapper;
 import com.example.carwash.model.dtos.AppointmentServiceDTO;
 import com.example.carwash.model.view.ServiceIndexView;
 import com.example.carwash.model.view.ServiceView;
 import com.example.carwash.repository.ServiceRepository;
 import com.example.carwash.service.interfaces.ServiceService;
-import org.modelmapper.ModelMapper;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -16,11 +16,11 @@ import java.util.stream.Collectors;
 public class ServiceServiceImpl implements ServiceService {
 
     private final ServiceRepository serviceRepository;
-    private final ModelMapper modelMapper;
+    private final CustomMapper customMapper;
 
-    public ServiceServiceImpl(ServiceRepository serviceRepository, ModelMapper modelMapper) {
+    public ServiceServiceImpl(ServiceRepository serviceRepository, CustomMapper customMapper) {
         this.serviceRepository = serviceRepository;
-        this.modelMapper = modelMapper;
+        this.customMapper = customMapper;
     }
 
 
@@ -28,7 +28,7 @@ public class ServiceServiceImpl implements ServiceService {
     public List<AppointmentServiceDTO> getAllServices() {
         return serviceRepository.findAll()
                 .stream()
-                .map(entity -> modelMapper.map(entity, AppointmentServiceDTO.class))
+                .map(customMapper::appointmentToAppointmentServiceDTO)
                 .collect(Collectors.toList());
     }
 
@@ -38,7 +38,7 @@ public class ServiceServiceImpl implements ServiceService {
         return serviceRepository
                 .findAll()
                 .stream()
-                .map(entity -> modelMapper.map(entity, ServiceIndexView.class))
+                .map(customMapper::serviceToServiceIndexView)
                 .collect(Collectors.toList());
     }
 
@@ -48,7 +48,7 @@ public class ServiceServiceImpl implements ServiceService {
         return serviceRepository
                 .findAll()
                 .stream()
-                .map(service -> modelMapper.map(service, ServiceView.class))
+                .map(customMapper::serviceToServiceView)
                 .collect(Collectors.toList());
     }
 

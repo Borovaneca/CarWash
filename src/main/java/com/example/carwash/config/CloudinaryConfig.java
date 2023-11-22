@@ -1,6 +1,7 @@
 package com.example.carwash.config;
 
 import com.cloudinary.Cloudinary;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -9,9 +10,18 @@ import java.util.Map;
 @Configuration
 public class CloudinaryConfig {
 
-    private final String CLOUD_NAME = "dy2y8i2de";
-    private final String API_KEY = "111187215981859";
-    private final String API_SECRET = "H3gM21c_0mYpOPklNO3pR11s8HE";
+
+    private final String CLOUD_NAME;
+    private final String API_KEY;
+    private final String API_SECRET;
+
+    public CloudinaryConfig(@Value("${cloudinary.name}") String cloudName,
+                            @Value("${cloudinary.api-key}") String apiKey,
+                            @Value("${cloudinary.api-secret}") String apiSecret) {
+        CLOUD_NAME = cloudName;
+        API_KEY = apiKey;
+        API_SECRET = apiSecret;
+    }
 
     @Bean
     public Cloudinary cloudinary() {

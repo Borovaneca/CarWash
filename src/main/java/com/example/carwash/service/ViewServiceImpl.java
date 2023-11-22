@@ -1,7 +1,6 @@
 package com.example.carwash.service;
 
 import com.example.carwash.model.dtos.AppointmentServiceDTO;
-import com.example.carwash.model.dtos.AppointmentVehicleDTO;
 import com.example.carwash.model.view.*;
 import com.example.carwash.service.interfaces.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +37,7 @@ public class ViewServiceImpl implements ViewService {
 
     @Override
     public List<VehicleView> getVehiclesViewByUsername(String username) {
-        return vehicleService.getVehiclesViewByUsernameAndGetVehicleView(username);
+        return vehicleService.getAllVehiclesByUserUsername(username);
     }
 
 
@@ -63,7 +62,7 @@ public class ViewServiceImpl implements ViewService {
     }
 
     @Override
-    public List<AppointmentVehicleDTO> getAllVehiclesByUserUsername(String username) {
+    public List<VehicleView> getAllVehiclesByUserUsername(String username) {
     return vehicleService.getAllVehiclesByUserUsername(username);
     }
 

@@ -8,17 +8,13 @@ import com.example.carwash.model.view.AppointmentAwaitingApprovalView;
 import com.example.carwash.model.view.AppointmentTodayView;
 import com.example.carwash.model.view.MyAppointmentView;
 import com.example.carwash.repository.AppointmentRepository;
-import com.example.carwash.repository.ServiceRepository;
 import com.example.carwash.service.interfaces.AppointmentService;
 import com.example.carwash.service.interfaces.ServiceService;
 import com.example.carwash.service.interfaces.UserService;
 import jakarta.persistence.Transient;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 

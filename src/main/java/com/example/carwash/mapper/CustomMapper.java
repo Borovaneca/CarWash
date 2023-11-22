@@ -1,10 +1,9 @@
 package com.example.carwash.mapper;
 
 import com.example.carwash.model.dtos.AppointmentAddDTO;
+import com.example.carwash.model.dtos.AppointmentServiceDTO;
 import com.example.carwash.model.dtos.UserRegisterDTO;
-import com.example.carwash.model.entity.Appointment;
-import com.example.carwash.model.entity.SocialMedia;
-import com.example.carwash.model.entity.User;
+import com.example.carwash.model.entity.*;
 import com.example.carwash.model.view.*;
 import org.mapstruct.Condition;
 import org.mapstruct.Mapper;
@@ -120,6 +119,34 @@ public interface CustomMapper {
             @Mapping(target = "price", expression = "java(appointment.getService().getPrice().toString())"),
     })
     MyAppointmentView appointmentToMyAppointmentView(Appointment appointment);
+
+    @Mappings({
+            @Mapping(source = "brand", target = "brand"),
+            @Mapping(source = "model", target = "model"),
+            @Mapping(source = "color", target = "color"),
+            @Mapping(source = "id", target = "id")
+    })
+    VehicleView vehicleToVehicleView(Vehicle vehicle);
+
+    @Mappings({
+            @Mapping(source = "name", target = "name" ),
+            @Mapping(target = "price", expression = "java(service.getPrice().toString())")
+    })
+    AppointmentServiceDTO appointmentToAppointmentServiceDTO(Service service);
+
+    @Mappings({
+            @Mapping(source = "name", target = "name"),
+            @Mapping(source = "description", target = "description")
+    })
+    ServiceIndexView serviceToServiceIndexView(Service service);
+
+    @Mappings({
+            @Mapping(source = "name", target = "name"),
+            @Mapping(source = "description", target = "description"),
+            @Mapping(target = "price", expression = "java(service.getPrice().toString())"),
+            @Mapping(source = "urlVideo", target = "urlVideo")
+    })
+    ServiceView serviceToServiceView(Service service);
     @Condition
     default String isBanned(boolean banned) {
         return banned ? "Yes" : "No";

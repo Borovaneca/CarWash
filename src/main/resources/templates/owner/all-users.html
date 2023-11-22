@@ -7,6 +7,7 @@
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 </head>
 <body onload="getAllUsers()">
+<div class="alert alert-danger" th:if="${invalidRole == true}">Invalid Role!</div>
 <th:block th:replace="~{fragments/navbar.html}"></th:block>
 
 <div class="container">

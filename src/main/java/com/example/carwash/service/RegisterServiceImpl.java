@@ -11,7 +11,6 @@ import com.example.carwash.service.interfaces.ConfirmationTokenService;
 import com.example.carwash.service.interfaces.ProfileImageService;
 import com.example.carwash.service.interfaces.RegisterService;
 import com.example.carwash.service.interfaces.RoleService;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
