@@ -135,6 +135,12 @@ The project leverages various mapping libraries to facilitate the conversion and
 3. **`Handmade Mappings`**
 ---
 
+* **`JWT Authentication`**
+
+Upon successful authentication, a JWT is generated and stored as an HTTP-only secure cookie in the user's browser. This token is used to authenticate and authorize subsequent requests to protected endpoints within the application.
+- [x] *Expiration*: The token expires after 24 hours.
+---
+
 * **Cacheable Implementation**
 
 Caching mechanisms are utilized within the application to improve performance by storing frequently accessed or computed data in temporary storage (cache). This reduces the need to repeatedly fetch or compute the same data, enhancing response times and overall system efficiency.
