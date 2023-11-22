@@ -40,7 +40,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String authorizationHeader = jwtCookie != null ? jwtCookie.getValue() : null;
         final String jtw;
         final String username;
-        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer-")) {
             filterChain.doFilter(request, response);
             return;
         }

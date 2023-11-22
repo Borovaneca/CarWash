@@ -21,7 +21,7 @@ public class JwtServiceImpl implements JwtService {
 
     @Override
     public String generateToken(User user) {
-        return generateTokenValue(new HashMap<>(), user);
+        return "Bearer-" + generateTokenValue(new HashMap<>(), user);
     }
 
     @Override

@@ -71,10 +71,10 @@ public class RegisterController {
             strategy.setContext(context);
             securityContextRepository.saveContext(context, request, response);
         });
-        String token = jwtService.generateToken(user);
-        Cookie cookie = new Cookie("jwt", token);
+        Cookie cookie = new Cookie("jwt", jwtService.generateToken(user));
         cookie.setPath("/");
         cookie.setMaxAge(60 * 60 * 24);
+        cookie.setHttpOnly(true);
         response.addCookie(cookie);
         return "redirect:/";
     }

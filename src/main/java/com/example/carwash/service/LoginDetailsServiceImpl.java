@@ -36,6 +36,7 @@ public class LoginDetailsServiceImpl implements UserDetailsService {
         Cookie cookie = new Cookie("jwt", jwtService.generateToken(user.get()));
         cookie.setMaxAge(60 * 60 * 24);
         cookie.setPath("/");
+        cookie.setHttpOnly(true);
         response.addCookie(cookie);
         return userDetails;
     }
