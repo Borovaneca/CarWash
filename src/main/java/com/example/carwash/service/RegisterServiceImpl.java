@@ -5,17 +5,18 @@ import com.example.carwash.model.entity.ConfirmationToken;
 import com.example.carwash.model.entity.User;
 import com.example.carwash.model.enums.RoleName;
 import com.example.carwash.events.events.UserRegisteredEvent;
-import com.example.carwash.repository.RoleRepository;
 import com.example.carwash.repository.UserRepository;
 import com.example.carwash.service.interfaces.ConfirmationTokenService;
 import com.example.carwash.service.interfaces.ProfileImageService;
 import com.example.carwash.service.interfaces.RegisterService;
 import com.example.carwash.service.interfaces.RoleService;
+import com.example.carwash.utils.jwt.JwtService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -54,7 +55,7 @@ public class RegisterServiceImpl implements RegisterService {
 
 
     @Override
-    public void registerUser(UserRegisterDTO userRegisterDTO, Consumer<Authentication> successfulLogin) {
+    public User registerUser(UserRegisterDTO userRegisterDTO, Consumer<Authentication> successfulLogin) {
         User user = mapToUser(userRegisterDTO);
         userRepository.save(user);
 
@@ -63,6 +64,7 @@ public class RegisterServiceImpl implements RegisterService {
                 token,
                 user
         );
+
         confirmationTokenService.saveConfirmationToken(confirmationToken);
 
         var userDetails = userDetailsService.loadUserByUsername(userRegisterDTO.getUsername());
@@ -76,6 +78,7 @@ public class RegisterServiceImpl implements RegisterService {
         successfulLogin.accept(authentication);
         applicationEventPublisher.publishEvent(new UserRegisteredEvent(
                 "UserService", userRegisterDTO.getEmail(), userRegisterDTO.getUsername(), token));
+        return user;
     }
 
     private User mapToUser(UserRegisterDTO dto) {

@@ -1,17 +1,23 @@
 package com.example.carwash.config;
 
+import com.example.carwash.filter.JwtAuthenticationFilter;
 import com.example.carwash.model.enums.RoleName;
 import com.example.carwash.repository.UserRepository;
 import com.example.carwash.service.LoginDetailsServiceImpl;
+import jakarta.servlet.Filter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.context.DelegatingSecurityContextRepository;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.RequestAttributeSecurityContextRepository;
@@ -21,6 +27,13 @@ import org.springframework.security.web.context.SecurityContextRepository;
 public class SecurityConfiguration {
 
     private final String rememberKey;
+
+    @Autowired
+    private AuthenticationProvider authenticationProvider;
+
+    @Autowired
+    private  JwtAuthenticationFilter jwtAuthenticationFilter;
+
     public SecurityConfiguration(@Value("${spring.remember.key}") String rememberKey) {
         this.rememberKey = rememberKey;
     }
@@ -39,7 +52,10 @@ public class SecurityConfiguration {
                         .requestMatchers("/owner/**").hasRole(RoleName.OWNER.name())
                         .anyRequest().authenticated()
 
-        ).formLogin(
+        ).authenticationProvider(authenticationProvider)
+
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .formLogin(
                 formLogin -> formLogin
                         .loginPage("/users/login")
                         .usernameParameter("username")
@@ -48,7 +64,7 @@ public class SecurityConfiguration {
                         .failureForwardUrl("/users/login-error")
         ).logout(logout -> logout.logoutUrl("/users/logout")
                 .logoutSuccessUrl("/")
-                .deleteCookies("JSESSIONID")
+                .deleteCookies("JSESSIONID", "jwt", "rememberme")
                 .invalidateHttpSession(true)
         ).rememberMe(
                 rememberMe ->
@@ -56,24 +72,7 @@ public class SecurityConfiguration {
                                 .key(rememberKey)
                                 .rememberMeParameter("rememberme")
                                 .rememberMeCookieName("rememberme")
-                                .tokenValiditySeconds(2628000)
+                                .tokenValiditySeconds(604800)
                 ).build();
-    }
-    @Bean
-    public UserDetailsService userDetailsService(UserRepository userRepository) {
-        return new LoginDetailsServiceImpl(userRepository);
-    }
-
-    @Bean
-    public SecurityContextRepository securityContextRepository() {
-        return new DelegatingSecurityContextRepository(
-                new RequestAttributeSecurityContextRepository(),
-                new HttpSessionSecurityContextRepository()
-        );
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return Pbkdf2PasswordEncoder.defaultsForSpringSecurity_v5_8();
     }
 }

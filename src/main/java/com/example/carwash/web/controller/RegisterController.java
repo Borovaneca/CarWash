@@ -1,8 +1,10 @@
 package com.example.carwash.web.controller;
 
 import com.example.carwash.model.dtos.UserRegisterDTO;
-import com.example.carwash.service.RegisterServiceImpl;
+import com.example.carwash.model.entity.User;
 import com.example.carwash.service.interfaces.RegisterService;
+import com.example.carwash.utils.jwt.JwtService;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -10,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextHolderStrategy;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -23,12 +26,14 @@ public class RegisterController {
 
     private final RegisterService registerService;
     private final SecurityContextRepository securityContextRepository;
+    private final JwtService jwtService;
 
 
     @Autowired
-    public RegisterController(RegisterService registerService, SecurityContextRepository securityContextRepository) {
+    public RegisterController(RegisterService registerService, SecurityContextRepository securityContextRepository, JwtService jwtService) {
         this.registerService = registerService;
         this.securityContextRepository = securityContextRepository;
+        this.jwtService = jwtService;
     }
 
     @ModelAttribute("userRegisterDTO")
@@ -50,13 +55,14 @@ public class RegisterController {
             HttpServletResponse response
             ) {
 
+
         if (bindingResult.hasErrors()) {
 
             redirectAttributes.addFlashAttribute("userRegisterDTO", userRegisterDTO);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userRegisterDTO", bindingResult);
             return "redirect:/users/register";
         }
-        registerService.registerUser(userRegisterDTO, successfulAuth -> {
+        User user = registerService.registerUser(userRegisterDTO, successfulAuth -> {
             SecurityContextHolderStrategy strategy = SecurityContextHolder.getContextHolderStrategy();
 
             SecurityContext context = strategy.createEmptyContext();
@@ -65,7 +71,11 @@ public class RegisterController {
             strategy.setContext(context);
             securityContextRepository.saveContext(context, request, response);
         });
-
+        String token = jwtService.generateToken(user);
+        Cookie cookie = new Cookie("jwt", token);
+        cookie.setPath("/");
+        cookie.setMaxAge(60 * 60 * 24);
+        response.addCookie(cookie);
         return "redirect:/";
     }
 }
