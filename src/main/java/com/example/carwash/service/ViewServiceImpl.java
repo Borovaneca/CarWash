@@ -4,6 +4,7 @@ import com.example.carwash.model.dtos.AppointmentServiceDTO;
 import com.example.carwash.model.view.*;
 import com.example.carwash.service.interfaces.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public class ViewServiceImpl implements ViewService {
     private final AppointmentService appointmentService;
 
     @Autowired
-    public ViewServiceImpl(UserService userService, VehicleService vehicleService, ServiceService serviceService, AppointmentService appointmentService) {
+    public ViewServiceImpl(@Qualifier("userServiceProxy") UserService userService, VehicleService vehicleService, @Qualifier("serviceServiceProxy") ServiceService serviceService, @Qualifier("appointmentServiceProxy") AppointmentService appointmentService) {
         this.userService = userService;
         this.vehicleService = vehicleService;
         this.serviceService = serviceService;
@@ -43,7 +44,7 @@ public class ViewServiceImpl implements ViewService {
 
     @Override
     public List<ServiceView> getServices() {
-        return serviceService.getAllServicesForServices();
+        return serviceService.getAllServicesForServicesPage();
     }
 
     @Override

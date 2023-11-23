@@ -3,7 +3,7 @@ package com.example.carwash.service;
 import com.example.carwash.model.entity.Role;
 import com.example.carwash.model.entity.User;
 import com.example.carwash.repository.UserRepository;
-import com.example.carwash.service.interfaces.JwtService;
+import com.example.carwash.service.jwt.JwtService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.GrantedAuthority;

@@ -1,9 +1,10 @@
 package com.example.carwash.model.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.databind.deser.std.StringArrayDeserializer;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Positive;
+
+import java.util.List;
 
 @Entity
 @Table(name = "services")
@@ -12,7 +13,7 @@ public class Service extends BaseEntity {
     @Column(unique = true, nullable = false)
     private String name;
 
-    @Column
+    @Column(nullable = false)
     private String description;
 
     @Column(unique = true, nullable = false)
@@ -21,6 +22,9 @@ public class Service extends BaseEntity {
     @Column(nullable = false)
     @Positive
     private Double price;
+
+    @OneToMany(mappedBy = "service", cascade = CascadeType.REMOVE)
+    private List<Appointment> appointments;
 
     public Service() {
     }
@@ -83,6 +87,15 @@ public class Service extends BaseEntity {
 
     public Service setPrice(Double price) {
         this.price = price;
+        return this;
+    }
+
+    public List<Appointment> getAppointments() {
+        return appointments;
+    }
+
+    public Service setAppointments(List<Appointment> appointments) {
+        this.appointments = appointments;
         return this;
     }
 }

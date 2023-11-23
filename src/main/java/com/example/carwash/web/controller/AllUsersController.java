@@ -2,6 +2,7 @@ package com.example.carwash.web.controller;
 
 import com.example.carwash.service.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,7 +16,7 @@ public class AllUsersController {
     private final UserService userService;
 
     @Autowired
-    public AllUsersController(UserService userService) {
+    public AllUsersController(@Qualifier("userServiceProxy") UserService userService) {
         this.userService = userService;
     }
 

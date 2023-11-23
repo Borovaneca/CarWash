@@ -7,6 +7,7 @@ import com.example.carwash.repository.UserRepository;
 import com.example.carwash.service.interfaces.ConfirmationTokenService;
 import com.example.carwash.service.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,7 +18,7 @@ public class ConfirmationTokenServiceImpl implements ConfirmationTokenService {
     private final UserService userService;
 
     @Autowired
-    public ConfirmationTokenServiceImpl(ConfirmationTokenRepository confirmationTokenRepository, UserService userService) {
+    public ConfirmationTokenServiceImpl(ConfirmationTokenRepository confirmationTokenRepository, @Qualifier("userServiceProxy") UserService userService) {
         this.confirmationTokenRepository = confirmationTokenRepository;
         this.userService = userService;
     }

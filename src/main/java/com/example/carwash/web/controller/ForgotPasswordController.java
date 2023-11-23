@@ -8,6 +8,7 @@ import com.example.carwash.model.entity.User;
 import com.example.carwash.service.interfaces.ResetService;
 import com.example.carwash.service.interfaces.UserService;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,7 +24,7 @@ public class ForgotPasswordController {
     private final ResetService resetService;
     private final UserService userService;
 
-    public ForgotPasswordController(ResetService resetService, UserService userService) {
+    public ForgotPasswordController(ResetService resetService, @Qualifier("userServiceProxy") UserService userService) {
         this.resetService = resetService;
         this.userService = userService;
     }

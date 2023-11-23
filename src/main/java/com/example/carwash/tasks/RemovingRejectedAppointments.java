@@ -5,6 +5,7 @@ import com.example.carwash.repository.AppointmentRepository;
 import com.example.carwash.service.interfaces.AppointmentService;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -17,7 +18,7 @@ public class RemovingRejectedAppointments {
 
     private final AppointmentService appointmentService;
 
-    public RemovingRejectedAppointments(AppointmentService appointmentService) {
+    public RemovingRejectedAppointments(@Qualifier("appointmentServiceProxy") AppointmentService appointmentService) {
         this.appointmentService = appointmentService;
     }
 

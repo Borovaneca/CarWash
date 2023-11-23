@@ -1,4 +1,4 @@
-function getServices() {
+function getOwnerServices() {
     let root = document.getElementById('services-container');
     fetch('http://localhost:8080/api/services/')
         .then(response => response.json())
@@ -32,9 +32,17 @@ function getServices() {
                 cardPrice.textContent = '$' + service.price + '0';
                 cardPrice.classList.add("card-price");
 
+                let button = document.createElement('button');
+                button.textContent = 'Delete';
+                button.classList.add('btn', 'btn-danger');
+                button.type = 'button';
+                button.onclick = () => deleteService(service.id);
+
+
                 cardBody.appendChild(cardTitle)
                 cardBody.appendChild(cardDescription)
                 cardBody.appendChild(cardPrice)
+                cardBody.appendChild(button)
 
                 card.appendChild(videoContainer)
                 card.appendChild(cardBody)
@@ -43,4 +51,23 @@ function getServices() {
                 root.appendChild(card);
             }
         ))
+}
+
+async function deleteService(id) {
+    const csrfToken = document.querySelector("meta[name='_csrf']").getAttribute("content");
+    const csrfHeader = document.querySelector("meta[name='_csrf_header']").getAttribute("content");
+
+    const headers = {
+        [csrfHeader]: csrfToken
+    };
+
+
+    await fetch(`http://localhost:8080/owner/services/delete/${id}`, {
+        method: 'POST',
+        headers: headers
+    })
+
+    location.reload();
+    alert('Role removed successfully!');
+    return false;
 }

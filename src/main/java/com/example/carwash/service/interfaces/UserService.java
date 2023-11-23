@@ -35,8 +35,6 @@ public interface UserService {
 
     void addRoleToUserId(String role, Long userId);
 
-    void banUserById(Long userId);
-
     void removeRoleToUserId(String role, Long userId);
 
     void registerAdmin();

@@ -3,16 +3,18 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <th:block th:replace="~{fragments/head.html}"></th:block>
+    <script th:src="@{/js/delete-service.js}"></script>
 </head>
-<body onload="getServices()">
+<body onload="getOwnerServices()">
 <th:block th:replace="~{fragments/navbar.html}"></th:block>
 
-    <div id="services-container" class="container">
-        
-    </div>
+<form>
+<div id="services-container" class="container">
 
+</div>
+</form>
 
-    <th:block th:replace="~{fragments/footer.html}"></th:block>
+<th:block th:replace="~{fragments/footer.html}"></th:block>
 
-    </body>
+</body>
 </html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <th:block th:replace="~{fragments/head.html}"></th:block>
+</head>
+<body>
+<th:block th:replace="~{fragments/navbar.html}"></th:block>
+
+<section class="vh-100 bg-image">
+    <div class="mask d-flex align-items-center h-100 gradient-custom-3">
+        <div class="container h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+                    <div class="card" style="border-radius: 15px;">
+                        <div class="card-body p-5">
+                            <h2 class="text-uppercase text-center mb-5">Add New Service</h2>
+
+                            <form th:action="@{/owner/services/add}" th:method="POST" th:object="${serviceAddDTO}">
+
+                                <p class="alert-danger text-center text-info rounded">All fields required!</p>
+                                <div class="form-outline mb-4">
+                                    <label class="form-label" for="serviceName">Service Name:</label>
+                                    <input type="text" id="serviceName" class="form-control form-control-lg"
+                                           th:field="*{name}"
+                                           th:errorclass="is-invalid"
+                                           is required />
+                                    <small th:each="msg : ${#fields.errors('name')}"
+                                             class="form-text text-danger invalid-feedback"
+                                    th:text="${msg}"
+                                    ></small>
+                                </div>
+
+                                <div class="form-outline mb-4">
+                                    <label class="form-label" for="serviceDescription">Service Description:</label>
+                                    <textarea type="text" id="serviceDescription" class="form-control form-control-lg"
+                                              th:field="*{description}"
+                                              th:errorclass="is-invalid"
+                                              is required ></textarea>
+                                    <small th:each="msg : ${#fields.errors('description')}"
+                                           class="form-text text-danger invalid-feedback"
+                                           th:text="${msg}"
+                                    ></small>
+                                </div>
+
+                                <div class="form-outline mb-4">
+                                    <label class="form-label" for="serviceVideoUrl">Service YT-URL</label>
+                                    <input type="url" id="serviceVideoUrl" class="form-control form-control-lg"
+                                           th:field="*{urlVideo}"
+                                           th:errorclass="is-invalid"
+                                           is required/>
+                                    <small th:each="msg : ${#fields.errors('urlVideo')}"
+                                           class="form-text text-danger invalid-feedback"
+                                           th:text="${msg}"
+                                    ></small>
+                                </div>
+
+                                <div class="form-outline mb-4">
+                                    <label class="form-label" for="servicePrice">Service Price:</label>
+                                    <input type="number" id="servicePrice" class="form-control form-control-lg"
+                                           th:field="*{price}"
+                                           th:errorclass="is-invalid"
+                                           is required/>
+                                    <small th:each="msg : ${#fields.errors('price')}"
+                                           class="form-text text-danger invalid-feedback"
+                                           th:text="${msg}"
+                                    ></small>
+                                </div>
+
+                                <div class="d-flex justify-content-center">
+                                    <button sec:authorize="hasRole('OWNER')" type="submit"
+                                            class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">Submit</button>
+                                </div>
+
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<th:block th:replace="~{fragments/footer.html}"></th:block>
+
+</body>
+</html>

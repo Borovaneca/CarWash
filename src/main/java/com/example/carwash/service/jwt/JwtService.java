@@ -1,4 +1,4 @@
-package com.example.carwash.service.interfaces;
+package com.example.carwash.service.jwt;
 
 
 import com.example.carwash.model.entity.User;

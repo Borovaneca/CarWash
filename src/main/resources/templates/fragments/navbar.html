@@ -43,6 +43,8 @@
                             Staff Menu
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" sec:authorize="hasRole('OWNER')" href="/owner/services/add">Add Service</a>
+                            <a class="dropdown-item" sec:authorize="hasRole('OWNER')" href="/owner/services/remove">Remove Service</a>
                             <a class="dropdown-item" sec:authorize="hasRole('OWNER')" href="/owner/users/all">All Users</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" sec:authorize="hasRole('MANAGER')" href="/manager/awaiting-approval">Appointments Wait...</a>

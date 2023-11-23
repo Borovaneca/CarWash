@@ -23,7 +23,7 @@ public class Appointment extends BaseEntity {
     @Future
     private LocalDateTime madeFor;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private Service service;
 
     @Column(nullable = false)

@@ -13,6 +13,7 @@ import com.example.carwash.service.interfaces.ServiceService;
 import com.example.carwash.service.interfaces.UserService;
 import jakarta.persistence.Transient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,7 +28,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     private final CustomMapper customMapper;
 
     @Autowired
-    public AppointmentServiceImpl(UserService userService, AppointmentRepository appointmentRepository, ServiceService serviceService, CustomMapper customMapper) {
+    public AppointmentServiceImpl(@Qualifier("userServiceProxy") UserService userService, AppointmentRepository appointmentRepository, @Qualifier("serviceServiceProxy") ServiceService serviceService, CustomMapper customMapper) {
         this.userService = userService;
         this.appointmentRepository = appointmentRepository;
         this.serviceService = serviceService;
@@ -42,7 +43,9 @@ public class AppointmentServiceImpl implements AppointmentService {
         Appointment appointment = customMapper.appointmentAddDTOToAppointment(appointmentAddDTO);
         appointment.setVehicle(user.getVehicles().stream().filter(vehicle -> vehicle.getId().equals(appointmentAddDTO.getVehicleId())).findAny().orElse(null));
         appointment.setUser(user);
-        appointment.setService(serviceService.getByName(appointmentAddDTO.getService()));
+        com.example.carwash.model.entity.Service service = serviceService.getByName(appointmentAddDTO.getService());
+        service.getAppointments().add(appointment);
+        appointment.setService(service);
         appointmentRepository.save(appointment);
         user.getAppointments().add(appointment);
         userService.save(user);
@@ -72,11 +75,6 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Override
     public void deleteAll(List<Appointment> rejected) {
         appointmentRepository.deleteAll(rejected);
-    }
-
-    @Override
-    public List<Appointment> findAllByUserUsername(String username) {
-        return appointmentRepository.findAllByUserUsername(username);
     }
 
     @Override

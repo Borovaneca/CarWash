@@ -2,14 +2,17 @@ package com.example.carwash.service;
 
 import com.example.carwash.mapper.CustomMapper;
 import com.example.carwash.model.dtos.AppointmentServiceDTO;
+import com.example.carwash.model.dtos.ServiceAddDTO;
 import com.example.carwash.model.view.ServiceIndexView;
 import com.example.carwash.model.view.ServiceView;
 import com.example.carwash.repository.ServiceRepository;
 import com.example.carwash.service.interfaces.ServiceService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -18,6 +21,7 @@ public class ServiceServiceImpl implements ServiceService {
     private final ServiceRepository serviceRepository;
     private final CustomMapper customMapper;
 
+    @Autowired
     public ServiceServiceImpl(ServiceRepository serviceRepository, CustomMapper customMapper) {
         this.serviceRepository = serviceRepository;
         this.customMapper = customMapper;
@@ -33,8 +37,7 @@ public class ServiceServiceImpl implements ServiceService {
     }
 
     @Override
-    @Cacheable("services")
-    public List<ServiceIndexView> getAllServicesForIndex() {
+    public List<ServiceIndexView> getAllServicesForIndexPage() {
         return serviceRepository
                 .findAll()
                 .stream()
@@ -43,13 +46,18 @@ public class ServiceServiceImpl implements ServiceService {
     }
 
     @Override
-    @Cacheable("servicesForServices")
-    public List<ServiceView> getAllServicesForServices() {
+    public List<ServiceView> getAllServicesForServicesPage() {
         return serviceRepository
                 .findAll()
                 .stream()
                 .map(customMapper::serviceToServiceView)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public void addService(ServiceAddDTO serviceAddDTO) {
+        com.example.carwash.model.entity.Service service = customMapper.serviceAddDTOToService(serviceAddDTO);
+        serviceRepository.save(service);
     }
 
     @Override
@@ -65,5 +73,17 @@ public class ServiceServiceImpl implements ServiceService {
     @Override
     public void saveAll(List<com.example.carwash.model.entity.Service> services) {
         serviceRepository.saveAll(services);
+    }
+
+    @Override
+    public void deleteServiceById(Long id) {
+        Optional<com.example.carwash.model.entity.Service> service = serviceRepository.findById(id);
+        if (service.isPresent()) {
+            service.get().getAppointments()
+                    .forEach(appointment -> {
+                        appointment.setService(null);
+                    });
+            serviceRepository.delete(service.get());
+        }
     }
 }

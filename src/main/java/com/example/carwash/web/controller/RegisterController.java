@@ -3,7 +3,7 @@ package com.example.carwash.web.controller;
 import com.example.carwash.model.dtos.UserRegisterDTO;
 import com.example.carwash.model.entity.User;
 import com.example.carwash.service.interfaces.RegisterService;
-import com.example.carwash.service.interfaces.JwtService;
+import com.example.carwash.service.jwt.JwtService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

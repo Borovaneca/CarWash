@@ -5,6 +5,7 @@ import com.example.carwash.repository.UserRepository;
 import com.example.carwash.service.interfaces.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -19,7 +20,7 @@ public class RemovingInactiveUsersTask {
     private final UserService userService;
 
     @Autowired
-    public RemovingInactiveUsersTask(UserService userService) {
+    public RemovingInactiveUsersTask(@Qualifier("userServiceProxy") UserService userService) {
         this.userService = userService;
     }
 

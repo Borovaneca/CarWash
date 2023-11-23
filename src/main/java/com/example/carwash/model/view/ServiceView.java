@@ -2,12 +2,22 @@ package com.example.carwash.model.view;
 
 public class ServiceView {
 
+    private Long id;
     private String name;
     private String description;
     private String price;
     private String urlVideo;
 
     public ServiceView() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public ServiceView setId(Long id) {
+        this.id = id;
+        return this;
     }
 
     public String getName() {

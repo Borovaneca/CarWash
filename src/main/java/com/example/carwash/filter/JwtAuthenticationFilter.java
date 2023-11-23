@@ -1,6 +1,9 @@
 package com.example.carwash.filter;
 
-import com.example.carwash.service.interfaces.JwtService;
+import com.example.carwash.service.jwt.JwtService;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -52,18 +55,26 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
         jtw = authorizationHeader.substring(7);
-        username = jwtService.getUsernameFromToken(jtw);
-        if (username!= null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            userDetails = userDetailsService.loadUserByUsername(username);
-            if (jwtService.isTokenValid(jtw, userDetails)) {
-                UsernamePasswordAuthenticationToken authToken =
-                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                authToken.setDetails(
-                        new WebAuthenticationDetailsSource().buildDetails(request)
-                );
-                SecurityContextHolder.getContext().setAuthentication(authToken);
+        try {
+            username = jwtService.getUsernameFromToken(jtw);
+            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                userDetails = userDetailsService.loadUserByUsername(username);
+                if (jwtService.isTokenValid(jtw, userDetails)) {
+                    UsernamePasswordAuthenticationToken authToken =
+                            new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                    authToken.setDetails(
+                            new WebAuthenticationDetailsSource().buildDetails(request)
+                    );
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
+                }
             }
+            filterChain.doFilter(request, response);
+        } catch (ExpiredJwtException | MalformedJwtException | UnsupportedJwtException | IllegalArgumentException e) {
+            Cookie expiredCookie = new Cookie("jwt", null);
+            expiredCookie.setMaxAge(0);
+            expiredCookie.setPath("/");
+            response.addCookie(expiredCookie);
+            filterChain.doFilter(request, response);
         }
-        filterChain.doFilter(request, response);
     }
 }

@@ -3,6 +3,7 @@ package com.example.carwash.web.controller;
 import com.example.carwash.model.dtos.VehicleAddDTO;
 import com.example.carwash.service.interfaces.UserService;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -17,7 +18,7 @@ public class VehicleController {
 
     private final UserService userService;
 
-    public VehicleController(UserService userService) {
+    public VehicleController(@Qualifier("userServiceProxy") UserService userService) {
         this.userService = userService;
     }
 

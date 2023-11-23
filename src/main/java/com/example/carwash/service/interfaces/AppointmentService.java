@@ -22,8 +22,6 @@ public interface AppointmentService {
 
     void deleteAll(List<Appointment> rejected);
 
-    List<Appointment> findAllByUserUsername(String username);
-
     List<AppointmentTodayView> findAllAppointmentsForToday();
 
     List<AppointmentAwaitingApprovalView> findAllAppointmentsWaitingApproval();

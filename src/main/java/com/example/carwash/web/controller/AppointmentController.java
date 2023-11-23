@@ -5,6 +5,7 @@ import com.example.carwash.service.interfaces.ViewService;
 import com.example.carwash.service.interfaces.AppointmentService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -24,7 +25,7 @@ public class AppointmentController {
     private final AppointmentService appointmentService;
 
     @Autowired
-    public AppointmentController(ViewService viewService, AppointmentService appointmentService) {
+    public AppointmentController(ViewService viewService, @Qualifier("appointmentServiceProxy") AppointmentService appointmentService) {
         this.viewService = viewService;
         this.appointmentService = appointmentService;
     }

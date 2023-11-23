@@ -11,6 +11,7 @@ import com.example.carwash.model.enums.RoleName;
 import com.example.carwash.model.view.AllUsersView;
 import com.example.carwash.model.view.ProfileView;
 import com.example.carwash.model.view.StaffView;
+import com.example.carwash.repository.ServiceRepository;
 import com.example.carwash.repository.UserRepository;
 import com.example.carwash.service.interfaces.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,10 +32,9 @@ public class UserServiceImpl implements UserService {
     private final SocialMediaService socialMediaService;
     private final CustomMapper customMapper;
     private final PasswordEncoder passwordEncoder;
-    private final ProfileImageServiceImpl profileImageServiceImpl;
     private final VehicleService vehicleService;
     private final RoleService roleService;
-    private final ServiceService serviceService;
+    private final ServiceRepository serviceRepository;
     @Value("${admin.username}")
     private String adminUsername;
     @Value("${admin.password}")
@@ -44,18 +44,16 @@ public class UserServiceImpl implements UserService {
     @Autowired
     public UserServiceImpl(UserRepository userRepository, ProfileImageService profileImageService,
                            SocialMediaServiceImpl socialMediaService, CustomMapper customMapper, PasswordEncoder passwordEncoder,
-                           ProfileImageServiceImpl profileImageServiceImpl,
                            VehicleServiceImpl vehicleService,
-                           RoleService roleService, ServiceService serviceService) {
+                           RoleService roleService, ServiceRepository serviceRepository) {
         this.userRepository = userRepository;
         this.profileImageService = profileImageService;
         this.socialMediaService = socialMediaService;
         this.customMapper = customMapper;
         this.passwordEncoder = passwordEncoder;
-        this.profileImageServiceImpl = profileImageServiceImpl;
         this.vehicleService = vehicleService;
         this.roleService = roleService;
-        this.serviceService = serviceService;
+        this.serviceRepository = serviceRepository;
     }
 
 
@@ -105,7 +103,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateImage(ProfileUpdateImageDTO profileUpdateImageDTO) {
-        profileImageServiceImpl.saveProfileImage(profileUpdateImageDTO.getImage(), findByUsername(profileUpdateImageDTO.getUsername()));
+        profileImageService.saveProfileImage(profileUpdateImageDTO.getImage(), findByUsername(profileUpdateImageDTO.getUsername()));
     }
 
     @Override
@@ -189,14 +187,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void banUserById(Long userId) {
-        userRepository.findById(userId).ifPresent(user -> {
-            user.setBanned(true);
-            userRepository.save(user);
-        });
-    }
-
-    @Override
     public void removeRoleToUserId(String role, Long userId) {
         Role roleEntity = roleService.findByName(RoleName.valueOf(role));
         if (roleEntity != null) {
@@ -222,11 +212,11 @@ public class UserServiceImpl implements UserService {
                         roles.add(role);
                     });
             roleService.saveAll(roles);
-            if (this.serviceService.allServices() == 0) {
+            if (this.serviceRepository.count() == 0) {
                 List<com.example.carwash.model.entity.Service> services = new ArrayList<>();
                 List<String> serviceNames = List.of("Interior Detailing", "Express Wash", "The Works Wash");
                 serviceNames.forEach(name -> services.add(new com.example.carwash.model.entity.Service(name)));
-                serviceService.saveAll(services);
+                serviceRepository.saveAll(services);
             }
             addAdmin();
         }
@@ -296,7 +286,6 @@ public class UserServiceImpl implements UserService {
     }
 
     private void addAdmin() {
-        Scanner scanner = new Scanner(System.in);
         User admin = new User();
         admin.setUsername(adminUsername);
         admin.setPassword(passwordEncoder.encode(adminPassword));

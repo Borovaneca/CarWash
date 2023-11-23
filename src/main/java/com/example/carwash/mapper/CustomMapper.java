@@ -2,6 +2,7 @@ package com.example.carwash.mapper;
 
 import com.example.carwash.model.dtos.AppointmentAddDTO;
 import com.example.carwash.model.dtos.AppointmentServiceDTO;
+import com.example.carwash.model.dtos.ServiceAddDTO;
 import com.example.carwash.model.dtos.UserRegisterDTO;
 import com.example.carwash.model.entity.*;
 import com.example.carwash.model.view.*;
@@ -141,12 +142,21 @@ public interface CustomMapper {
     ServiceIndexView serviceToServiceIndexView(Service service);
 
     @Mappings({
+            @Mapping(source = "id", target = "id"),
             @Mapping(source = "name", target = "name"),
             @Mapping(source = "description", target = "description"),
             @Mapping(target = "price", expression = "java(service.getPrice().toString())"),
             @Mapping(source = "urlVideo", target = "urlVideo")
     })
     ServiceView serviceToServiceView(Service service);
+
+    @Mappings({
+            @Mapping(source = "name", target = "name"),
+            @Mapping(source = "description", target = "description"),
+            @Mapping(target = "price", expression = "java(serviceAddDTO.getPrice())"),
+            @Mapping(target = "urlVideo", expression = "java(new StringBuilder(new StringBuilder(serviceAddDTO.getUrlVideo()).reverse().substring(0, 11)).reverse().toString())")
+    })
+    Service serviceAddDTOToService(ServiceAddDTO serviceAddDTO);
     @Condition
     default String isBanned(boolean banned) {
         return banned ? "Yes" : "No";

@@ -8,6 +8,7 @@ import com.example.carwash.service.interfaces.EmailService;
 import com.example.carwash.service.interfaces.ResetService;
 import com.example.carwash.service.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,7 +28,7 @@ public class ResetServiceImpl implements ResetService {
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public ResetServiceImpl(EmailService emailService, ResetPasswordRepository resetPasswordRepository, ApplicationEventPublisher applicationEventPublisher, UserService userService, PasswordEncoder passwordEncoder) {
+    public ResetServiceImpl(EmailService emailService, ResetPasswordRepository resetPasswordRepository, ApplicationEventPublisher applicationEventPublisher, @Qualifier("userServiceProxy") UserService userService, PasswordEncoder passwordEncoder) {
         this.emailService = emailService;
         this.resetPasswordRepository = resetPasswordRepository;
         this.applicationEventPublisher = applicationEventPublisher;

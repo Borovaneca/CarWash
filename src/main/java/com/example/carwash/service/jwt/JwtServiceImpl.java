@@ -1,7 +1,6 @@
-package com.example.carwash.service;
+package com.example.carwash.service.jwt;
 
 import com.example.carwash.model.entity.User;
-import com.example.carwash.service.interfaces.JwtService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -37,14 +36,14 @@ public class JwtServiceImpl implements JwtService {
     }
 
     private String generateTokenValue(Map<String, Object> claims, User user) {
-        return Jwts
-                .builder()
-                .setClaims(claims)
-                .setSubject(user.getUsername())
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
-                .signWith(getSignKey(), SignatureAlgorithm.HS256)
-                .compact();
+         return Jwts
+                    .builder()
+                    .setClaims(claims)
+                    .setSubject(user.getUsername())
+                    .setIssuedAt(new Date(System.currentTimeMillis()))
+                    .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
+                    .signWith(getSignKey(), SignatureAlgorithm.HS256)
+                    .compact();
     }
 
     private boolean isTokenExpired(String token) {

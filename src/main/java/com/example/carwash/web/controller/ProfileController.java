@@ -11,6 +11,7 @@ import com.example.carwash.service.interfaces.ViewService;
 import com.example.carwash.service.interfaces.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -35,7 +36,7 @@ public class ProfileController {
     private ProfileEditDTO profileEditDTO;
 
     @Autowired
-    public ProfileController(ViewService viewService, UserService userService) {
+    public ProfileController(ViewService viewService, @Qualifier("userServiceProxy") UserService userService) {
         this.viewService = viewService;
         this.userService = userService;
     }

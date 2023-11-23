@@ -2,7 +2,7 @@ package com.example.carwash.config;
 
 import com.example.carwash.repository.UserRepository;
 import com.example.carwash.service.LoginDetailsServiceImpl;
-import com.example.carwash.service.interfaces.JwtService;
+import com.example.carwash.service.jwt.JwtService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

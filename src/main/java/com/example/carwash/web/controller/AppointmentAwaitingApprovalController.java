@@ -2,6 +2,7 @@ package com.example.carwash.web.controller;
 
 import com.example.carwash.service.interfaces.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,7 +16,7 @@ public class AppointmentAwaitingApprovalController {
     private final AppointmentService appointmentService;
 
     @Autowired
-    public AppointmentAwaitingApprovalController(AppointmentService appointmentService) {
+    public AppointmentAwaitingApprovalController(@Qualifier("appointmentServiceProxy") AppointmentService appointmentService) {
         this.appointmentService = appointmentService;
     }
 
