@@ -139,12 +139,24 @@ The project leverages various mapping libraries to facilitate the conversion and
 Upon successful authentication, a JWT is generated and stored as an HTTP-only secure cookie in the user's browser. This token is used to authenticate and authorize subsequent requests to protected endpoints within the application.
 - [x] *Expiration*: The token expires after 24 hours.
 ---
-
+```
+DEPRECATED
 * **Cacheable Implementation**
 
 Caching mechanisms are utilized within the application to improve performance by storing frequently accessed or computed data in temporary storage (cache). This reduces the need to repeatedly fetch or compute the same data, enhancing response times and overall system efficiency.
 
+```
 ---
+
+* **`Proxy Pattern for Improved Performance and Data Storage`**
+
+The integration of the Proxy Pattern has significantly enhanced my project performance and provided a more efficient mechanism for data storage, replacing the previous caching system.
+
+---
+
+* **`Multithreading`**
+
+In my project, Multithreading is instrumental in executing parallel operations efficiently, especially during cache updates within the Proxy Pattern. This utilization of Multithreading enhances the system's responsiveness and performance when refreshing cached information.
 
 * **Custom Exceptions**
 
