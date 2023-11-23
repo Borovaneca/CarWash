@@ -158,6 +158,8 @@ The integration of the Proxy Pattern has significantly enhanced my project perfo
 
 In my project, Multithreading is instrumental in executing parallel operations efficiently, especially during cache updates within the Proxy Pattern. This utilization of Multithreading enhances the system's responsiveness and performance when refreshing cached information.
 
+---
+
 * **Custom Exceptions**
 
 Custom exceptions are used to handle specific errors or exceptional cases in the application, improving error handling and providing meaningful feedback to users or clients.
