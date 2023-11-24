@@ -18,7 +18,7 @@ public class ViewServiceImpl implements ViewService {
     private final AppointmentService appointmentService;
 
     @Autowired
-    public ViewServiceImpl(@Qualifier("userServiceProxy") UserService userService, VehicleService vehicleService, @Qualifier("serviceServiceProxy") ServiceService serviceService, @Qualifier("appointmentServiceProxy") AppointmentService appointmentService) {
+    public ViewServiceImpl(@Qualifier("userServiceProxy") UserService userService, @Qualifier("vehicleServiceProxy") VehicleService vehicleService, @Qualifier("serviceServiceProxy") ServiceService serviceService, @Qualifier("appointmentServiceProxy") AppointmentService appointmentService) {
         this.userService = userService;
         this.vehicleService = vehicleService;
         this.serviceService = serviceService;

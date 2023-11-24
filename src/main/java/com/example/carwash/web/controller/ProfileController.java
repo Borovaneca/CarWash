@@ -23,7 +23,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
-import java.util.stream.Collectors;
 
 @CrossOrigin("*")
 @Controller
@@ -55,7 +54,7 @@ public class ProfileController {
             return "redirect:/";
         }
         if (isValidUser(username)) {
-            if (isAuthorized(userDetails, username)) {
+            if (userService.isAuthorized(userDetails, username)) {
                 model.addAttribute("isAuthorized", true);
             }
             ProfileView profileView = viewService.getProfileView(username);
@@ -185,16 +184,9 @@ public class ProfileController {
         return true;
     }
 
-    private static void checkIfAuthorized(UserDetails userDetails, String username) {
-        if (!isAuthorized(userDetails, username)) {
+    private void checkIfAuthorized(UserDetails userDetails, String username) {
+        if (!userService.isAuthorized(userDetails, username)) {
             throw new UnauthorizedException(ExceptionMessages.ACCESS_DENIED);
         }
-    }
-
-    private static boolean isAuthorized(UserDetails userDetails, String username) {
-        return !userDetails.getAuthorities().
-                stream().
-                filter(a -> a.getAuthority().equals("ROLE_OWNER")).
-                collect(Collectors.toSet()).isEmpty() || username.equals(userDetails.getUsername());
     }
 }

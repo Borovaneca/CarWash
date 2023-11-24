@@ -1,93 +1,115 @@
 async function getAllUsers() {
 
+    let elementId = 1;
+    let usersArr = [];
+    const searchInput = document.getElementById('search-bar');
+    searchInput.addEventListener('input', (e) => {
+        const value = e.target.value;
+        usersArr.forEach(user => {
+            console.log(user);
+            const isMatch = user.username.toLowerCase().includes(value.toLowerCase()) ||
+                user.email.toLowerCase().includes(value.toLowerCase()) ||
+                user.role.toLowerCase().includes(value.toLowerCase()) ||
+                user.registeredOn.toLowerCase().includes(value.toLowerCase());
+                document.getElementById(`${user.element}`).classList.toggle("hide", !isMatch);
+        })
+    });
     let tbody = document.getElementById('tbody');
-
     fetch('http://localhost:8080/api/owner/users/all')
         .then(response => response.json())
-        .then(users => users.forEach(
-            user => {
+        .then(users => {
+            usersArr = users.map(user => {
 
-                let tr = document.createElement('tr');
-                let picture = document.createElement('td');
-                let profileUrl = document.createElement('a');
-                let username = document.createElement('td');
-                let email = document.createElement('td');
-                let higherRole = document.createElement('td');
-                let age = document.createElement('td');
-                let registered = document.createElement('td');
-                let status = document.createElement('td');
+                    let tr = document.createElement('tr');
+                    tr.id = `${elementId++}`;
+                    let picture = document.createElement('td');
+                    let profileUrl = document.createElement('a');
+                    let username = document.createElement('td');
+                    let email = document.createElement('td');
+                    let higherRole = document.createElement('td');
+                    let age = document.createElement('td');
+                    let registered = document.createElement('td');
+                    let status = document.createElement('td');
 
-                let img = document.createElement('img');
-                img.src = user.locatedOn;
-                img.width = 100;
-                img.alt = `${user.username}`;
-                profileUrl.href = `http://localhost:8080/users/view/${user.username}`;
-                profileUrl.appendChild(img);
-                picture.appendChild(profileUrl);
-                username.textContent = user.username;
-                email.textContent = user.email;
-                higherRole.textContent = user.role;
-                age.textContent = user.age;
-                registered.textContent = user.registeredOn;
-                status.textContent = user.isBanned;
+                    let img = document.createElement('img');
+                    img.src = user.locatedOn;
+                    img.width = 100;
+                    img.alt = `${user.username}`;
+                    profileUrl.href = `http://localhost:8080/users/view/${user.username}`;
+                    profileUrl.appendChild(img);
+                    picture.appendChild(profileUrl);
+                    username.textContent = user.username;
+                    email.textContent = user.email;
+                    higherRole.textContent = user.role;
+                    age.textContent = user.age;
+                    registered.textContent = user.registeredOn;
+                    status.textContent = user.isBanned;
 
-                let changeRole = document.createElement('td');
-                changeRole.classList.add('text-center', 'wrap');
-                let select = document.createElement('select');
-                select.id = 'role';
-                let option3 = document.createElement('option');
-                option3.value = 'EMPLOYEE';
-                option3.textContent = 'Employee'
-                select.appendChild(option3);
-                let option2 = document.createElement('option');
-                option2.value = 'MANAGER';
-                option2.textContent = 'Manager';
-                select.appendChild(option2);
-                let option = document.createElement('option');
-                option.value = 'OWNER';
-                option.textContent = 'Owner';
-                select.appendChild(option);
-                select.addEventListener('change', () => {
-                    let roleSelect = document.getElementById('role');
-                    let roleValue = roleSelect.value;
-                });
+                    let changeRole = document.createElement('td');
+                    changeRole.classList.add('text-center', 'wrap');
+                    let select = document.createElement('select');
+                    select.id = 'role';
+                    let option3 = document.createElement('option');
+                    option3.value = 'EMPLOYEE';
+                    option3.textContent = 'Employee'
+                    select.appendChild(option3);
+                    let option2 = document.createElement('option');
+                    option2.value = 'MANAGER';
+                    option2.textContent = 'Manager';
+                    select.appendChild(option2);
+                    let option = document.createElement('option');
+                    option.value = 'OWNER';
+                    option.textContent = 'Owner';
+                    select.appendChild(option);
+                    select.addEventListener('change', () => {
+                        let roleSelect = document.getElementById('role');
+                        let roleValue = roleSelect.value;
+                    });
 
-                let addRoleButton = document.createElement('button');
-                addRoleButton.type = 'button'
-                addRoleButton.classList.add('btn',  'btn-primary', 'btn-sm');
-                addRoleButton.textContent = 'Add Role';
-                addRoleButton.onclick = () => addRole(user.id, select);
+                    let addRoleButton = document.createElement('button');
+                    addRoleButton.type = 'button'
+                    addRoleButton.classList.add('btn', 'btn-primary', 'btn-sm');
+                    addRoleButton.textContent = 'Add Role';
+                    addRoleButton.onclick = () => addRole(user.id, select);
 
-                let removeRoleButton = document.createElement('button');
-                removeRoleButton.type = 'button'
-                removeRoleButton.classList.add('btn',  'btn-danger', 'btn-sm');
-                removeRoleButton.textContent = 'Remove Role';
-                removeRoleButton.onclick = () => removeRole(user.id, select);
+                    let removeRoleButton = document.createElement('button');
+                    removeRoleButton.type = 'button'
+                    removeRoleButton.classList.add('btn', 'btn-danger', 'btn-sm');
+                    removeRoleButton.textContent = 'Remove Role';
+                    removeRoleButton.onclick = () => removeRole(user.id, select);
 
-                let ban = document.createElement('td');
-                let banButton = document.createElement('button');
-                banButton.type = 'button';
-                banButton.classList.add('btn', 'btn-danger', 'btn-sm');
-                banButton.textContent = 'Ban/Unban';
-                banButton.onclick = () => banUser(user.id);
-                ban.appendChild(banButton);
+                    let ban = document.createElement('td');
+                    let banButton = document.createElement('button');
+                    banButton.type = 'button';
+                    banButton.classList.add('btn', 'btn-danger', 'btn-sm');
+                    banButton.textContent = 'Ban/Unban';
+                    banButton.onclick = () => banUser(user.id);
+                    ban.appendChild(banButton);
 
-                changeRole.appendChild(select)
-                changeRole.appendChild(addRoleButton)
-                changeRole.appendChild(removeRoleButton);
-                tr.appendChild(picture);
-                tr.appendChild(username);
-                tr.appendChild(email);
-                tr.appendChild(higherRole);
-                tr.appendChild(age);
-                tr.appendChild(registered);
-                tr.appendChild(status);
-                tr.appendChild(changeRole);
-                tr.appendChild(ban);
-                tbody.appendChild(tr);
-
-            }
-        ))
+                    changeRole.appendChild(select)
+                    changeRole.appendChild(addRoleButton)
+                    changeRole.appendChild(removeRoleButton);
+                    tr.appendChild(picture);
+                    tr.appendChild(username);
+                    tr.appendChild(email);
+                    tr.appendChild(higherRole);
+                    tr.appendChild(age);
+                    tr.appendChild(registered);
+                    tr.appendChild(status);
+                    tr.appendChild(changeRole);
+                    tr.appendChild(ban);
+                    tbody.appendChild(tr);
+                    return {
+                        username: user.username,
+                        email: user.email,
+                        role: user.role,
+                        age: user.age,
+                        registeredOn: user.registeredOn,
+                        element: `${tr.id}`
+                    };
+                }
+            )
+        })
 }
 
 async function addRole(userId, selectElement) {

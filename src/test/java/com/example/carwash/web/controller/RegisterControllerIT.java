@@ -1,7 +1,6 @@
 package com.example.carwash.web.controller;
 
-import com.example.carwash.model.dtos.UserRegisterDTO;
-import com.example.carwash.model.entity.User;
+import com.example.carwash.model.dtos.RegisterDTO;
 import com.example.carwash.repository.UserRepository;
 import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.ServerSetup;
@@ -44,14 +43,14 @@ public class RegisterControllerIT {
 
     private GreenMail greenMail;
 
-    private UserRegisterDTO user;
+    private RegisterDTO registerDTO;
 
     @BeforeEach
     void setUp() {
         greenMail = new GreenMail(new ServerSetup(port, host, "smtp"));
         greenMail.start();
         greenMail.setUser(username, password);
-        user = createUser();
+        registerDTO = createUser();
     }
 
     @Test
@@ -59,7 +58,10 @@ public class RegisterControllerIT {
 
         mockMvc.perform(
                         post("/users/register")
-                                .flashAttr("userRegisterDTO", user)
+                                .param("username", registerDTO.getUsername())
+                                .param("email", registerDTO.getEmail())
+                                .param("password", registerDTO.getPassword())
+                                .param("confirmPassword", registerDTO.getConfirmPassword())
                                 .with(csrf())
                 )
                 .andExpect(status().isFound())
@@ -73,12 +75,12 @@ public class RegisterControllerIT {
     }
 
 
-    private UserRegisterDTO createUser() {
-        UserRegisterDTO userRegisterDTO = new UserRegisterDTO();
-        userRegisterDTO.setUsername("testUser");
-        userRegisterDTO.setEmail("test@test.com");
-        userRegisterDTO.setPassword("Borovaneca");
-        userRegisterDTO.setConfirmPassword("Borovaneca");
-        return userRegisterDTO;
+    private RegisterDTO createUser() {
+        RegisterDTO registerDTO = new RegisterDTO();
+        registerDTO.setUsername("testUser");
+        registerDTO.setEmail("test@test.com");
+        registerDTO.setPassword("Borovaneca1");
+        registerDTO.setConfirmPassword("Borovaneca1");
+        return registerDTO;
     }
 }

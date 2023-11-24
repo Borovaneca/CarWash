@@ -1,5 +1,6 @@
 package com.example.carwash.service;
 
+import com.example.carwash.mapper.CustomMapper;
 import com.example.carwash.model.dtos.SocialMediaAddDTO;
 import com.example.carwash.model.entity.SocialMedia;
 import com.example.carwash.model.entity.User;
@@ -26,13 +27,16 @@ class SocialMediaServiceImplTest {
     @InjectMocks
     private SocialMediaServiceImpl socialMediaService;
 
+    @Mock
+    private CustomMapper customMapper;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
     }
     @Test
     void addSocialMediaToUser_ValidInput_ShouldReturnSavedSocialMedia() {
-        User user = new User(); // Create a User object
+        User user = new User(); // Create a RegisterDTO object
         SocialMediaAddDTO socialMediaAddDTO = new SocialMediaAddDTO();
         socialMediaAddDTO.setLink("https://example.com");
         socialMediaAddDTO.setType("Facebook");
@@ -61,7 +65,7 @@ class SocialMediaServiceImplTest {
 
     @Test
     void getByNameAndUser_ExistingSocialMedia_ShouldReturnSocialMedia() {
-        User user = new User(); // Create a User object
+        User user = new User(); // Create a RegisterDTO object
         String socialMediaName = "Facebook";
 
         SocialMedia expectedSocialMedia = new SocialMedia();
@@ -79,7 +83,7 @@ class SocialMediaServiceImplTest {
 
     @Test
     void getByNameAndUser_NonExistingSocialMedia_ShouldReturnNull() {
-        User user = new User(); // Create a User object
+        User user = new User(); // Create a RegisterDTO object
         String socialMediaName = "NonExistingSocialMedia";
 
         when(socialMediaRepository.findByTypeAndUser(eq(socialMediaName), any()))

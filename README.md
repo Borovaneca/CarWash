@@ -44,7 +44,7 @@
         <li><a href="#employee">Employee</a></li>
       </ul>
       <ul>
-        <li><a href="#user">Employee</a></li>
+        <li><a href="#registerDTO">Employee</a></li>
       </ul>
     </li>
     <li><a href="#rest-tests">REST Tests</a></li>
@@ -121,7 +121,7 @@ _The project incorporates a bit of Aspect-Oriented Programming (AOP) to modulari
 
 * **Events Handling**
 
-1. **`User Registration Activation Email`**: An event triggers the sending of an activation email upon user registration.
+1. **`User Registration Activation Email`**: An event triggers the sending of an activation email upon registerDTO registration.
 2. **`Password Reset Email`**: Another event allows users to reset their passwords if they forget them.
 
 ---
@@ -136,7 +136,7 @@ The project leverages various mapping libraries to facilitate the conversion and
 
 * **`JWT Authentication`**
 
-Upon successful authentication, a JWT is generated and stored as an HTTP-only secure cookie in the user's browser. This token is used to authenticate and authorize subsequent requests to protected endpoints within the application.
+Upon successful authentication, a JWT is generated and stored as an HTTP-only secure cookie in the registerDTO's browser. This token is used to authenticate and authorize subsequent requests to protected endpoints within the application.
 - [x] *Expiration*: The token expires after 24 hours.
 ---
 
@@ -154,7 +154,7 @@ Custom exceptions are used to handle specific errors or exceptional cases in the
 
 * **Interceptor for Banned Users**
 
-An interceptor is implemented to handle access control for banned users within the application. When a user attempts to access restricted resources or endpoints, this interceptor checks whether the user has been banned. If the user is identified as banned, access to the requested resource is denied.
+An interceptor is implemented to handle access control for banned users within the application. When a registerDTO attempts to access restricted resources or endpoints, this interceptor checks whether the registerDTO has been banned. If the registerDTO is identified as banned, access to the requested resource is denied.
 
 ---
 

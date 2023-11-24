@@ -27,4 +27,8 @@ public interface AppointmentService {
     List<AppointmentAwaitingApprovalView> findAllAppointmentsWaitingApproval();
 
     List<MyAppointmentView> getAppointmentsOfUser(String username);
+
+    void refreshAppointments();
+
+    List<Appointment> findByMadeForBeforeNow();
 }

@@ -1,6 +1,6 @@
 package com.example.carwash.web.controller;
 
-import com.example.carwash.model.dtos.UserRegisterDTO;
+import com.example.carwash.model.dtos.RegisterDTO;
 import com.example.carwash.model.entity.User;
 import com.example.carwash.service.interfaces.RegisterService;
 import com.example.carwash.service.jwt.JwtService;
@@ -35,9 +35,9 @@ public class RegisterController {
         this.jwtService = jwtService;
     }
 
-    @ModelAttribute("userRegisterDTO")
-    public UserRegisterDTO userRegisterDTO() {
-        return new UserRegisterDTO();
+    @ModelAttribute("registerDTO")
+    public RegisterDTO userRegisterDTO() {
+        return new RegisterDTO();
     }
 
 
@@ -48,7 +48,7 @@ public class RegisterController {
 
     @PostMapping("users/register")
     public String postRegister(
-            @Valid UserRegisterDTO userRegisterDTO, BindingResult bindingResult,
+            @Valid RegisterDTO registerDTO, BindingResult bindingResult,
             RedirectAttributes redirectAttributes,
             HttpServletRequest request,
             HttpServletResponse response
@@ -57,11 +57,11 @@ public class RegisterController {
 
         if (bindingResult.hasErrors()) {
 
-            redirectAttributes.addFlashAttribute("userRegisterDTO", userRegisterDTO);
-            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userRegisterDTO", bindingResult);
+            redirectAttributes.addFlashAttribute("registerDTO", registerDTO);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.registerDTO", bindingResult);
             return "redirect:/users/register";
         }
-        User user = registerService.registerUser(userRegisterDTO, successfulAuth -> {
+        User user = registerService.registerUser(registerDTO, successfulAuth -> {
             SecurityContextHolderStrategy strategy = SecurityContextHolder.getContextHolderStrategy();
 
             SecurityContext context = strategy.createEmptyContext();

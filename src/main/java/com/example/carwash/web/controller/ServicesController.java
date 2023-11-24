@@ -22,6 +22,11 @@ public class ServicesController {
         this.serviceService = serviceService;
     }
 
+    @ModelAttribute("serviceAddDTO")
+    public ServiceAddDTO serviceAddDTO() {
+        return new ServiceAddDTO();
+    }
+
 
     @GetMapping("/services/view")
     public String get() {
@@ -29,14 +34,8 @@ public class ServicesController {
     }
 
     @GetMapping("/owner/services/add")
-    public String add(@ModelAttribute ServiceAddDTO serviceAddDTO, Model model) {
-        model.addAttribute("serviceAddDTO", serviceAddDTO);
+    public String add() {
         return "owner/add-service";
-    }
-
-    @GetMapping("/owner/services/remove")
-    public String remove() {
-        return "owner/remove-service";
     }
 
     @PostMapping("/owner/services/add")

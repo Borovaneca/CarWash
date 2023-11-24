@@ -51,7 +51,8 @@ public class ResetServiceImpl implements ResetService {
         resetPassword.setUser(user);
         resetPassword.setUsername(user.getUsername());
         resetPasswordRepository.save(resetPassword);
-        applicationEventPublisher.publishEvent(new ForgotPasswordEvent(user, user.getEmail(), resetPassword.getToken(), user.getUsername()));
+        applicationEventPublisher
+                .publishEvent(new ForgotPasswordEvent(user, user.getEmail(), resetPassword.getToken(), user.getUsername()));
     }
 
     @Override

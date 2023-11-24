@@ -53,9 +53,6 @@ public class ForgotPasswordControllerIT {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Mock
-    private Model model;
-
     @Value("${spring.mail.host}")
     private String host;
 
@@ -69,12 +66,6 @@ public class ForgotPasswordControllerIT {
     private String password;
 
     private GreenMail greenMail;
-
-    @Mock
-    private BindingResult bindingResult;
-
-    @Autowired
-    private ForgotPasswordController forgotPasswordController;
 
     private User user;
     @BeforeEach

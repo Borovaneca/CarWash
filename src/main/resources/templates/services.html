@@ -4,15 +4,23 @@
 <head>
     <th:block th:replace="~{fragments/head.html}"></th:block>
 </head>
-<body onload="getServices()">
+<body>
 <th:block th:replace="~{fragments/navbar.html}"></th:block>
 
     <div id="services-container" class="container">
         
     </div>
 
+<template remove-service>
+    <div button-container class="remove-button"></div>
+</template>
 
     <th:block th:replace="~{fragments/footer.html}"></th:block>
 
+<script th:inline="javascript">
+    /* Retrieve the user's role and store it in a JavaScript variable */
+    var userRole = /*[[${#authentication.principal.authorities}]]*/ ['ROLE_GUEST']; // Default if no role is available
+    getServices(userRole);
+</script>
     </body>
 </html>

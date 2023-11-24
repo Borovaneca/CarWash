@@ -15,8 +15,12 @@ spring:
     key: ${REMEMBER_KEY:carwash}
 
 admin:
-  username: ${ADMIN_USERNAME:admin}
+  username: ${ADMIN_USERNAME:Admin}
   password: ${ADMIN_PASSWORD:Adminov1}
+cloudinary:
+  name: ${CLOUDINARY_NAME:dy2y8i2de}
+  api-key: ${CLOUDINARY_API_KEY:111187215981859}
+  api-secret: ${CLOUDINARY_API_SECRET:H3gM21c_0mYpOPklNO3pR11s8HE}
 
 #logging:
 #  level:

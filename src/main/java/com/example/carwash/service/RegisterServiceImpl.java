@@ -1,17 +1,13 @@
 package com.example.carwash.service;
 
 import com.example.carwash.mapper.CustomMapper;
-import com.example.carwash.model.dtos.UserRegisterDTO;
+import com.example.carwash.model.dtos.RegisterDTO;
 import com.example.carwash.model.entity.ConfirmationToken;
-import com.example.carwash.model.entity.User;
 import com.example.carwash.model.enums.RoleName;
 import com.example.carwash.events.events.UserRegisteredEvent;
-import com.example.carwash.repository.UserRepository;
-import com.example.carwash.service.interfaces.ConfirmationTokenService;
-import com.example.carwash.service.interfaces.ProfileImageService;
-import com.example.carwash.service.interfaces.RegisterService;
-import com.example.carwash.service.interfaces.RoleService;
+import com.example.carwash.service.interfaces.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -26,7 +22,7 @@ import java.util.function.Consumer;
 @Service
 public class RegisterServiceImpl implements RegisterService {
 
-    private final UserRepository userRepository;
+    private final UserService userService;
     private final PasswordEncoder passwordEncoder;
     private final UserDetailsService userDetailsService;
     private final CustomMapper customMapper;
@@ -36,12 +32,12 @@ public class RegisterServiceImpl implements RegisterService {
     private final ConfirmationTokenService confirmationTokenService;
 
     @Autowired
-    public RegisterServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder,
+    public RegisterServiceImpl(@Qualifier("userServiceProxy") UserService userService, PasswordEncoder passwordEncoder,
                                UserDetailsService userDetailsService,
                                CustomMapper customMapper, ProfileImageService profileImageService, RoleService roleService,
                                ApplicationEventPublisher applicationEventPublisher,
                                ConfirmationTokenService confirmationTokenService) {
-        this.userRepository = userRepository;
+        this.userService = userService;
         this.passwordEncoder = passwordEncoder;
         this.userDetailsService = userDetailsService;
         this.customMapper = customMapper;
@@ -53,9 +49,9 @@ public class RegisterServiceImpl implements RegisterService {
 
 
     @Override
-    public User registerUser(UserRegisterDTO userRegisterDTO, Consumer<Authentication> successfulLogin) {
-        User user = mapToUser(userRegisterDTO);
-        userRepository.save(user);
+    public com.example.carwash.model.entity.User registerUser(RegisterDTO registerDTORegisterDTO, Consumer<Authentication> successfulLogin) {
+        com.example.carwash.model.entity.User user = mapToUser(registerDTORegisterDTO);
+        userService.save(user);
 
         String token = UUID.randomUUID().toString();
         ConfirmationToken confirmationToken = new ConfirmationToken(
@@ -65,7 +61,7 @@ public class RegisterServiceImpl implements RegisterService {
 
         confirmationTokenService.saveConfirmationToken(confirmationToken);
 
-        var userDetails = userDetailsService.loadUserByUsername(userRegisterDTO.getUsername());
+        var userDetails = userDetailsService.loadUserByUsername(registerDTORegisterDTO.getUsername());
 
         Authentication authentication = new UsernamePasswordAuthenticationToken(
                 userDetails,
@@ -75,13 +71,13 @@ public class RegisterServiceImpl implements RegisterService {
 
         successfulLogin.accept(authentication);
         applicationEventPublisher.publishEvent(new UserRegisteredEvent(
-                "UserService", userRegisterDTO.getEmail(), userRegisterDTO.getUsername(), token));
+                "UserService", registerDTORegisterDTO.getEmail(), registerDTORegisterDTO.getUsername(), token));
         return user;
     }
 
-    private User mapToUser(UserRegisterDTO dto) {
-//        User user = modelMapper.map(dto, User.class);
-        User user = customMapper.userRegistrationDTOToUser(dto);
+    private com.example.carwash.model.entity.User mapToUser(RegisterDTO dto) {
+//        RegisterDTO user = modelMapper.map(dto, RegisterDTO.class);
+        com.example.carwash.model.entity.User user = customMapper.userRegistrationDTOToUser(dto);
         user.setPassword(passwordEncoder.encode(dto.getPassword()));
         user.getRoles().add(roleService.findByName(RoleName.USER));
         if (dto.getImage() == null || Objects.equals(dto.getImage().getOriginalFilename(), "")) {

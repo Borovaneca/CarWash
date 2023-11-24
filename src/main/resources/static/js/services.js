@@ -1,6 +1,7 @@
-function getServices() {
+async function getServices(auth) {
     let root = document.getElementById('services-container');
-    fetch('http://localhost:8080/api/services/')
+    const removeContainer = document.querySelector('[remove-service]');
+    await fetch('http://localhost:8080/api/services/')
         .then(response => response.json())
         .then(services => services.forEach(
             service => {
@@ -36,6 +37,21 @@ function getServices() {
                 cardBody.appendChild(cardDescription)
                 cardBody.appendChild(cardPrice)
 
+                auth.forEach(a => {
+                    if (a.authority === 'ROLE_OWNER') {
+                        let button = document.createElement('button');
+                        button.textContent = 'Delete';
+                        button.classList.add('btn', 'btn-danger');
+                        button.type = 'button';
+                        button.onclick = () => deleteService(service.id);
+                        button.title = 'Delete service with id: ' + service.id + ' and name: ' + service.name + '';
+
+                        const fragment = removeContainer.content.cloneNode(true).children[0]
+                        fragment.appendChild(button)
+                        cardBody.appendChild(fragment)
+                    }
+                })
+
                 card.appendChild(videoContainer)
                 card.appendChild(cardBody)
 
@@ -43,4 +59,23 @@ function getServices() {
                 root.appendChild(card);
             }
         ))
+}
+
+async function deleteService(id) {
+    const csrfToken = document.querySelector("meta[name='_csrf']").getAttribute("content");
+    const csrfHeader = document.querySelector("meta[name='_csrf_header']").getAttribute("content");
+
+    const headers = {
+        [csrfHeader]: csrfToken
+    };
+
+
+    await fetch(`http://localhost:8080/owner/services/delete/${id}`, {
+        method: 'POST',
+        headers: headers
+    })
+
+    location.reload();
+    alert('Role removed successfully!');
+    return false;
 }

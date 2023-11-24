@@ -1,7 +1,6 @@
 package com.example.carwash.tasks;
 
 import com.example.carwash.model.entity.Appointment;
-import com.example.carwash.repository.AppointmentRepository;
 import com.example.carwash.service.interfaces.AppointmentService;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
@@ -14,11 +13,11 @@ import java.util.concurrent.TimeUnit;
 
 @Component
 @Slf4j
-public class RemovingRejectedAppointments {
+public class RemovingRejectedOrExpiredAppointments {
 
     private final AppointmentService appointmentService;
 
-    public RemovingRejectedAppointments(@Qualifier("appointmentServiceProxy") AppointmentService appointmentService) {
+    public RemovingRejectedOrExpiredAppointments(@Qualifier("appointmentServiceProxy") AppointmentService appointmentService) {
         this.appointmentService = appointmentService;
     }
 
@@ -26,11 +25,17 @@ public class RemovingRejectedAppointments {
     @Scheduled(timeUnit = TimeUnit.HOURS, fixedRate = 12)
     @Transactional
     public void performTask() {
-        log.info("Starting removing rejected appointments.");
+        log.info("Starting removing rejected and expired appointments.");
         List<Appointment> rejected = appointmentService.findAllByStatus(-1);
+        List<Appointment> expired = appointmentService.findByMadeForBeforeNow();
         rejected.forEach(appointment -> appointment.getUser().getAppointments().remove(appointment));
+        expired.forEach(appointment -> appointment.getUser().getAppointments().remove(appointment));
         log.info("Found {} rejected appointments.", rejected.size());
+        log.info("Found {} expired appointments.", expired.size());
         appointmentService.deleteAll(rejected);
-        log.info("Finished removing rejected appointments.");
+        appointmentService.deleteAll(expired);
+        appointmentService.refreshAppointments();
+        log.info("Finished removing rejected and expired appointments.");
+
     }
 }

@@ -8,11 +8,9 @@ import com.example.carwash.model.entity.SocialMedia;
 import com.example.carwash.model.entity.User;
 import com.example.carwash.model.entity.Vehicle;
 import com.example.carwash.model.enums.RoleName;
-import com.example.carwash.repository.RoleRepository;
 import com.example.carwash.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -24,7 +22,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class UserServiceImplTest {
+class RegisterDTOServiceImplTest {
 
     @Mock
     private UserRepository userRepository;

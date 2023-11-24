@@ -1,9 +1,7 @@
 package com.example.carwash.mapper;
 
-import com.example.carwash.model.dtos.AppointmentAddDTO;
-import com.example.carwash.model.dtos.AppointmentServiceDTO;
-import com.example.carwash.model.dtos.ServiceAddDTO;
-import com.example.carwash.model.dtos.UserRegisterDTO;
+import com.example.carwash.model.dtos.*;
+import com.example.carwash.model.dtos.RegisterDTO;
 import com.example.carwash.model.entity.*;
 import com.example.carwash.model.view.*;
 import org.mapstruct.Condition;
@@ -33,7 +31,7 @@ public interface CustomMapper {
             @Mapping(target = "appointments", expression = "java(user.getAppointments().size())"),
             @Mapping(source = "bio", target = "bio")
     })
-    ProfileView userToProfileView(User user);
+    ProfileView userToProfileView(com.example.carwash.model.entity.User user);
 
     @Mappings({
             @Mapping(source = "id", target = "id"),
@@ -66,7 +64,7 @@ public interface CustomMapper {
             @Mapping(source = "registeredOn", target = "registeredOn", dateFormat = "dd.MM.yyyy"),
             @Mapping(source = "banned", target = "isBanned")
     })
-    AllUsersView userToAllUsersView(User user);
+    AllUsersView userToAllUsersView(com.example.carwash.model.entity.User user);
 
     @Mappings({
             @Mapping(source = "type", target = "type"),
@@ -74,12 +72,21 @@ public interface CustomMapper {
     })
     SocialMediaView socialToSocialMediaView(SocialMedia social);
 
+
+    @Mappings({
+            @Mapping(target = "id", expression = "java(null)"),
+            @Mapping(target = "type", expression = "java(socialMediaAddDTO.getType())"),
+            @Mapping(target = "link", expression = "java(socialMediaAddDTO.getLink())"),
+            @Mapping(target = "user", expression = "java(user)")
+    })
+    SocialMedia socialMediaAddDTOToSocialMedia(SocialMediaAddDTO socialMediaAddDTO, com.example.carwash.model.entity.User user);
+
     @Mappings({
             @Mapping(source = "username", target = "username"),
             @Mapping(source = "image.locatedOn", target = "image"),
             @Mapping(source = "age", target = "age"),
     })
-    StaffView userToStaffView(User user);
+    StaffView userToStaffView(com.example.carwash.model.entity.User user);
 
     @Mappings({
             @Mapping(source = "username", target = "username"),
@@ -98,7 +105,7 @@ public interface CustomMapper {
             @Mapping(target = "image", expression = "java(null)"),
             @Mapping(target = "bio", expression = "java(null)")
     })
-    User userRegistrationDTOToUser(UserRegisterDTO userRegisterDTO);
+    com.example.carwash.model.entity.User userRegistrationDTOToUser(RegisterDTO registerDTO);
 
     @Mappings({
             @Mapping(target = "madeFor", expression = "java(appointmentAddDTO.getMadeFor())"),

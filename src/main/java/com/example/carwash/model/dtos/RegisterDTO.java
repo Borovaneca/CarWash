@@ -3,10 +3,8 @@ package com.example.carwash.model.dtos;
 import com.example.carwash.validation.passwordMatcher.PasswordMatcher;
 import com.example.carwash.validation.uniqueEmail.UniqueEmail;
 import com.example.carwash.validation.uniqueUsername.UniqueUsername;
-import com.example.carwash.validation.validImage.ValidImage;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,7 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
         password = "password",
         confirmPassword = "confirmPassword"
 )
-public class UserRegisterDTO {
+public class RegisterDTO {
 
 
     private MultipartFile image;

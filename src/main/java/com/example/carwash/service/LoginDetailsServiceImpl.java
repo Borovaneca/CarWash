@@ -32,7 +32,7 @@ public class LoginDetailsServiceImpl implements UserDetailsService {
         Optional<User> user = userRepository.findByUsername(username);
         UserDetails userDetails = user
                 .map(LoginDetailsServiceImpl::map)
-                .orElseThrow(() -> new UsernameNotFoundException("User " + username + " not found"));
+                .orElseThrow(() -> new UsernameNotFoundException("RegisterDTO " + username + " not found"));
         Cookie cookie = new Cookie("jwt", jwtService.generateToken(user.get()));
         cookie.setMaxAge(60 * 60 * 24);
         cookie.setPath("/");

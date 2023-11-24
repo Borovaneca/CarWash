@@ -8,6 +8,7 @@ import com.example.carwash.model.entity.User;
 import com.example.carwash.model.view.AllUsersView;
 import com.example.carwash.model.view.ProfileView;
 import com.example.carwash.model.view.StaffView;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.List;
 import java.util.Optional;
@@ -50,4 +51,8 @@ public interface UserService {
     List<AllUsersView> getAllUsers();
 
     AllUsersView banOrUnbanUser(Long id);
+
+    boolean isAuthorized(UserDetails userDetails, String username);
+
+    boolean isAuthorized(UserDetails userDetails, Long userId);
 }

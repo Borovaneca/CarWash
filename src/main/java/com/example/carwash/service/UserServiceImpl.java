@@ -15,7 +15,9 @@ import com.example.carwash.repository.ServiceRepository;
 import com.example.carwash.repository.UserRepository;
 import com.example.carwash.service.interfaces.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,8 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static com.example.carwash.constants.ExceptionMessages.ROLE_NOT_FOUND_EXCEPTION_MESSAGE;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -44,7 +48,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     public UserServiceImpl(UserRepository userRepository, ProfileImageService profileImageService,
                            SocialMediaServiceImpl socialMediaService, CustomMapper customMapper, PasswordEncoder passwordEncoder,
-                           VehicleServiceImpl vehicleService,
+                           @Qualifier("vehicleServiceProxy") VehicleService vehicleService,
                            RoleService roleService, ServiceRepository serviceRepository) {
         this.userRepository = userRepository;
         this.profileImageService = profileImageService;
@@ -245,7 +249,7 @@ public class UserServiceImpl implements UserService {
     public ProfileView getProfileView(String username) {
         return userRepository.findByUsername(username)
                 .map(this::toProfileView)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+                .orElseThrow(() -> new UsernameNotFoundException("RegisterDTO not found"));
     }
 
     @Override
@@ -269,6 +273,22 @@ public class UserServiceImpl implements UserService {
             allUsersView.setRole(getMajorRole(user.getRoles()));
             return allUsersView;
         }).orElse(null);
+    }
+
+    @Override
+    public boolean isAuthorized(UserDetails userDetails, String username) {
+        return !userDetails.getAuthorities().
+                stream().
+                filter(a -> a.getAuthority().equals("ROLE_OWNER")).
+                collect(Collectors.toSet()).isEmpty() || username.equals(userDetails.getUsername());
+    }
+
+    @Override
+    public boolean isAuthorized(UserDetails userDetails, Long userId) {
+        return !userDetails.getAuthorities().
+                stream().
+                filter(a -> a.getAuthority().equals("ROLE_OWNER")).
+                collect(Collectors.toSet()).isEmpty() || userRepository.findById(userId).map(user -> user.getUsername().equals(userDetails.getUsername())).orElse(false);
     }
 
     private ProfileView toProfileView(User user) {

@@ -48,11 +48,11 @@ public class SecurityConfiguration {
                 authorizeRequests -> authorizeRequests
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                         .requestMatchers("/","/confirm-email/token/**", "/users/forgot-password", "/users/logout", "/users/register", "/users/login", "/users/register", "/about", "/users/login-error").permitAll()
-                        .requestMatchers("/api/**", "/contact").permitAll()
+                        .requestMatchers("/api/about/","/api/index/","/api/services/", "/contact").permitAll()
                         .requestMatchers("/users/reset-password/**").permitAll()
-                        .requestMatchers("/employee/**").hasRole(RoleName.EMPLOYEE.name())
-                        .requestMatchers("/manager/**").hasRole(RoleName.MANAGER.name())
-                        .requestMatchers("/owner/**").hasRole(RoleName.OWNER.name())
+                        .requestMatchers("/employee/**", "/api/appointments/today").hasRole(RoleName.EMPLOYEE.name())
+                        .requestMatchers("/manager/**", "/api/awaiting-approval/").hasRole(RoleName.MANAGER.name())
+                        .requestMatchers("/owner/**", "/api/owner/users/**").hasRole(RoleName.OWNER.name())
                         .anyRequest().authenticated()
 
         )

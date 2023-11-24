@@ -28,9 +28,7 @@ public class AllUsersRestController {
 
     @PostMapping("/ban/{id}")
     public ResponseEntity<?> banUnbanUser(@PathVariable Long id) {
-        ResponseEntity<AllUsersView> body = ResponseEntity.status(200).body(viewService.banOrUnbanUser(id));
-        String string = body.getBody().toString();
-        return body;
+        return ResponseEntity.status(200).body(viewService.banOrUnbanUser(id));
     }
 
 }

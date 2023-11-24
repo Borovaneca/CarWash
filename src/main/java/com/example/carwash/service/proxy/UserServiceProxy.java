@@ -12,6 +12,7 @@ import com.example.carwash.service.UserServiceImpl;
 import com.example.carwash.service.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -185,5 +186,15 @@ public class UserServiceProxy implements UserService {
         });
         thread.start();
         return allUsersView;
+    }
+
+    @Override
+    public boolean isAuthorized(UserDetails userDetails, String username) {
+        return userService.isAuthorized(userDetails, username);
+    }
+
+    @Override
+    public boolean isAuthorized(UserDetails userDetails, Long userId) {
+        return userService.isAuthorized(userDetails, userId);
     }
 }
