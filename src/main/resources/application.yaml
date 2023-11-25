@@ -15,6 +15,14 @@ spring:
     hibernate:
       ddl-auto: update
 
+  thymeleaf:
+    cache: false
+    mode: HTML
+    encoding: UTF-8
+  messages:
+    encoding: UTF-8
+    basename: messages
+
   mvc:
     hiddenmethod:
       filter:
