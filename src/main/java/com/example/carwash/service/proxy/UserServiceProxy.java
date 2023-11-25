@@ -36,6 +36,15 @@ public class UserServiceProxy implements UserService {
     @Override
     public void update(ProfileEditDTO profileEditDTO) {
         userService.update(profileEditDTO);
+
+        staffViews = null;
+        allUsers = null;
+
+        Thread thread = new Thread(() -> {
+            staffViews = userService.getAllStaffViews();
+            allUsers = userService.getAllUsers();
+        });
+        thread.start();
     }
 
     @Override
@@ -51,11 +60,29 @@ public class UserServiceProxy implements UserService {
     @Override
     public void updateImage(ProfileUpdateImageDTO profileUpdateImageDTO) {
         userService.updateImage(profileUpdateImageDTO);
+
+        staffViews = null;
+        allUsers = null;
+
+        Thread thread = new Thread(() -> {
+            staffViews = userService.getAllStaffViews();
+            allUsers = userService.getAllUsers();
+        });
+        thread.start();
     }
 
     @Override
     public void addSocialMedia(String username, SocialMediaAddDTO socialMediaAddDTO) {
         userService.addSocialMedia(username, socialMediaAddDTO);
+
+        staffViews = null;
+        allUsers = null;
+
+        Thread thread = new Thread(() -> {
+            staffViews = userService.getAllStaffViews();
+            allUsers = userService.getAllUsers();
+        });
+        thread.start();
     }
 
     @Override
@@ -66,16 +93,45 @@ public class UserServiceProxy implements UserService {
     @Override
     public void deleteSocialMedia(String username, String socialName) {
         userService.deleteSocialMedia(username, socialName);
+
+        staffViews = null;
+        allUsers = null;
+
+        Thread thread = new Thread(() -> {
+            staffViews = userService.getAllStaffViews();
+            allUsers = userService.getAllUsers();
+        });
+        thread.start();
     }
 
     @Override
     public void addVehicleToUser(String username, VehicleAddDTO vehicleAddDTO) {
         userService.addVehicleToUser(username, vehicleAddDTO);
+
+        staffViews = null;
+        allUsers = null;
+
+        Thread thread = new Thread(() -> {
+            staffViews = userService.getAllStaffViews();
+            allUsers = userService.getAllUsers();
+        });
+        thread.start();
     }
 
     @Override
     public boolean removeVehicleFromUser(String username, Long id) {
-        return userService.removeVehicleFromUser(username, id);
+        boolean removed = userService.removeVehicleFromUser(username, id);
+
+        staffViews = null;
+        allUsers = null;
+
+        Thread thread = new Thread(() -> {
+            staffViews = userService.getAllStaffViews();
+            allUsers = userService.getAllUsers();
+        });
+        thread.start();
+
+        return removed;
     }
 
     @Override

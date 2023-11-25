@@ -3,21 +3,42 @@ async function getAllUsers() {
     let elementId = 1;
     let usersArr = [];
     const searchInput = document.getElementById('search-bar');
+    let usersNum = document.getElementById('count-users');
+    let counter = 0;
     searchInput.addEventListener('input', (e) => {
         const value = e.target.value;
-        usersArr.forEach(user => {
-            console.log(user);
+        let filteredUsers = usersArr;
+        counter = 0;
+        const checkBox = document.getElementById('bannedUserTrue');
+        if (checkBox.checked) {
+            filteredUsers = filteredUsers.filter(user => user.banned === 'Yes').slice();
+            usersArr.forEach(user => document.getElementById(`${user.element}`).classList.toggle("hide", true));
+        }
+        filteredUsers.forEach(user => {
+            console.log(user.banned);
             const isMatch = user.username.toLowerCase().includes(value.toLowerCase()) ||
                 user.email.toLowerCase().includes(value.toLowerCase()) ||
                 user.role.toLowerCase().includes(value.toLowerCase()) ||
                 user.registeredOn.toLowerCase().includes(value.toLowerCase());
+            if (value.toLowerCase() === 'banned') {
+                document.getElementById(`${user.element}`).classList.toggle("hide", user.banned !== 'Yes');
+                if (user.banned === 'Yes') {
+                    counter++;
+                }
+            } else if (isMatch) {
+                counter++;
                 document.getElementById(`${user.element}`).classList.toggle("hide", !isMatch);
+            } else {
+                document.getElementById(`${user.element}`).classList.toggle("hide", true);
+            }
         })
+        usersNum.textContent = counter.toString();
     });
     let tbody = document.getElementById('tbody');
     fetch('http://localhost:8080/api/owner/users/all')
         .then(response => response.json())
         .then(users => {
+            usersNum.textContent = users.length.toString()
             usersArr = users.map(user => {
 
                     let tr = document.createElement('tr');
@@ -105,7 +126,8 @@ async function getAllUsers() {
                         role: user.role,
                         age: user.age,
                         registeredOn: user.registeredOn,
-                        element: `${tr.id}`
+                        element: `${tr.id}`,
+                        banned: user.isBanned
                     };
                 }
             )

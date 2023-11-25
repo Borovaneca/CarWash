@@ -2,27 +2,15 @@ package com.example.carwash.config;
 
 import com.example.carwash.filter.JwtAuthenticationFilter;
 import com.example.carwash.model.enums.RoleName;
-import com.example.carwash.repository.UserRepository;
-import com.example.carwash.service.LoginDetailsServiceImpl;
-import jakarta.servlet.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.context.DelegatingSecurityContextRepository;
-import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
-import org.springframework.security.web.context.RequestAttributeSecurityContextRepository;
-import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 @Configuration
@@ -30,14 +18,16 @@ public class SecurityConfiguration {
 
     private final String rememberKey;
 
-    @Autowired
-    private AuthenticationProvider authenticationProvider;
+
+    private final AuthenticationProvider authenticationProvider;
+
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Autowired
-    private  JwtAuthenticationFilter jwtAuthenticationFilter;
-
-    public SecurityConfiguration(@Value("${spring.remember.key}") String rememberKey) {
+    public SecurityConfiguration(@Value("${spring.remember.key}") String rememberKey, AuthenticationProvider authenticationProvider, JwtAuthenticationFilter jwtAuthenticationFilter) {
         this.rememberKey = rememberKey;
+        this.authenticationProvider = authenticationProvider;
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
     }
 
     @Bean

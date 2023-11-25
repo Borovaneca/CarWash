@@ -10,8 +10,9 @@
 <th:block th:replace="~{fragments/navbar.html}"></th:block>
 
 <div class="container">
-    <div class="bg-white border-left mt-4">
-    <i class="fa-solid fa-magnifying-glass"></i><input type="text" id="search-bar"/>
+    <div class="bg-white rounded mt-2">
+        <p><i>Search by username, email and role:</i><input type="text" id="search-bar"/>Banned users: <input type="checkbox" id="bannedUserTrue"/> <i class="fa-solid fa-magnifying-glass"></i> ->
+        Founded: <small id="count-users" ></small></p>
     </div>
     <div class="row">
         <div class="col-md-12">
