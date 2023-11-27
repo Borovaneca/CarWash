@@ -133,7 +133,7 @@ _The project incorporates a bit of Aspect-Oriented Programming (AOP) to modulari
 
 ---
 
-* **`JWT Authentication`**
+* **JWT Authentication**
 
 Upon successful authentication, a JWT is generated and stored as an HTTP-only secure cookie in the browser. This token is used to authenticate.
 - [x] *Expiration*: The token expires after 24 hours.
@@ -147,13 +147,13 @@ Caching mechanisms are utilized within the application to improve performance by
 ```
 ---
 
-* **`Proxy Pattern for Improved Performance and Data Storage`**
+* **Proxy Pattern for Improved Performance and Data Storage**
 
 The integration of the Proxy Pattern has significantly enhanced my project performance and provided a more efficient mechanism for data storage, replacing the previous caching system.
 
 ---
 
-* **`Multithreading`**
+* **Multithreading**
 
 In my project, Multithreading is instrumental in executing parallel operations efficiently, especially during cache updates within the Proxy Pattern. This utilization of Multithreading enhances the system's responsiveness and performance when refreshing cached information.
 
