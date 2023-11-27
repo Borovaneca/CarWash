@@ -179,7 +179,7 @@ Custom exception handling is implemented within the application to manage and re
 
 * **Integration of External Services**
 
-The project integrates with services like Cloudinary for managing and serving images or media assets.
+The project integrates with services like Cloudinary for managing and serving images.
 
 ---
 
