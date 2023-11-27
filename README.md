@@ -119,6 +119,14 @@ _The project incorporates a bit of Aspect-Oriented Programming (AOP) to modulari
 
 ---
 
+* **Internalization/i18n**
+
+1. **`Bulgarian`**
+2. **`English`**
+3. **`Italian`**
+
+---
+
 * **Events Handling**
 
 1. **`User Registration Activation Email`**: An event triggers the sending of an activation email upon registerDTO registration.
