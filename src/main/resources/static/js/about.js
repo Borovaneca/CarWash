@@ -20,12 +20,12 @@ async function fetchAbout() {
             fullName.classList.add('mb-0');
             fullName.textContent = member.fullName;
             infoContainer.appendChild(fullName);
-            let position = document.createElement('h6');
+            let position = document.getElementById('position');
             position.textContent = member.position;
             position.classList.add('mb-0');
             infoContainer.appendChild(position)
-            let age = document.createElement('small');
-            age.textContent = `Age: ${member.age}`;
+            let age = document.getElementById('age');
+            age.textContent = `${age.textContent}: ${member.age}`;
             age.classList.add('small', 'text-uppercase', 'text-muted');
             infoContainer.appendChild(age);
             employeeContainer.appendChild(infoContainer);

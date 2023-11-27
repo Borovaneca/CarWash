@@ -4,7 +4,7 @@ import com.example.carwash.mapper.CustomMapper;
 import com.example.carwash.model.dtos.RegisterDTO;
 import com.example.carwash.model.entity.ConfirmationToken;
 import com.example.carwash.model.enums.RoleName;
-import com.example.carwash.events.events.UserRegisteredEvent;
+import com.example.carwash.events.UserRegisteredEvent;
 import com.example.carwash.service.interfaces.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

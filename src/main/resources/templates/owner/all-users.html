@@ -11,8 +11,10 @@
 
 <div class="container">
     <div class="bg-white rounded mt-2">
-        <p><i>Search by username, email and role:</i><input type="text" id="search-bar"/>Banned users: <input type="checkbox" id="bannedUserTrue"/> <i class="fa-solid fa-magnifying-glass"></i> ->
-        Founded: <small id="count-users" ></small></p>
+        <div>
+            <p><i th:text="#{searchByUsernameEmailAndRole} + ': '"></i><i class="fa-solid fa-magnifying-glass"></i><input type="text" id="search-bar"/><i th:text="#{bannedUsers} + ': '"></i> <input type="checkbox" id="bannedUserTrue"/>  ->
+        <i th:text="#{found} + ': '"></i> <small id="count-users" ></small></p>
+        </div>
     </div>
     <div class="row">
         <div class="col-md-12">
@@ -20,15 +22,15 @@
                 <table id="datatable" class="table table-responsive-sm table-responsive-lg table-striped bg-white">
                     <thead>
                     <tr class="text-center">
-                        <th>Picture</th>
-                        <th>Username</th>
-                        <th>Email</th>
-                        <th>Higher Role</th>
-                        <th>Age</th>
-                        <th>Registered</th>
-                        <th>Banned</th>
-                        <th>Add Role</th>
-                        <th>Ban</th>
+                        <th th:text="#{picture}"></th>
+                        <th th:text="#{username}"></th>
+                        <th th:text="#{email}">Email</th>
+                        <th th:text="#{role}"></th>
+                        <th th:text="#{age}"></th>
+                        <th th:text="#{registered}"></th>
+                        <th th:text="#{banned}"></th>
+                        <th th:text="#{addRemoveRole}"></th>
+                        <th th:text="#{banUnban}"></th>
                     </tr>
                     </thead>
                     <tbody id="tbody">

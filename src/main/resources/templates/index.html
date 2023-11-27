@@ -13,15 +13,13 @@
     </div>
 </div>
 
-<h1 th:text="#{hello}" class="bg-white"></h1>
     <div class="mainContainer-index">
         <blockquote id="index-response" class="index-quote">
-            <h3>Welcome to CarWash!</h3>
-            Get your car sparkling clean with our premium car washing services. Our state-of-the-art facility uses the latest tools and technologies to make sure your car gets a perfect clean, inside and out.
-                We offer a range of car washing packages to suit your needs:
+            <h3 th:text="#{welcome}"></h3>
+            <p th:text="#{welcomeServices}"></p>
             <br>
             <br>
-            <th:block sec:authorize="!isAuthenticated()">To see our services please <a href="/users/login">Login</a> or <a href="/users/register">Register</a>!</th:block>
+            <th:block sec:authorize="!isAuthenticated()" th:utext="#{anonymousIndex}"></th:block>
             <th:block sec:authorize="isAuthenticated()">
                 <script>
                     fetchIndex()

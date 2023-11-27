@@ -9,13 +9,13 @@
 <th:block th:replace="~{fragments/navbar.html}"></th:block>
 
 <div class="registration-form">
-    <p class="text-center alert-success alert" th:if="${addedSuccessfully}">The appointment was send properly, now wait for approvement.</p>
+    <p class="text-center alert-success alert" th:if="${addedSuccessfully}" th:text="#{submittedAppointment}"></p>
     <form class="text-center" th:action="@{/appointments/make-appointment}" th:method="post" th:object="${appointmentAddDTO}">
         <div class="form-icon">
             <i class="fa-solid fa-calendar-check"></i>
         </div>
         <div class="form-group">
-            <label for="service">Choose the service you want:</label>
+            <label for="service" th:text="#{chooseService} + ':'"></label>
             <label>
                 <select th:field="*{service}" class="form-control selectpicker" is required>
                     <option id="service" th:each="service : ${services}" th:text="${service.getName()} + ' - $' + ${service.getPrice()} + '0'" th:value="${service.getName()}"></option>
@@ -23,13 +23,13 @@
             </label>
         </div>
         <div class="form-group">
-            <label for="madeFor">Select date and time for the appointment.</label>
+            <label for="madeFor" th:text="#{makeAppointmentInfo}"></label>
             <input id="madeFor" th:field="*{madeFor}" type="datetime-local" class="form-control item"
                 th:classappend="${#fields.hasErrors('madeFor')} ? 'is-invalid'" is required>
             <p class="text-light invalid-feedback rounded bg-danger" th:each="msg : ${#fields.errors('madeFor')}" th:text="${msg.toUpperCase()}"></p>
         </div>
         <div class="form-group">
-            <label for="vehicle">Choose one of your free vehicles:</label>
+            <label for="vehicle" th:text="#{chooseAvailableVehicle}"></label>
             <select th:field="*{vehicleId}" class="form-control selectpicker" th:classappend="${#fields.hasErrors('vehicleId')} ? 'is-invalid'" is required>
                 <option id="vehicle" th:each="vehicle : ${vehicles}" th:text="${vehicle.getBrand()} + ' - ' + ${vehicle.getModel()} + '-' + ${vehicle.getColor()}" th:value="${vehicle.getId()}"></option>
             </select>
@@ -37,7 +37,7 @@
         </div>
         <div>
             <div class="form-group">
-                <button type="submit" class="btn btn-success">Submit</button>
+                <button type="submit" class="btn btn-success" th:text="#{submit}"></button>
             </div>
         </div>
     </form>

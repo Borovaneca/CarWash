@@ -90,21 +90,42 @@ async function getAllUsers() {
                     let addRoleButton = document.createElement('button');
                     addRoleButton.type = 'button'
                     addRoleButton.classList.add('btn', 'btn-primary', 'btn-sm');
-                    addRoleButton.textContent = 'Add Role';
+                    if (localStorage.getItem('lang') === null) {
+                        addRoleButton.textContent = 'Add Role';
+                    } else if (localStorage.getItem('lang') === 'en') {
+                        addRoleButton.textContent = 'Add Role';
+                    } else if (localStorage.getItem('lang') === 'bg') {
+                        addRoleButton.textContent = 'Добави Роля';
+                    } else if (localStorage.getItem('lang') === 'it') {
+                        addRoleButton.textContent = 'Aggiungi Ruolo';
+                    }
                     addRoleButton.onclick = () => addRole(user.id, select);
 
                     let removeRoleButton = document.createElement('button');
                     removeRoleButton.type = 'button'
                     removeRoleButton.classList.add('btn', 'btn-danger', 'btn-sm');
-                    removeRoleButton.textContent = 'Remove Role';
+                    if (localStorage.getItem('lang') === null) {
+                        removeRoleButton.textContent = 'Remove Role';
+                    } else if (localStorage.getItem('lang') === 'en') {
+                        removeRoleButton.textContent = 'Remove Role';
+                    } else if (localStorage.getItem('lang') === 'bg') {
+                        removeRoleButton.textContent = 'Премахни Роля';
+                    } else if (localStorage.getItem('lang') === 'it') {
+                        removeRoleButton.textContent = 'Rimuovi Ruolo';
+                    }
                     removeRoleButton.onclick = () => removeRole(user.id, select);
 
                     let ban = document.createElement('td');
                     let banButton = document.createElement('button');
                     banButton.type = 'button';
-                    banButton.classList.add('btn', 'btn-danger', 'btn-sm');
-                    banButton.textContent = 'Ban/Unban';
-                    banButton.onclick = () => banUser(user.id);
+                    if (user.isBanned) {
+                        banButton.classList.add('btn', 'btn-danger', 'btn-sm');
+                        banButton.textContent = 'Ban';
+                    } else {
+                        banButton.classList.add('btn', 'btn-success', 'btn-sm');
+                        banButton.textContent = 'Unban';
+                    }
+                    banButton.onclick = () => banOrUnbanUser(user.id);
                     ban.appendChild(banButton);
 
                     changeRole.appendChild(select)
@@ -175,7 +196,7 @@ async function removeRole(id, select) {
     return false;
 }
 
-async function banUser(id) {
+async function banOrUnbanUser(id) {
 
     const csrfToken = document.querySelector("meta[name='_csrf']").getAttribute("content");
     const csrfHeader = document.querySelector("meta[name='_csrf_header']").getAttribute("content");

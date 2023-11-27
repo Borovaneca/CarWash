@@ -14,13 +14,13 @@
                 <div class="col-12 col-md-9 col-lg-7 col-xl-6">
                     <div class="card" style="border-radius: 15px;">
                         <div class="card-body p-5">
-                            <h2 class="text-uppercase text-center mb-5">Add New Service</h2>
+                            <h2 class="text-uppercase text-center mb-5" th:text="#{addNewService}"></h2>
 
                             <form th:action="@{/owner/services/add}" th:method="POST" th:object="${serviceAddDTO}">
 
-                                <p class="alert-danger text-center text-info rounded">All fields required!</p>
+                                <p class="alert-danger text-center text-info rounded" th:text="#{allFieldsRequired}"></p>
                                 <div class="form-outline mb-4">
-                                    <label class="form-label" for="serviceName">Service Name:</label>
+                                    <label class="form-label" for="serviceName" th:text="#{serviceName} + ':'"></label>
                                     <input type="text" id="serviceName" class="form-control form-control-lg"
                                            th:field="*{name}"
                                            th:classappend="${#fields.hasErrors('name')}? 'is-invalid' : ''"
@@ -32,7 +32,7 @@
                                 </div>
 
                                 <div class="form-outline mb-4">
-                                    <label class="form-label" for="serviceDescription">Service Description:</label>
+                                    <label class="form-label" for="serviceDescription" th:text="#{serviceDescription} + ':'"></label>
                                     <textarea type="text" id="serviceDescription" class="form-control form-control-lg"
                                               th:field="*{description}"
                                               th:classappend="${#fields.hasErrors('description')}? 'is-invalid' : ''"
@@ -44,7 +44,7 @@
                                 </div>
 
                                 <div class="form-outline mb-4">
-                                    <label class="form-label" for="serviceVideoUrl">Service YT-URL</label>
+                                    <label class="form-label" for="serviceVideoUrl" th:text="#{serviceYTLink} + ':'"></label>
                                     <input type="url" id="serviceVideoUrl" class="form-control form-control-lg"
                                            th:field="*{urlVideo}"
                                            th:classappend="${#fields.hasErrors('urlVideo')}? 'is-invalid' : ''"
@@ -56,7 +56,7 @@
                                 </div>
 
                                 <div class="form-outline mb-4">
-                                    <label class="form-label" for="servicePrice">Service Price:</label>
+                                    <label class="form-label" for="servicePrice" th:text="#{servicePrice} + ':'"></label>
                                     <input type="number" id="servicePrice" class="form-control form-control-lg"
                                            th:field="*{price}"
                                            th:classappend="${#fields.hasErrors('price')}? 'is-invalid' : ''"

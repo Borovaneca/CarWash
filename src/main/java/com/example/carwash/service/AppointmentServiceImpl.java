@@ -1,5 +1,6 @@
 package com.example.carwash.service;
 
+import com.example.carwash.events.ApprovedOrRejectedAppointmentEvent;
 import com.example.carwash.mapper.CustomMapper;
 import com.example.carwash.model.dtos.AppointmentAddDTO;
 import com.example.carwash.model.entity.Appointment;
@@ -14,9 +15,13 @@ import com.example.carwash.service.interfaces.UserService;
 import jakarta.persistence.Transient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,13 +32,15 @@ public class AppointmentServiceImpl implements AppointmentService {
     private final AppointmentRepository appointmentRepository;
     private final ServiceService serviceService;
     private final CustomMapper customMapper;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     @Autowired
-    public AppointmentServiceImpl(@Qualifier("userServiceProxy") UserService userService, AppointmentRepository appointmentRepository, @Qualifier("serviceServiceProxy") ServiceService serviceService, CustomMapper customMapper) {
+    public AppointmentServiceImpl(@Qualifier("userServiceProxy") UserService userService, AppointmentRepository appointmentRepository, @Qualifier("serviceServiceProxy") ServiceService serviceService, CustomMapper customMapper, ApplicationEventPublisher applicationEventPublisher) {
         this.userService = userService;
         this.appointmentRepository = appointmentRepository;
         this.serviceService = serviceService;
         this.customMapper = customMapper;
+        this.applicationEventPublisher = applicationEventPublisher;
     }
 
 
@@ -57,6 +64,13 @@ public class AppointmentServiceImpl implements AppointmentService {
         appointmentRepository.findById(id).ifPresent(appointment -> {
             appointment.setStatus(1);
             appointmentRepository.save(appointment);
+            applicationEventPublisher.publishEvent(new ApprovedOrRejectedAppointmentEvent(
+                    appointment,
+                    appointment.getUser().getUsername(),
+                    appointment.getUser().getEmail(),
+                    appointment.getMadeFor().toLocalDate(),
+                    appointment.getMadeFor().toLocalTime(),
+                    "Approved"));
         });
     }
 
@@ -65,6 +79,13 @@ public class AppointmentServiceImpl implements AppointmentService {
         appointmentRepository.findById(id).ifPresent(appointment -> {
             appointment.setStatus(-1);
             appointmentRepository.save(appointment);
+            applicationEventPublisher.publishEvent(new ApprovedOrRejectedAppointmentEvent(
+                    appointment,
+                    appointment.getUser().getUsername(),
+                    appointment.getUser().getEmail(),
+                    appointment.getMadeFor().toLocalDate(),
+                    appointment.getMadeFor().toLocalTime(),
+                    "Rejected"));
         });
     }
 

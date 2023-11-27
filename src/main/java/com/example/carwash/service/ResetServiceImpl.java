@@ -2,7 +2,7 @@ package com.example.carwash.service;
 
 import com.example.carwash.model.entity.ResetPassword;
 import com.example.carwash.model.entity.User;
-import com.example.carwash.events.events.ForgotPasswordEvent;
+import com.example.carwash.events.ForgotPasswordEvent;
 import com.example.carwash.repository.ResetPasswordRepository;
 import com.example.carwash.service.interfaces.EmailService;
 import com.example.carwash.service.interfaces.ResetService;

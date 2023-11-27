@@ -12,49 +12,56 @@
                            th:href="@{/users/view/{name}(name = ${#authentication.principal.username})}"></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/about">About</a>
+                        <a class="nav-link" th:text="#{about}" href="/about">About</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" sec:authorize="!isAuthenticated()" href="/users/login">Login</a>
+                        <a class="nav-link" sec:authorize="!isAuthenticated()" th:text="#{login}" href="/users/login">Login</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" sec:authorize="!isAuthenticated()" href="/users/register">Register</a>
+                        <a class="nav-link" sec:authorize="!isAuthenticated()" th:text="#{register}" href="/users/register">Register</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" sec:authorize="isAuthenticated()" href="/services/view">Services</a>
+                        <a class="nav-link" sec:authorize="isAuthenticated()" th:text="#{services}" href="/services/view">Services</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" sec:authorize="isAuthenticated()" href="/my-vehicles">My Vehicles</a>
+                        <a class="nav-link" sec:authorize="isAuthenticated()" th:text="#{myVehicles}" href="/my-vehicles">My Vehicles</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/contact">Contact</a>
+                        <a class="nav-link" href="/contact" th:text="#{contact}">Contact</a>
                     </li>
                     <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
-                        <a class="nav-link dropdown-toggle" href="#" id="appointmentsNavbar" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" th:text="#{appointments}" href="#" id="appointmentsNavbar" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Appointments
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="/appointments/make-appointment">Make Appointment</a>
-                            <a class="dropdown-item" href="/appointments/my-appointments">My Appointments</a>
+                            <a class="dropdown-item" th:text="#{makeAppointment}" href="/appointments/make-appointment">Make Appointment</a>
+                            <a class="dropdown-item" th:text="#{myAppointments}" href="/appointments/my-appointments">My Appointments</a>
                         </div>
                     </li>
                     <li class="nav-item dropdown" sec:authorize="hasRole('EMPLOYEE')">
-                        <a class="nav-link dropdown-toggle" href="#" id="managerNavbar" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Staff Menu
+                        <a class="nav-link dropdown-toggle" href="#" id="managerNavbar" role="button" th:text="#{staff}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" sec:authorize="hasRole('OWNER')" href="/owner/services/add">Add Service</a>
-                            <a class="dropdown-item" sec:authorize="hasRole('OWNER')" href="/owner/users/all">All Users</a>
+                            <p class="dropdown-header" sec:authorize="hasRole('OWNER')" th:text="#{owner}">Owner</p>
+                            <a class="dropdown-item" sec:authorize="hasRole('OWNER')" href="/owner/services/add" th:text="#{addService}">Add Service</a>
+                            <a class="dropdown-item" sec:authorize="hasRole('OWNER')" href="/owner/users/all" th:text="#{allUsers}">All Users</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" sec:authorize="hasRole('MANAGER')" href="/manager/awaiting-approval">Appointments Wait...</a>
+                            <p class="dropdown-header" sec:authorize="hasRole('MANAGER')" th:text="#{manager}">Manager</p>
+                            <a class="dropdown-item" sec:authorize="hasRole('MANAGER')" href="/manager/awaiting-approval" th:text="#{appointmentsAwaiting}"></a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" sec:authorize="hasRole('EMPLOYEE')" href="/employee/appointments-today">Appointments for today</a>
+                            <p class="dropdown-header" sec:authorize="hasRole('EMPLOYEE')" th:text="#{employee}">Employee</p>
+                            <a class="dropdown-item" sec:authorize="hasRole('EMPLOYEE')" href="/employee/appointments-today" th:text="#{appointmentsForToday}">Appointments for today</a>
                         </div>
                     </li>
                     <li class="nav-item btn-outline-danger rounded" sec:authorize="isAuthenticated()">
                         <form th:action="@{/users/logout}" th:method="post">
-                            <input class="nav-link border-0 bg-transparent" type="submit" value="Logout"/>
+                            <input class="nav-link border-0 bg-transparent" type="submit" th:value="#{logout}"/>
                         </form>
+                    </li>
+                    <li class="ml-3">
+                        <img src="/images/Bandera-UK.svg" style="cursor: pointer;" width="20" height="20" onclick="changeLanguage('en')">
+                        <img src="/images/Flag-of-Bulgaria-2016081253.svg" style="cursor: pointer;" width="20" height="20" onclick="changeLanguage('bg')">
+                        <img src="/images/italian-flag.svg" style="cursor: pointer;" width="20" height="20" onclick="changeLanguage('it')">
                     </li>
                 </ul>
             </div>

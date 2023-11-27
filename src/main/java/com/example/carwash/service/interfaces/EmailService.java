@@ -1,7 +1,9 @@
 package com.example.carwash.service.interfaces;
 
 import com.example.carwash.model.dtos.ContactDTO;
-import com.example.carwash.model.entity.User;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 public interface EmailService {
 
@@ -10,4 +12,6 @@ public interface EmailService {
     void sendResetPasswordEmail(String username, String email, String token);
 
     void receiveComment(ContactDTO contactDTO);
+
+    void sendAcceptedOrRejectedAppointmentEmail(String username, String email, LocalDate date, LocalTime time, String status);
 }

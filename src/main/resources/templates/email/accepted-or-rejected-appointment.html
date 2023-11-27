@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Appointment Status</title>
+</head>
+
+<body style="font-family: Arial, sans-serif;">
+
+<div style="max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ccc; border-radius: 5px;">
+  <h2>Appointment Status Notification</h2>
+  <p th:text="'Hello, ' + ${username}"></p>
+
+  <p th:text="'Your appointment scheduled for ' + ${date} + ' has been ' + ${status} + '.'"></p>
+
+  <p>
+    <strong>Appointment Details:</strong><br>
+    Date: <i th:text="${date}"></i><br>
+    Time: <i th:text="${time}"></i><br>
+  </p>
+
+  <p>If you have any questions or concerns, feel free to contact us.</p>
+
+  <p th:text="'Thank you, ' + ${username}"><br>
+  </p>
+</div>
+
+</body>

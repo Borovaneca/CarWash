@@ -1,0 +1,11 @@
+<?xml version="1.0" standalone="yes"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://web.resource.org/cc/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" width="434" height="260">
+<path style="fill:#ebbbbb; stroke:none;" d="M0 0L0 1L432 1L432 86C434.497 80.049 433 71.4202 433 65L433 21C433 16.6192 435.151 4.00099 431.397 1.02777C426.151 -3.12692 408.598 0 402 0L319 0L0 0z"/>
+<path style="fill:#ffffff; stroke:none;" d="M432 0L433 30L433 84L433 259L0 259L0 260L434 260L434 65L434 17L432 0M0 1L0 86L432 86L432 1L0 1z"/>
+<path style="fill:#997f3d; stroke:none;" d="M0 86L0 87L433 87C422.972 82.7923 405.896 86 395 86L306 86L0 86z"/>
+<path style="fill:#319501; stroke:none;" d="M0 87L0 172L432 172L432 87L0 87z"/>
+<path style="fill:#65a117; stroke:none;" d="M432 87L432 172L433 172L433 113L432 87z"/>
+<path style="fill:#9f4b0f; stroke:none;" d="M0 172L0 173L433 173C422.973 168.792 405.896 172 395 172L306 172L0 172z"/>
+<path style="fill:#df2111; stroke:none;" d="M0 173L0 258L432 258L432 173L0 173z"/>
+<path style="fill:#7b3f07; stroke:none;" d="M432 173L432 258L0 258L0 259L433 259L433 200L432 173z"/>
+</svg>

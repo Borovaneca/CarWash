@@ -1,7 +1,6 @@
 package com.example.carwash.service;
 
 import com.example.carwash.model.dtos.ContactDTO;
-import com.example.carwash.model.entity.User;
 import com.example.carwash.service.interfaces.EmailService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -13,7 +12,8 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
-import java.util.UUID;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 import static com.example.carwash.constants.EmailSubjects.*;
 
@@ -90,6 +90,25 @@ public class EmailServiceImpl implements EmailService {
         }
     }
 
+    @Override
+    public void sendAcceptedOrRejectedAppointmentEmail(String username, String email, LocalDate date, LocalTime time, String status) {
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+
+        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage);
+
+        try {
+            mimeMessageHelper.setFrom(carWash);
+            mimeMessageHelper.setReplyTo(carWash);
+            mimeMessageHelper.setTo(email);
+            mimeMessageHelper.setSubject(ACCEPTED_OR_REJECTED_APPOINTMENT);
+            mimeMessageHelper.setText(generateAcceptedOrRejectedEmailBody(username, status, date, time), true);
+
+            javaMailSender.send(mimeMessageHelper.getMimeMessage());
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private String generateContactBodyForComment(String name, String email, String message) {
         Context context = new Context();
         context.setVariable("name", name);
@@ -111,5 +130,14 @@ public class EmailServiceImpl implements EmailService {
         context.setVariable("username", username);
         context.setVariable("token", token);
         return templateEngine.process("email/registration-email", context);
+    }
+
+    private String generateAcceptedOrRejectedEmailBody(String username, String status, LocalDate date, LocalTime time) {
+        Context context = new Context();
+        context.setVariable("username", username);
+        context.setVariable("status", status);
+        context.setVariable("date", date);
+        context.setVariable("time", time);
+        return templateEngine.process("email/accepted-or-rejected-appointment", context);
     }
 }

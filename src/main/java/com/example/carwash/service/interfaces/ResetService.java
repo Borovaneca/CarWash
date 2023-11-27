@@ -1,7 +1,6 @@
 package com.example.carwash.service.interfaces;
 
-import com.example.carwash.events.events.ForgotPasswordEvent;
-import com.example.carwash.model.entity.ResetPassword;
+import com.example.carwash.events.ForgotPasswordEvent;
 import com.example.carwash.model.entity.User;
 import org.springframework.context.event.EventListener;
 
