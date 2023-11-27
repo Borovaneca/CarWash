@@ -129,7 +129,7 @@ _The project incorporates a bit of Aspect-Oriented Programming (AOP) to modulari
 
 * **Mapping**
 
-1. **`MapStruct`** - In this project, we employ [MapStruct](https://mapstruct.org/) to simplify the mapping between different types of objects, particularly between entity models and DTOs (Data Transfer Objects). MapStruct is a convenient and efficient code generation library that automates the process of mapping by generating mapping code during the compilation phase.
+1. **`MapStruct`** - In this project, I employ [MapStruct](https://mapstruct.org/) to simplify the mapping between different types of objects, particularly between entity models and DTOs (Data Transfer Objects). MapStruct is a convenient and efficient code generation library that automates the process of mapping by generating mapping code during the compilation phase.
 
 ---
 
