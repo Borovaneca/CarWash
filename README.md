@@ -119,6 +119,14 @@ _The project incorporates a bit of Aspect-Oriented Programming (AOP) to modulari
 
 ---
 
+* **Internalization/i18n**
+
+1. **`Bulgarian`**
+2. **`English`**
+3. **`Italian`**
+
+---
+
 * **Events Handling**
 
 1. **`User Registration Activation Email`**: An event triggers the sending of an activation email upon registerDTO registration.
@@ -127,17 +135,15 @@ _The project incorporates a bit of Aspect-Oriented Programming (AOP) to modulari
 
 ---
 
-* **Mappings**
+* **Mapping**
 
-The project leverages various mapping libraries to facilitate the conversion and mapping of data between different objects or models within the application. These libraries assist in simplifying and automating the process of mapping objects, reducing manual coding effort, and enhancing code maintainability.
+1. **`MapStruct`** - In this project, I employ [MapStruct](https://mapstruct.org/) to simplify the mapping between different types of objects, particularly between entity models and DTOs (Data Transfer Objects). MapStruct is a convenient and efficient code generation library that automates the process of mapping by generating mapping code during the compilation phase.
 
-1. **`MapStruct`**
-3. **`Handmade Mappings`**
 ---
 
-* **`JWT Authentication`**
+* **JWT Authentication**
 
-Upon successful authentication, a JWT is generated and stored as an HTTP-only secure cookie in the registerDTO's browser. This token is used to authenticate and authorize subsequent requests to protected endpoints within the application.
+Upon successful authentication, a JWT is generated and stored as an HTTP-only secure cookie in the browser. This token is used to authenticate.
 - [x] *Expiration*: The token expires after 24 hours.
 ---
 ```
@@ -149,13 +155,13 @@ Caching mechanisms are utilized within the application to improve performance by
 ```
 ---
 
-* **`Proxy Pattern for Improved Performance and Data Storage`**
+* **Proxy Pattern for Improved Performance and Data Storage**
 
 The integration of the Proxy Pattern has significantly enhanced my project performance and provided a more efficient mechanism for data storage, replacing the previous caching system.
 
 ---
 
-* **`Multithreading`**
+* **Multithreading**
 
 In my project, Multithreading is instrumental in executing parallel operations efficiently, especially during cache updates within the Proxy Pattern. This utilization of Multithreading enhances the system's responsiveness and performance when refreshing cached information.
 
@@ -181,7 +187,7 @@ Custom exception handling is implemented within the application to manage and re
 
 * **Integration of External Services**
 
-The project integrates with services like Cloudinary for managing and serving images or media assets.
+The project integrates with services like Cloudinary for managing and serving images.
 
 ---
 
