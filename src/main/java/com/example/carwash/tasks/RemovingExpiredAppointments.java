@@ -13,11 +13,11 @@ import java.util.concurrent.TimeUnit;
 
 @Component
 @Slf4j
-public class RemovingRejectedOrExpiredAppointments {
+public class RemovingExpiredAppointments {
 
     private final AppointmentService appointmentService;
 
-    public RemovingRejectedOrExpiredAppointments(@Qualifier("appointmentServiceProxy") AppointmentService appointmentService) {
+    public RemovingExpiredAppointments(@Qualifier("appointmentServiceProxy") AppointmentService appointmentService) {
         this.appointmentService = appointmentService;
     }
 
@@ -26,15 +26,10 @@ public class RemovingRejectedOrExpiredAppointments {
     @Transactional
     public void performTask() {
         log.info("Starting removing rejected and expired appointments.");
-        List<Appointment> rejected = appointmentService.findAllByStatus(-1);
         List<Appointment> expired = appointmentService.findByMadeForBeforeNow();
-        rejected.forEach(appointment -> appointment.getUser().getAppointments().remove(appointment));
         expired.forEach(appointment -> appointment.getUser().getAppointments().remove(appointment));
-        log.info("Found {} rejected appointments.", rejected.size());
         log.info("Found {} expired appointments.", expired.size());
-        appointmentService.deleteAll(rejected);
         appointmentService.deleteAll(expired);
-        appointmentService.refreshAllAppointments();
         log.info("Finished removing rejected and expired appointments.");
 
     }
