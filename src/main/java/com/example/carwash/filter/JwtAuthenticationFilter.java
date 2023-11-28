@@ -38,7 +38,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
 
-        if (request.getRequestURI().equals("/users/login")) {
+        if (request.getRequestURI().equals("/users/login") || request.getRequestURI().equals("/users/register")) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -70,10 +70,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
             filterChain.doFilter(request, response);
         } catch (ExpiredJwtException | MalformedJwtException | UnsupportedJwtException | IllegalArgumentException e) {
-            Cookie expiredCookie = new Cookie("jwt", null);
-            expiredCookie.setMaxAge(0);
-            expiredCookie.setPath("/");
-            response.addCookie(expiredCookie);
+            boolean rememberme = Arrays.stream(request.getCookies()).anyMatch(cookie -> cookie.getName().equals("rememberme"));
+            if (rememberme) {
+                String newJwt = jwtService.generateTokenFromUsername(userDetails.getUsername());
+                Cookie newJwtCookie = new Cookie("jwt", newJwt);
+                newJwtCookie.setMaxAge(60 * 60 * 24);
+                newJwtCookie.setPath("/");
+                response.addCookie(newJwtCookie);
+            }
+            SecurityContextHolder.clearContext();
             filterChain.doFilter(request, response);
         }
     }

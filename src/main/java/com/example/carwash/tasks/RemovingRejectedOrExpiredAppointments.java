@@ -34,7 +34,7 @@ public class RemovingRejectedOrExpiredAppointments {
         log.info("Found {} expired appointments.", expired.size());
         appointmentService.deleteAll(rejected);
         appointmentService.deleteAll(expired);
-        appointmentService.refreshAppointments();
+        appointmentService.refreshAllAppointments();
         log.info("Finished removing rejected and expired appointments.");
 
     }

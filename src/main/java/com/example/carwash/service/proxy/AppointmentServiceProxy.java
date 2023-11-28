@@ -21,6 +21,8 @@ public class AppointmentServiceProxy implements AppointmentService {
 
     private List<AppointmentTodayView> appointmentTodayViews;
     private List<AppointmentAwaitingApprovalView> appointmentAwaitingApprovalViews;
+    private List<MyAppointmentView> myAppointments;
+    private String username;
 
     @Autowired
     public AppointmentServiceProxy(AppointmentServiceImpl appointmentService) {
@@ -34,10 +36,10 @@ public class AppointmentServiceProxy implements AppointmentService {
         Thread thread = new Thread(() -> {
             appointmentTodayViews = null;
             appointmentAwaitingApprovalViews = null;
-
+            myAppointments = null;
             findAllAppointmentsForToday();
             findAllAppointmentsWaitingApproval();
-
+            getAppointmentsOfUser(username);
         });
         thread.start();
     }
@@ -48,11 +50,12 @@ public class AppointmentServiceProxy implements AppointmentService {
 
         appointmentTodayViews = null;
         appointmentAwaitingApprovalViews = null;
-
+        myAppointments = null;
         Thread thread = new Thread(() -> {
 
             findAllAppointmentsForToday();
             findAllAppointmentsWaitingApproval();
+            getAppointmentsOfUser(username);
         });
         thread.start();
     }
@@ -63,11 +66,12 @@ public class AppointmentServiceProxy implements AppointmentService {
 
         appointmentTodayViews = null;
         appointmentAwaitingApprovalViews = null;
-
+        myAppointments = null;
         Thread thread = new Thread(() -> {
 
             findAllAppointmentsForToday();
             findAllAppointmentsWaitingApproval();
+            getAppointmentsOfUser(username);
         });
         thread.start();
     }
@@ -83,10 +87,10 @@ public class AppointmentServiceProxy implements AppointmentService {
         Thread thread = new Thread(() -> {
             appointmentTodayViews = null;
             appointmentAwaitingApprovalViews = null;
-
+            myAppointments = null;
             findAllAppointmentsForToday();
             findAllAppointmentsWaitingApproval();
-
+            getAppointmentsOfUser(username);
         });
         thread.start();
     }
@@ -109,25 +113,30 @@ public class AppointmentServiceProxy implements AppointmentService {
 
     @Override
     public List<MyAppointmentView> getAppointmentsOfUser(String username) {
-        return appointmentService.getAppointmentsOfUser(username);
-    }
-
-    @Override
-    public void refreshAppointments() {
-        appointmentTodayViews = null;
-        appointmentAwaitingApprovalViews = null;
-
-        Thread thread = new Thread(() -> {
-
-            findAllAppointmentsForToday();
-            findAllAppointmentsWaitingApproval();
-        });
-        thread.start();
+        if (myAppointments == null) {
+            myAppointments = appointmentService.getAppointmentsOfUser(username);
+        }
+        return myAppointments;
     }
 
     @Override
     public List<Appointment> findByMadeForBeforeNow() {
         return appointmentService.findByMadeForBeforeNow();
+    }
+
+    @Override
+    public void refreshAllAppointments() {
+        appointmentTodayViews = null;
+        appointmentAwaitingApprovalViews = null;
+        myAppointments = null;
+        Thread thread = new Thread(() -> {
+            findAllAppointmentsForToday();
+            findAllAppointmentsWaitingApproval();
+            if (username != null) {
+                getAppointmentsOfUser(username);
+            }
+        });
+        thread.start();
     }
 }
 

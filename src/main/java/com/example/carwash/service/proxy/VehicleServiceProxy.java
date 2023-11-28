@@ -59,4 +59,14 @@ public class VehicleServiceProxy implements VehicleService {
         }
         return vehicleViews;
     }
+
+    @Override
+    public void initVehiclesOfLoggInUser(String username) {
+        vehicleViews = null;
+
+        Thread thread = new Thread(() -> {
+            vehicleViews = vehicleServiceImpl.getAllVehiclesByUserUsername(username);
+        });
+        thread.start();
+    }
 }

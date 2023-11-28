@@ -26,8 +26,6 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.example.carwash.constants.ExceptionMessages.ROLE_NOT_FOUND_EXCEPTION_MESSAGE;
-
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -82,7 +80,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public ProfileEditDTO getUserAndMapToProfileEditDTO(String username) {
         Optional<User> user = userRepository.findByUsername(username);
-        return user.map(this::mapToProfileEditDTO).orElseThrow(() -> new UserNotFoundException("Username: " + username + " not found", username));
+        return user.map(this::mapToProfileEditDTO).orElseThrow(() -> new UserNotFoundException("User with username: " + username + " not found", username));
     }
 
     private ProfileEditDTO mapToProfileEditDTO(User user) {

@@ -64,8 +64,25 @@ async function getAllUsers() {
                     higherRole.textContent = user.role;
                     age.textContent = user.age;
                     registered.textContent = user.registeredOn;
-                    status.textContent = user.isBanned;
+                    if (user.isBanned === 'Yes' && localStorage.getItem('lang') === null) {
+                        status.textContent = 'Yes';
+                    } else if (user.isBanned === 'Yes' && localStorage.getItem('lang') === 'en') {
+                        status.textContent = 'Yes';
+                    } else if (user.isBanned === 'Yes' && localStorage.getItem('lang') === 'bg') {
+                        status.textContent = 'Да';
+                    } else if (user.isBanned === 'Yes' && localStorage.getItem('lang') === 'it') {
+                        status.textContent = 'Sì';
+                    }
 
+                    if (user.isBanned === 'No' && localStorage.getItem('lang') === null) {
+                        status.textContent = 'No';
+                    } else if (user.isBanned === 'No' && localStorage.getItem('lang') === 'en') {
+                        status.textContent = 'No';
+                    } else if (user.isBanned === 'No' && localStorage.getItem('lang') === 'bg') {
+                        status.textContent = 'Не';
+                    } else if (user.isBanned === 'No' && localStorage.getItem('lang') === 'it') {
+                        status.textContent = 'No';
+                    }
                     let changeRole = document.createElement('td');
                     changeRole.classList.add('text-center', 'wrap');
                     let select = document.createElement('select');

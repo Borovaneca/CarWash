@@ -10,14 +10,13 @@
 <div class="px-2 py-5 mx-2 bg-transparent ">
     <div class="row d-flex m-5 bg-transparent justify-content-center">
         <div class="card col-xl-7 col-lg-8 col-md-9 col-11 text-center" th:object="${profileEditDTO}">
-            <h5 class="text-center mb-4">Fields with <span class="text-danger">*</span> are required!</h5>
             <form class="form-card"
                   th:action="@{/users/edit/{username}(username=${username})}"
                   th:method="post">
                 <div class="row justify-content-between text-left">
                     <input type="hidden" th:field="*{id}"/>
                     <div class="form-group col-sm-6 flex-column d-flex"><label
-                            class="form-control-label px-3">Email<span class="text-danger"> *</span></label>
+                            class="form-control-label px-3 btn-outline-danger rounded" th:text="#{emailRequired}"></label>
                         <input type="email" id="email"
                                th:field="*{email}"
                                th:value="*{email}"
@@ -27,7 +26,7 @@
                            th:text="${msg}"></p>
                     </div>
                     <div class="form-group col-sm-6 flex-column d-flex"><label
-                            class="form-control-label px-3">Username<span class="text-danger"> *</span></label>
+                            class="form-control-label px-3 btn-outline-danger rounded" th:text="#{usernameRequired}"></label>
                         <input type="text" id="username"
                                th:value="*{username}"
                                th:field="*{username}"
@@ -38,10 +37,10 @@
                            th:text="${msg}"></p>
                     </div>
                 </div>
-                <h5 class="text-center mb-4"><span class="text-danger">ATTENTION</span> you can use your old password or set a new one!</h5>
+                <h5 class="text-center mb-4"><span class="text-danger" th:text="#{attentionPassword}"></h5>
                 <div class="row justify-content-between text-left">
                     <div class="form-group col-sm-6 flex-column d-flex"><label
-                            class="form-control-label px-3">Password<span class="text-danger"> *</span></label>
+                            class="form-control-label px-3 btn-outline-danger rounded" th:text="#{passwordRequired}"></label>
                         <input type="password" id="password"
                                th:field="*{password}"
                                 th:classappend="${#fields.hasErrors('password')} ? 'bg-danger'">
@@ -50,7 +49,7 @@
                            th:text="${msg}"></p>
                     </div>
                     <div class="form-group col-sm-6 flex-column d-flex"><label
-                            class="form-control-label px-3">Confirm Password<span class="text-danger"> *</span></label>
+                            class="form-control-label btn-outline-danger rounded" th:text="#{confirmPasswordRequired}"></label>
                         <input type="password" id="confirmPassword"
                                th:field="*{confirmPassword}"
                                 th:classappend="${#fields.hasErrors('confirmPassword')} ? 'bg-danger'">
@@ -61,48 +60,48 @@
                 </div>
                 <div class="row justify-content-between text-left">
                     <div class="form-group col-sm-6 flex-column d-flex">
-                        <label class="form-control-label px-3">First name
+                        <label class="form-control-label px-3" th:text="#{firstName}">
                         </label> <input type="text" id="fname"
                                         th:field="*{firstName}"
                                         th:value="*{firstName}"
-                                        placeholder="Enter your first name">
+                                        th:placeholder="#{firstName}">
                     </div>
                     <div class="form-group col-sm-6 flex-column d-flex">
-                        <label class="form-control-label px-3">Last name</label>
+                        <label class="form-control-label px-3" th:text="#{lastName}"></label>
                         <input type="text" id="lname"
                                th:field="*{lastName}"
                                th:value="*{lastName}"
-                               placeholder="Enter your last name">
+                               th:placeholder="#{lastName}">
                     </div>
                 </div>
                 <div class="row justify-content-between text-left">
                     <div class="form-group col-sm-6 flex-column d-flex"><label
-                            class="form-control-label px-3">Age</label>
+                            class="form-control-label px-3" th:text="#{age}"></label>
                         <input type="number" id="job"
                                th:field="*{age}"
                                th:value="*{age}"
-                               placeholder="Enter your age">
+                               th:placeholder="#{age}">
                     </div>
                     <div class="form-group col-sm-6 flex-column d-flex"><label
-                            class="form-control-label px-3">City</label>
+                            class="form-control-label px-3" th:text="#{city}"></label>
                         <input type="text" id="city"
                                th:field="*{city}"
                                th:value="*{city}"
-                               placeholder="Enter your city">
+                               th:placeholder="#{city}">
                     </div>
                 </div>
                 <div class="row justify-content-between text-left">
                     <div class="form-group col-12 flex-column d-flex">
-                        <label class="form-control-label px-3">Bio</label>
+                        <label class="form-control-label px-3" th:text="#{bio}"></label>
                         <input type="text" id="ans"
                                th:field="*{bio}"
                                th:value="*{bio}"
-                               placeholder="Enter your bio">
+                               th:placeholder="#{bio}">
                     </div>
                 </div>
                 <div class="row justify-content-end">
                     <div class="form-group col-sm-6">
-                        <button type="submit" class="btn btn-outline-dark bg-secondary">Submit</button>
+                        <button type="submit" class="btn btn-outline-dark bg-secondary" th:text="#{submit}"></button>
                     </div>
                 </div>
             </form>

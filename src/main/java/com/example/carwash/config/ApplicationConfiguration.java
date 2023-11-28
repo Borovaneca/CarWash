@@ -2,8 +2,12 @@ package com.example.carwash.config;
 
 import com.example.carwash.repository.UserRepository;
 import com.example.carwash.service.LoginDetailsServiceImpl;
+import com.example.carwash.service.interfaces.AppointmentService;
+import com.example.carwash.service.interfaces.VehicleService;
 import com.example.carwash.service.jwt.JwtService;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -27,10 +31,12 @@ import java.util.Locale;
 public class ApplicationConfiguration {
 
 
+    @Autowired
+    @Qualifier("vehicleServiceProxy") VehicleService vehicleService;
 
     @Bean
     public UserDetailsService userDetailsService(UserRepository userRepository, JwtService jwtService, HttpServletResponse response) {
-        return new LoginDetailsServiceImpl(jwtService, userRepository, response);
+        return new LoginDetailsServiceImpl(vehicleService, jwtService, userRepository, response);
     }
 
     @Bean

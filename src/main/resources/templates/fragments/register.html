@@ -1,7 +1,7 @@
 <div class="card bg-light mt-2" style="width: 18rem; margin: 0 auto">
     <article class="card-body mx-auto" style="max-width: 400px;">
-        <h4 class="card-title mt-3 text-center">Create Account</h4>
-        <small>Picture is not required:</small>
+        <h4 class="card-title mt-3 text-center" th:text="#{createAccount}">Create Account</h4>
+        <small th:text="#{pictureNotRequired} + ':'"></small>
         <form th:method="post" th:action="@{/users/register}" th:object="${registerDTO}" enctype="multipart/form-data">
             <div class="form-group input-group">
                 <label for="image" class="h4 mb-2 text-white"></label>
@@ -20,9 +20,9 @@
                 </div>
                 <input id="username"
                        th:field="*{username}"
-                       class="form-control" placeholder="Username" type="text" minlength="3" maxlength="20" is required
-                       oninput="validateField(this, validateUsername, 'Username must be at least 3 characters.')"
-                       onchange="validateField(this, validateUsername, 'Username must be at least 3 characters.')"
+                       class="form-control" th:placeholder="#{username}" type="text" minlength="3" maxlength="20" is required
+                       oninput="validateField(this, validateUsername)"
+                       onchange="validateField(this, validateUsername)"
                        th:classappend="${#fields.hasErrors('username')} ? 'is-invalid bg-danger'">
                 <small class="invalid-feedback text-danger" th:each="msg : ${#fields.errors('username')}"
                        th:text="${msg}"></small>
@@ -34,9 +34,9 @@
                 </div>
                 <input id="email"
                        th:field="*{email}"
-                       class="form-control" placeholder="Email address" type="email" is required
-                       oninput="validateField(this, validateEmail, 'Please enter a valid email address.')"
-                       onchange="validateField(this, validateEmail, 'Please enter a valid email address.')"
+                       class="form-control" th:placeholder="#{email}" type="email" is required
+                       oninput="validateField(this, validateEmail)"
+                       onchange="validateField(this, validateEmail)"
                        th:classappend="${#fields.hasErrors('email')} ? 'is-invalid bg-danger'">
                 <small class="invalid-feedback text-danger" th:each="msg : ${#fields.errors('email')}"
                        th:text="${msg}"></small>
@@ -48,9 +48,9 @@
                 </div>
                 <input id="password"
                        th:field="*{password}"
-                       class="form-control" placeholder="Create password" type="password" minlength="8" maxlength="20" is required
-                       oninput="validateField(this, validatePassword, 'Password must be at least 8 characters.')"
-                       onchange="validateField(this, validatePassword, 'Password must be at least 8 characters.')"
+                       class="form-control" th:placeholder="#{password}" type="password" minlength="8" maxlength="20" is required
+                       oninput="validateField(this, validatePassword)"
+                       onchange="validateField(this, validatePassword)"
                        th:classappend="${#fields.hasErrors('password')} ? 'is-invalid bg-danger'">
                 <small class="invalid-feedback text-danger" th:each="msg : ${#fields.errors('password')}"
                        th:text="${msg}"></small>
@@ -62,17 +62,20 @@
                 </div>
                 <input id="confirmPassword"
                        th:field="*{confirmPassword}"
-                       class="form-control" placeholder="Repeat password" type="password" minlength="8" maxlength="20" is required
-                       oninput="validateField(this, function(value) { return validateConfirmPassword(value, document.getElementById('password').value); }, 'Passwords do not match.')"
-                       onchange="validateField(this, function(value) { return validateConfirmPassword(value, document.getElementById('password').value); }, 'Passwords do not match.')"
+                       class="form-control" th:placeholder="#{confirmPassword}" type="password" minlength="8" maxlength="20" is required
+                       oninput="validateField([document.getElementById('password'), document.getElementById('confirmPassword')], validateConfirmPassword)"
+                       onchange="validateField([document.getElementById('password'), document.getElementById('confirmPassword')], validateConfirmPassword)"
                        th:classappend="${#fields.hasErrors('password')} ? 'is-invalid bg-danger'">
                 <small class="invalid-feedback text-danger" th:each="msg : ${#fields.errors('password')}"
                        th:text="${msg}"></small>
-            </div> <!-- form-group// -->
+            </div>
             <div class="form-group">
-                <button type="submit" class="btn btn-secondary btn-block" onclick="return validateForm()"> Create Account  </button>
-            </div> <!-- form-group// -->
-            <p class="text-center">Have an account? <a href="/login">Log In</a> </p>
+                <button type="submit" class="btn btn-secondary btn-block" onclick="return validateForm()" th:text="#{createAccount}"></button>
+                <div class="flex-nowrap ">
+                <small class="text-center" th:text="#{haveAnAccount} + ' '" ></small>
+                <a class="btn btn-block btn-outline-success mr-0" href="/login" th:text="#{login}"></a>
+                </div>
+            </div>
         </form>
     </article>
 </div> <!-- card.// -->

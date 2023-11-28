@@ -42,4 +42,9 @@ public class VehicleServiceImpl implements VehicleService {
                 map(vehicleList -> vehicleList.stream().map(customMapper::vehicleToVehicleView).toList()).orElse(null);
     }
 
+    @Override
+    public void initVehiclesOfLoggInUser(String username) {
+
+    }
+
 }

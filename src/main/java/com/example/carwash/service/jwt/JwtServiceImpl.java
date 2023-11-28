@@ -21,7 +21,7 @@ public class JwtServiceImpl implements JwtService {
 
     @Override
     public String generateToken(User user) {
-        return "Bearer-" + generateTokenValue(new HashMap<>(), user);
+        return "Bearer-" + generateTokenValue(new HashMap<>(), user.getUsername());
     }
 
     @Override
@@ -35,11 +35,16 @@ public class JwtServiceImpl implements JwtService {
         return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
     }
 
-    private String generateTokenValue(Map<String, Object> claims, User user) {
+    @Override
+    public String generateTokenFromUsername(String username) {
+        return "Bearer-" + generateTokenValue(new HashMap<>(), username);
+    }
+
+    private String generateTokenValue(Map<String, Object> claims, String username) {
          return Jwts
                     .builder()
                     .setClaims(claims)
-                    .setSubject(user.getUsername())
+                    .setSubject(username)
                     .setIssuedAt(new Date(System.currentTimeMillis()))
                     .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
                     .signWith(getSignKey(), SignatureAlgorithm.HS256)
@@ -54,7 +59,7 @@ public class JwtServiceImpl implements JwtService {
         return getClaimFromToken(token, Claims::getExpiration);
     }
 
-    public <E> E getClaimFromToken(String token, Function<Claims, E> claimsResolver) {
+    private  <E> E getClaimFromToken(String token, Function<Claims, E> claimsResolver) {
         Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }

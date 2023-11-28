@@ -3,9 +3,13 @@ package com.example.carwash.service;
 import com.example.carwash.model.entity.Role;
 import com.example.carwash.model.entity.User;
 import com.example.carwash.repository.UserRepository;
+import com.example.carwash.service.interfaces.AppointmentService;
+import com.example.carwash.service.interfaces.VehicleService;
 import com.example.carwash.service.jwt.JwtService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,8 +24,9 @@ public class LoginDetailsServiceImpl implements UserDetailsService {
     private final JwtService jwtService;
     private final UserRepository userRepository;
     private final HttpServletResponse response;
-
-    public LoginDetailsServiceImpl(JwtService jwtService, UserRepository userRepository, HttpServletResponse response) {
+    private final VehicleService vehicleService;
+    public LoginDetailsServiceImpl(VehicleService vehicleService, JwtService jwtService, UserRepository userRepository, HttpServletResponse response) {
+        this.vehicleService = vehicleService;
         this.jwtService = jwtService;
         this.userRepository = userRepository;
         this.response = response;
@@ -32,8 +37,9 @@ public class LoginDetailsServiceImpl implements UserDetailsService {
         Optional<User> user = userRepository.findByUsername(username);
         UserDetails userDetails = user
                 .map(LoginDetailsServiceImpl::map)
-                .orElseThrow(() -> new UsernameNotFoundException("RegisterDTO " + username + " not found"));
+                .orElseThrow(() -> new UsernameNotFoundException("User with username: " + username + " not found"));
         Cookie cookie = new Cookie("jwt", jwtService.generateToken(user.get()));
+        vehicleService.initVehiclesOfLoggInUser(username);
         cookie.setMaxAge(60 * 60 * 24);
         cookie.setPath("/");
         cookie.setHttpOnly(true);

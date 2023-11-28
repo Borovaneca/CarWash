@@ -11,30 +11,26 @@
 
 <div id="container-update-photo">
     <form method="post" th:action="@{/users/change/image}" enctype="multipart/form-data">
-        <h5 class="d-inline-block">Choose a picture!</h5>
-        <button id="close" type="button" class="float-right btn-dark mr-2" onclick="hide('container-update-photo')">
-            Close
-        </button>
+        <h5 class="d-inline-block" th:text="#{chooseAPicture}"></h5>
+        <button id="close" type="button" class="float-right btn-dark mr-2" onclick="hide('container-update-photo')" th:text="#{close}"></button>
         <input type="hidden" th:value="${user.getUsername()}" name="username"/>
         <input id="input-file" type="file" name="image" accept="image/png, image/jpeg" is required/>
         <p></p>
-        <button type="submit" id="upload-btn" class="btn btn-outline-danger" onclick="submit('container-update-photo')">
-            Submit
-        </button>
+        <button type="submit" id="upload-btn" class="btn btn-outline-danger" onclick="submit('container-update-photo')" th:text="#{submit}"></button>
     </form>
 </div>
 
 <div id="container-add-social">
     <form method="post" th:action="@{/users/social/add/{username}(username = ${user.getUsername()})}">
-        <h5 class="d-inline-block">Insert the name and the url!</h5>
-        <button type="button" class="float-right btn-dark mr-2" onclick="hide('container-add-social')">Close</button>
+        <h5 class="d-inline-block" th:text="#{insertNameAndUrl}"></h5>
+        <button type="button" class="float-right btn-dark mr-2" onclick="hide('container-add-social')" th:text="#{close}"></button>
         <input type="hidden" th:value="${user.getUsername()}" name="username" required/>
         <label for="type"></label>
-        <input pattern="[a-zA-Z]+" placeholder="Ex. Facebook, Instagram, Twitter" name="type" id="type" required/>
+        <input pattern="[a-zA-Z]+" placeholder="Facebook, Instagram, Twitter" name="type" id="type" required/>
         <label for="Link"></label>
         <input type="url" placeholder="URL" name="link" id="Link" required/>
         <p></p>
-        <button type="submit" class="btn btn-outline-danger" onclick="submit('container-add-social')">Submit</button>
+        <button type="submit" class="btn btn-outline-danger" onclick="submit('container-add-social')" th:text="#{submit}"></button>
     </form>
 </div>
 
@@ -44,27 +40,24 @@
         <div class="row">
             <div class="col-md-4">
                 <div class="profile-img">
-                    <img th:src="*{locatedOn}" alt="Profile"/>
-                    <!--                    <a href="#" class="file btn btn-lg btn-primary" onclick="popup()" >-->
-                    <!--                        Change Photo-->
-                    <!--                    </a>-->
+                    <img onclick="showForm('container-update-photo')" th:src="*{locatedOn}" alt="Profile"/>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="profile-head">
-                    <div th:if="${invalidImage}" class="alert alert-danger">Invalid/Missing image!</div>
-                    <div th:if="${invalidSocial}" class="alert alert-danger">Invalid Social name or URL!</div>
+                    <div th:if="${invalidImage}" class="alert alert-danger" th:text="#{invalidMissingimage}"></div>
+                    <div th:if="${invalidSocial}" class="alert alert-danger" th:text="#{invalidSocialNameOrURL}"></div>
                     <h5 th:text="*{getFullName()} == 'null null' ? '[N/A]' : *{getFullName()}"></h5>
-                    <h6 th:if="*{city != null}" th:text="'From: ' + *{city}"></h6>
-                    <p class="proile-rating">APPOINTMENTS : <span th:text="*{appointments}"></span></p>
+                    <h6 th:if="*{city != null}" th:text="#{from} + ': ' + *{city}"></h6>
+                    <p class="proile-rating" th:text="#{appointments} + ' : ' + *{appointments}"></p>
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
                         <li class="nav-item">
                             <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab"
-                               aria-controls="home" aria-selected="true">About</a>
+                               aria-controls="home" aria-selected="true" th:text="#{aboutProfile}"></a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
-                               aria-controls="profile" aria-selected="false">Timeline</a>
+                               aria-controls="profile" aria-selected="false" th:text="#{timeline}"></a>
                         </li>
                     </ul>
                 </div>
@@ -72,23 +65,21 @@
             <div class="col-md-2">
                 <a th:if="${isAuthorized}"
                    th:href="@{/users/edit/{username}(username=${user.username})}"
-                   class="btn btn-outline-info profile-edit-btn">Edit Profile</a>
+                   class="btn btn-outline-info profile-edit-btn text-md-center text-sm-center flex-content"><small style="font-size: x-small" th:text="#{editProfile}"></small></a>
                 <a th:if="${isAuthorized}"
-                   onclick="showForm('container-update-photo')" class="btn btn-outline-dark profile-edit-btn btn-sm">Change
-                    Photo</a>
+                   onclick="showForm('container-update-photo')" class="btn btn-outline-dark profile-edit-btn btn-sm text-md-center text-sm-center"><small style="font-size: x-small" th:text="#{changePhoto}"></small></a>
                 <a th:if="${isAuthorized}"
-                   onclick="showForm('container-add-social')" class="btn btn-outline-success profile-edit-btn">Add
-                    Social</a>
+                   onclick="showForm('container-add-social')" class="btn btn-outline-success profile-edit-btn text-md-center text-sm-center"><small style="font-size: x-small" th:text="#{addSocial}"></small></a>
             </div>
         </div>
         <div class="row">
             <div class="col-md-4">
                 <div class="profile-work">
-                    <p>SOCIALS</p>
+                    <p th:text="#{socials}"></p>
                     <div th:each="social : *{socials}">
                         <a th:href="${social.link}" th:text="${social.type.toUpperCase()}" th:target="_blank"></a>
                         <form method="post" th:action="@{'/users/social/delete/' + ${username} + '/' + ${social.type}}" class="float-md-right">
-                            <button class="btn-dark ml-3" type="submit" th:if="${isAuthorized}">Remove</button>
+                            <button class="btn-dark ml-3" type="submit" th:if="${isAuthorized}" th:text="#{remove}"></button>
                         </form>
                     </div>
                 </div>
@@ -98,7 +89,7 @@
                     <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                         <div class="row">
                             <div class="col-md-6">
-                                <label>Username</label>
+                                <label th:text="#{username}"></label>
                             </div>
                             <div class="col-md-6">
                                 <p th:text="*{getUsername()}"></p>
@@ -106,7 +97,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-6">
-                                <label>Full Name</label>
+                                <label th:text="#{fullName}"></label>
                             </div>
                             <div class="col-md-6">
                                 <p th:text="*{fullName} == 'null null' ? '[N/A]' : *{fullName}"></p>
@@ -114,7 +105,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-6">
-                                <label>Age</label>
+                                <label th:text="#{age}"></label>
                             </div>
                             <div class="col-md-6">
                                 <p th:text="*{age} == null ? '[N/A]' : *{age}"></p>
@@ -122,7 +113,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-6">
-                                <label>Email</label>
+                                <label th:text="#{email}"></label>
                             </div>
                             <div class="col-md-6">
                                 <p th:text="*{email}"></p>
@@ -130,7 +121,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-6">
-                                <label>City</label>
+                                <label th:text="#{city}"></label>
                             </div>
                             <div class="col-md-6">
                                 <p th:text="*{city == null} ? '[N/A]' : *{city}"></p>
@@ -138,17 +129,28 @@
                         </div>
                         <div class="row">
                             <div class="col-md-6">
-                                <label>Role</label>
+                                <label th:text="#{role}"></label>
                             </div>
-                            <div class="col-md-6">
-                                <p th:text="*{role}"></p>
+                            <div class="col-md-6" th:switch="*{role}">
+                                <div th:case="'OWNER'">
+                                <p th:text="#{owner}"></p>
+                                </div>
+                                <div th:case="'MANAGER'">
+                                    <p th:text="#{manager}"></p>
+                                </div>
+                                <div th:case="'EMPLOYEE'">
+                                    <p th:text="#{employee}"></p>
+                                </div>
+                                <div th:case="'USER'">
+                                    <p th:text="#{user}"></p>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                         <div class="row">
                             <div class="col-md-6">
-                                <label>Registered On</label>
+                                <label th:text="#{registered}"></label>
                             </div>
                             <div class="col-md-6">
                                 <p th:text="*{registeredOn}"></p>
@@ -156,7 +158,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-6">
-                                <label>Registered Cars</label>
+                                <label th:text="#{vehicles}"></label>
                             </div>
                             <div class="col-md-6">
                                 <p th:text="*{vehicles}"></p>
@@ -164,15 +166,15 @@
                         </div>
                         <div class="row">
                             <div class="col-md-6">
-                                <label>Email Validated</label>
+                                <label th:text="#{emailValidated}"></label>
                             </div>
                             <div class="col-md-6">
-                                <p th:text="*{isActive()} ? 'Yes' : 'No'"></p>
+                                <p th:text="*{isActive()} ? #{yes} : #{no}"></p>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-12">
-                                <label>Bio</label><br/>
+                                <label th:text="#{bio}"></label><br/>
                                 <p th:text="*{bio}"></p>
                             </div>
                         </div>

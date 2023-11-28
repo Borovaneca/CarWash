@@ -121,13 +121,14 @@ public class AppointmentServiceImpl implements AppointmentService {
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public void refreshAppointments() {
-
-    }
 
     @Override
     public List<Appointment> findByMadeForBeforeNow() {
         return appointmentRepository.findByMadeForBefore(LocalDateTime.now());
+    }
+
+    @Override
+    public void refreshAllAppointments() {
+
     }
 }

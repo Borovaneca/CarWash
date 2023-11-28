@@ -40,7 +40,15 @@ async function getServices(auth) {
                 auth.forEach(a => {
                     if (a.authority === 'ROLE_OWNER') {
                         let button = document.createElement('button');
-                        button.textContent = 'Delete';
+                        if (localStorage.getItem('lang') === 'en') {
+                            button.textContent = 'Delete';
+                        } else if (localStorage.getItem('lang') === 'bg') {
+                            button.textContent = 'Изтрий';
+                        } else if (localStorage.getItem('lang') === 'it') {
+                            button.textContent = 'Elimina';
+                        } else {
+                            button.textContent = 'Delete';
+                        }
                         button.classList.add('btn', 'btn-danger');
                         button.type = 'button';
                         button.onclick = () => deleteService(service.id);

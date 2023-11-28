@@ -45,6 +45,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/owner/**", "/api/owner/users/**").hasRole(RoleName.OWNER.name())
                         .anyRequest().authenticated()
 
+
         )
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)

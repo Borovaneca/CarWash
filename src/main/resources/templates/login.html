@@ -24,7 +24,7 @@
                                 <p class="alert alert-danger" th:if="${wrongCredentials}" th:text="#{wrongLogin}"></p>
 
                                 <form th:action="@{/users/login}" method="post">
-                                    <p>Please login to your account</p>
+                                    <p th:text="#{pleaseLogin}"></p>
 
                                     <div class="form-outline mb-4">
                                         <input type="text" id="username" name="username" class="form-control"

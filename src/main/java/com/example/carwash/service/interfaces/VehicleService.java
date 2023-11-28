@@ -14,4 +14,6 @@ public interface VehicleService {
 
     List<VehicleView> getAllVehiclesByUserUsername(String username);
 
+    void initVehiclesOfLoggInUser(String username);
+
 }

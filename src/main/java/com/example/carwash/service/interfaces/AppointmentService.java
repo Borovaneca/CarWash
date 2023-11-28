@@ -28,7 +28,7 @@ public interface AppointmentService {
 
     List<MyAppointmentView> getAppointmentsOfUser(String username);
 
-    void refreshAppointments();
-
     List<Appointment> findByMadeForBeforeNow();
+
+    void refreshAllAppointments();
 }

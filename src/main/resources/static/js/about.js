@@ -21,8 +21,43 @@ async function fetchAbout() {
             fullName.textContent = member.fullName;
             infoContainer.appendChild(fullName);
             let position = document.getElementById('position');
-            position.textContent = member.position;
-            position.classList.add('mb-0');
+            let lang = localStorage.getItem('lang');
+            console.log(lang);
+            if (lang === null) {
+                lang = 'en';
+                if (member.position === 'OWNER') {
+                        position.textContent = 'Owner';
+                } else if (member.position === 'MANAGER') {
+                        position.textContent = 'Manager';
+                } else if (member.position === 'EMPLOYEE') {
+                        position.textContent = 'Employee';
+                }
+            } else if (lang === 'it') {
+                if (member.position === 'OWNER') {
+                        position.textContent = 'Proprietario';
+                } else if (member.position === 'MANAGER') {
+                        position.textContent = 'Manager';
+                } else if (member.position === 'EMPLOYEE') {
+                        position.textContent = 'Dipendente';
+                }
+            } else if (lang === 'bg') {
+                if (member.position === 'OWNER') {
+                        position.textContent = 'Собственик';
+                } else if (member.position === 'MANAGER') {
+                        position.textContent = 'Мениджър';
+                } else if (member.position === 'EMPLOYEE') {
+                        position.textContent = 'Служител';
+                }
+            } else {
+                if (member.position === 'OWNER') {
+                    position.textContent = 'Owner';
+                } else if (member.position === 'MANAGER') {
+                    position.textContent = 'Manager';
+                } else if (member.position === 'EMPLOYEE') {
+                    position.textContent = 'Employee';
+                }
+            }
+                position.classList.add('mb-0');
             infoContainer.appendChild(position)
             let age = document.getElementById('age');
             age.textContent = `${age.textContent}: ${member.age}`;
