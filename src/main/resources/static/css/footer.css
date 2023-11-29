@@ -4,3 +4,7 @@
     bottom: 0;
     transform: translateY(0);
 }
+
+#site-footer:hover {
+    display: none;
+}
