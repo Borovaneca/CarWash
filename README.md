@@ -146,6 +146,12 @@ _The project incorporates a bit of Aspect-Oriented Programming (AOP) to modulari
 Upon successful authentication, a JWT is generated and stored as an HTTP-only secure cookie in the browser. This token is used to authenticate.
 - [x] *Expiration*: The token expires after 24 hours.
 ---
+
+* **`Chat Room`**
+
+Real-time messaging feature built using WebSocket technology. It allows registered users to communicate in real time within the application, 
+enabling instant message delivery and updates without the need to refresh the page.
+
 ```
 DEPRECATED
 * **Cacheable Implementation**
