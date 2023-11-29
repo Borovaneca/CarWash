@@ -8,23 +8,23 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" sec:authorize="isAuthenticated()" th:text="${#authentication.principal.username}"
+                        <a class="nav-link" id="logged-user" sec:authorize="isAuthenticated()" th:text="${#authentication.principal.username}"
                            th:href="@{/users/view/{name}(name = ${#authentication.principal.username})}"></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" th:text="#{about}" href="/about">About</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" sec:authorize="!isAuthenticated()" th:text="#{login}" href="/users/login">Login</a>
+                        <a class="nav-link" sec:authorize="!isAuthenticated()" th:text="#{login}" href="/users/login"></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" sec:authorize="!isAuthenticated()" th:text="#{register}" href="/users/register">Register</a>
+                        <a class="nav-link" sec:authorize="!isAuthenticated()" th:text="#{register}" href="/users/register"></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" sec:authorize="isAuthenticated()" th:text="#{services}" href="/services/view">Services</a>
+                        <a class="nav-link" sec:authorize="isAuthenticated()" th:text="#{services}" href="/services/view"></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" sec:authorize="isAuthenticated()" th:text="#{myVehicles}" href="/my-vehicles">My Vehicles</a>
+                        <a class="nav-link" sec:authorize="isAuthenticated()" th:text="#{myVehicles}" href="/my-vehicles"></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/contact" th:text="#{contact}">Contact</a>
@@ -48,10 +48,14 @@
                             <div class="dropdown-divider"></div>
                             <p class="dropdown-header" sec:authorize="hasRole('MANAGER')" th:text="#{manager}">Manager</p>
                             <a class="dropdown-item" sec:authorize="hasRole('MANAGER')" href="/manager/awaiting-approval" th:text="#{appointmentsAwaiting}"></a>
+                            <a class="dropdown-item" sec:authorize="hasRole('MANAGER')" href="/manager/all-appointments" th:text="#{allAppointments}"></a>
                             <div class="dropdown-divider"></div>
                             <p class="dropdown-header" sec:authorize="hasRole('EMPLOYEE')" th:text="#{employee}">Employee</p>
                             <a class="dropdown-item" sec:authorize="hasRole('EMPLOYEE')" href="/employee/appointments-today" th:text="#{appointmentsForToday}">Appointments for today</a>
                         </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" sec:authorize="isAuthenticated()" th:text="#{chat}" href="/chat"></a>
                     </li>
                     <li class="nav-item btn-outline-danger rounded" sec:authorize="isAuthenticated()">
                         <form th:action="@{/users/logout}" th:method="post">

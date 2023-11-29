@@ -41,15 +41,14 @@ public class SecurityConfiguration {
                         .requestMatchers("/api/about/","/api/index/","/api/services/", "/contact").permitAll()
                         .requestMatchers("/users/reset-password/**").permitAll()
                         .requestMatchers("/employee/**", "/api/appointments/today").hasRole(RoleName.EMPLOYEE.name())
-                        .requestMatchers("/manager/**", "/api/awaiting-approval/").hasRole(RoleName.MANAGER.name())
+                        .requestMatchers("/manager/**", "/api/awaiting-approval/", "/api/all-appointments").hasRole(RoleName.MANAGER.name())
                         .requestMatchers("/owner/**", "/api/owner/users/**").hasRole(RoleName.OWNER.name())
                         .anyRequest().authenticated()
 
 
-        )
-                .authenticationProvider(authenticationProvider)
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .formLogin(
+        ).authenticationProvider(authenticationProvider)
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class
+        ).formLogin(
                 formLogin -> formLogin
                         .loginPage("/users/login")
                         .usernameParameter("username")

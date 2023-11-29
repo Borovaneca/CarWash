@@ -9,7 +9,7 @@
 
 <div id="email-not-validated" sec:authorize="isAuthenticated()">
     <div th:unless="${emailNotValidated}" class="alert alert-danger text-center h4" >
-    <p>Please verify your email!</p>
+    <p th:text="#{pleaseVerifyYourEmail}"></p>
     </div>
 </div>
 

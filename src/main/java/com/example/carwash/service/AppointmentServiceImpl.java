@@ -5,6 +5,7 @@ import com.example.carwash.mapper.CustomMapper;
 import com.example.carwash.model.dtos.AppointmentAddDTO;
 import com.example.carwash.model.entity.Appointment;
 import com.example.carwash.model.entity.User;
+import com.example.carwash.model.view.AllAppointmentsView;
 import com.example.carwash.model.view.AppointmentAwaitingApprovalView;
 import com.example.carwash.model.view.AppointmentTodayView;
 import com.example.carwash.model.view.MyAppointmentView;
@@ -128,7 +129,9 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public void refreshAllAppointments() {
-
+    public List<AllAppointmentsView> findAllAppointments() {
+        return appointmentRepository.findAll().stream()
+                .map(customMapper::appointmentToAllAppointmentsView)
+                .collect(Collectors.toList());
     }
 }

@@ -34,7 +34,10 @@ async function getAllUsers() {
         })
         usersNum.textContent = counter.toString();
     });
+
     let tbody = document.getElementById('tbody');
+
+
     fetch('http://localhost:8080/api/owner/users/all')
         .then(response => response.json())
         .then(users => {

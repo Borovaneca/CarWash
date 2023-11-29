@@ -72,6 +72,18 @@ public interface CustomMapper {
     })
     SocialMediaView socialToSocialMediaView(SocialMedia social);
 
+    @Mappings({
+            @Mapping(source = "id", target = "id"),
+            @Mapping(target = "createdBy", expression = "java(appointment.getUser().getUsername())"),
+            @Mapping(target = "service", expression = "java(appointment.getService().getName())"),
+            @Mapping(target = "vehicle", expression = "java(appointment.getVehicle().getFullCarInfo())"),
+            @Mapping(target = "status", expression = "java(appointment.getStatus() == 0 ? \"PENDING\" : appointment.getStatus() == 1 ? \"ACCEPTED\" : \"REJECTED\")"),
+            @Mapping(target = "price", expression = "java(appointment.getService().getPrice().toString())"),
+            @Mapping(target = "madeFor", expression = "java(appointment.getMadeFor().format(java.time.format.DateTimeFormatter.ofPattern(\"dd.MM.yyyy/HH:mm\")))"),
+            @Mapping(target = "madeOn", expression = "java(appointment.getCreateOn().format(java.time.format.DateTimeFormatter.ofPattern(\"dd.MM.yyyy/HH:mm\")))")
+    })
+    AllAppointmentsView appointmentToAllAppointmentsView(Appointment appointment);
+
 
     @Mappings({
             @Mapping(target = "id", expression = "java(null)"),

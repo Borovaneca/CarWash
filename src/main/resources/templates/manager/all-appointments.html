@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <th:block th:replace="~{fragments/head.html}"></th:block>
+    <link rel="stylesheet" th:href="@{/css/all-appointments.css}">
+</head>
+<body onload="getAllAppointments()">
+<th:block th:replace="~{fragments/navbar.html}"></th:block>
+
+<div class="content">
+    <div class="container">
+        <h2 class="mb-5 text-center" th:text="#{allAppointments}"></h2>
+        <div class="table-responsive custom-table-responsive">
+            <table class="table custom-table">
+                <thead>
+                <tr>
+                    <th scope="col" th:text="#{id}"></th>
+                    <th scope="col" th:text="#{username}"></th>
+                    <th scope="col" th:text="#{created}"></th>
+                    <th scope="col" th:text="#{forDateTime}"></th>
+                    <th scope="col" th:text="#{service}"></th>
+                    <th scope="col" th:text="#{vehicle}"></th>
+                    <th scope="col" th:text="#{price}"></th>
+                    <th scope="col" th:text="#{status}"></th>
+                </tr>
+                </thead>
+                <tbody id="tbody-all-appointments">
+<!--                <tr scope="row">-->
+<!--                    <td>-->
+<!--                        1392-->
+<!--                    </td>-->
+<!--                    <td><a href="#">James Yates</a></td>-->
+<!--                    <td>-->
+<!--                        Web Designer-->
+<!--                        <small class="d-block">Far far away, behind the word mountains</small>-->
+<!--                    </td>-->
+<!--                    <td>+63 983 0962 971</td>-->
+<!--                    <td>NY University</td>-->
+<!--                </tr>-->
+<!--                <tr class="spacer"><td colspan="100"></td></tr>-->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<th:block th:replace="~{fragments/footer.html}"></th:block>
+<script th:src="@{/js/all-appointments.js}"></script>
+</body>
+</html>
