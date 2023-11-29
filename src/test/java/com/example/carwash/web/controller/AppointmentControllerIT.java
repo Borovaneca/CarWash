@@ -9,20 +9,28 @@ import com.example.carwash.service.interfaces.ViewService;
 import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.ServerSetup;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @ExtendWith(MockitoExtension.class)
 public class AppointmentControllerIT {
+
+    @Autowired
+    private MockMvc mockMvc;
 
     @Autowired
     private UserRepository userRepository;
@@ -47,6 +55,13 @@ public class AppointmentControllerIT {
             user = registerUser();
             userRepository.save(user);
         }
+    }
+
+    @Test
+    @WithMockUser(username = "Boro", roles = {"ADMIN", "MANAGER", "USER"})
+    void testAddingAppointment() throws Exception {
+
+        mockMvc.perform(post(""));
     }
 
 
