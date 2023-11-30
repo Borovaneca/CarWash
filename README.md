@@ -230,6 +230,10 @@ _The role of the Employee is basically a permission to see the approved appointm
 
 ![employee-view](src/main/resources/static/images/project/employee.png)
 
+### Chat
+
+![chat-view](src/main/resources/static/images/project/chat.png)
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## REST Tests
