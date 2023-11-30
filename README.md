@@ -7,7 +7,7 @@
     <img src="src/main/resources/static/images/logo.png" alt="Logo" width="120" height="120">
   </a>
     <h2>CarWash</h2>
-  Deployed: ![HERE](https://carwash-carwash1.azuremicroservices.io/)
+    <p><a href="https://carwash-carwash1.azuremicroservices.io">HERE</a></p>
   <p>
 <!--     <a href="https://github.com/othneildrew/Best-README-Template">View Demo</a> -->
     <a href="https://github.com/Borovaneca/CarWash/issues">Report Bug</a>
