@@ -65,7 +65,6 @@ public class ProfileController {
     @GetMapping("/edit/{username}")
     public String editProfile(@PathVariable String username,
                               Model model,
-                              Principal principal,
                               @AuthenticationPrincipal UserDetails userDetails) {
 
         if (username == null) {
@@ -75,9 +74,10 @@ public class ProfileController {
         checkIfAuthorized(userDetails, username);
 
         if (isValidUser(username)) {
-               var profileEditDTO = userService.getUserAndMapToProfileEditDTO(username);
+            if (model.asMap().size() == 1) {
+                ProfileEditDTO profileEditDTO = userService.getUserAndMapToProfileEditDTO(username);
                 model.addAttribute("profileEditDTO", profileEditDTO);
-
+            }
         }
         return "edit-profile";
     }
