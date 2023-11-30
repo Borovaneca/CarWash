@@ -1,7 +1,8 @@
 async function fetchAbout() {
     let employees = document.querySelector('#staff');
+    const template = document.querySelector('[employeeInfo]');
 
-    await fetch('https://carwash-carwash1.azuremicroservices.io/api/about/').then(response => response.json())
+    await fetch('http://localhost:8080/api/about/').then(response => response.json())
         .then(staff => staff.forEach(member => {
             let employeeContainer = document.createElement('div');
             employeeContainer.classList.add('col-xl-3', 'col-sm-6', 'mb-5');
@@ -20,33 +21,33 @@ async function fetchAbout() {
             fullName.classList.add('mb-0');
             fullName.textContent = member.fullName;
             infoContainer.appendChild(fullName);
-            let position = document.getElementById('position');
+            let position = document.createElement('p');
             let lang = localStorage.getItem('lang');
             console.log(lang);
             if (lang === null) {
                 lang = 'en';
                 if (member.position === 'OWNER') {
-                        position.textContent = 'Owner';
+                    position.textContent = 'Owner';
                 } else if (member.position === 'MANAGER') {
-                        position.textContent = 'Manager';
+                    position.textContent = 'Manager';
                 } else if (member.position === 'EMPLOYEE') {
-                        position.textContent = 'Employee';
+                    position.textContent = 'Employee';
                 }
             } else if (lang === 'it') {
                 if (member.position === 'OWNER') {
-                        position.textContent = 'Proprietario';
+                    position.textContent = 'Proprietario';
                 } else if (member.position === 'MANAGER') {
-                        position.textContent = 'Manager';
+                    position.textContent = 'Manager';
                 } else if (member.position === 'EMPLOYEE') {
-                        position.textContent = 'Dipendente';
+                    position.textContent = 'Dipendente';
                 }
             } else if (lang === 'bg') {
                 if (member.position === 'OWNER') {
-                        position.textContent = 'Собственик';
+                    position.textContent = 'Собственик';
                 } else if (member.position === 'MANAGER') {
-                        position.textContent = 'Мениджър';
+                    position.textContent = 'Мениджър';
                 } else if (member.position === 'EMPLOYEE') {
-                        position.textContent = 'Служител';
+                    position.textContent = 'Служител';
                 }
             } else {
                 if (member.position === 'OWNER') {
@@ -57,12 +58,13 @@ async function fetchAbout() {
                     position.textContent = 'Employee';
                 }
             }
-                position.classList.add('mb-0');
+            position.classList.add('mb-0');
             infoContainer.appendChild(position)
-            let age = document.getElementById('age');
+            let child = template.content.cloneNode(true).children[0];
+            let age = child.querySelector('[age]');
             age.textContent = `${age.textContent}: ${member.age}`;
             age.classList.add('small', 'text-uppercase', 'text-muted');
-            infoContainer.appendChild(age);
+            infoContainer.appendChild(child);
             employeeContainer.appendChild(infoContainer);
             employees.appendChild(employeeContainer);
         }))
