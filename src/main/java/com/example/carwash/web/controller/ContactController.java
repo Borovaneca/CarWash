@@ -22,7 +22,7 @@ public class ContactController {
         this.emailService = emailService;
     }
 
-    @ModelAttribute("contact")
+    @ModelAttribute("contactDTO")
     public ContactDTO contactDTO() {
         return new ContactDTO();
     }
@@ -35,7 +35,7 @@ public class ContactController {
     public String postContact(@Valid ContactDTO contactDTO, BindingResult bindingResult,
                               RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("contact", contactDTO);
+            redirectAttributes.addFlashAttribute("contactDTO", contactDTO);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.contactDTO", bindingResult);
             return "redirect:/contact";
         }

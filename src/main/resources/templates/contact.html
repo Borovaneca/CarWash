@@ -25,7 +25,7 @@
             </div>
 
             <div class="col-md-6">
-                <form class="mb-5" method="post" id="contactForm" name="contactForm" th:action="@{/contact}" th:object="${contact}">
+                <form class="mb-5" method="post" id="contactForm" name="contactForm" th:action="@{/contact}" th:object="${contactDTO}">
                     <p class="alert alert-success" th:if="${success}">
                         Thank you for your message. We will get back to you as soon as possible.
                     </p>
@@ -34,9 +34,9 @@
                         <div class="col-md-12 form-group">
                             <label for="name" class="col-form-label" th:text="#{name}"></label>
                             <input type="text" class="form-control" th:field="*{name}" id="name"
-                            th:errorclass="is-invalid">
+                                   th:errorclass="is-invalid">
                             <p class="invalid-feedback bg-danger" th:if="${#fields.hasErrors('name')}" th:each="msg : ${#fields.errors('name')}"
-                                th:text="${msg}"></p>
+                               th:text="${msg}"></p>
                         </div>
                     </div>
                     <div class="row">
@@ -45,9 +45,9 @@
                             <input type="text" class="form-control"
                                    th:field="*{email}" id="email"
                                    th:errorclass="is-invalid">
-                            <span class="invalid-feedback bg-danger" th:if="${#fields.hasErrors('email')}"
-                            th:each="msg : ${#fields.errors('email')}"
-                            th:text="${msg}"></span>
+                            <p class="invalid-feedback bg-danger text-light" th:if="${#fields.hasErrors('email')}"
+                               th:each="msg : ${#fields.errors('email')}"
+                               th:text="${msg}"></p>
                         </div>
                     </div>
 
@@ -56,8 +56,9 @@
                             <label for="message" class="col-form-label" th:text="#{message}"></label>
                             <textarea class="form-control" th:field="*{message}" id="message" cols="30" rows="7"
                                       th:errorclass="is-invalid"></textarea>
-                            <span class="invalid-feedback bg-danger" th:if="${#fields.hasErrors('message')}" th:each="msg : ${#fields.errors('message')}"
-                                  th:text="${msg}"></span>
+                            <p class="invalid-feedback bg-danger" th:if="${#fields.hasErrors('message')}"
+                               th:each="msg : ${#fields.errors('message')}"
+                               th:text="${msg}"></p>
                         </div>
                     </div>
                     <div class="row">
