@@ -129,7 +129,7 @@ _The project incorporates a bit of Aspect-Oriented Programming (AOP) to modulari
 
 * **Events Handling**
 
-1. **`User Registration Activation Email`**: An event triggers the sending of an activation email upon registerDTO registration.
+1. **`User Registration Activation Email`**: An event triggers the sending of an activation email upon user registration.
 2. **`Password Reset Email`**: Another event allows users to reset their passwords if they forget them.
 3. **`User Email Notification`**: Users will receive email notifications indicating whether the appointment has been accepted or rejected.
 
@@ -151,6 +151,8 @@ Upon successful authentication, a JWT is generated and stored as an HTTP-only se
 
 Real-time messaging feature built using WebSocket technology. It allows registered users to communicate in real time within the application, 
 enabling instant message delivery and updates without the need to refresh the page.
+
+---
 
 ```
 DEPRECATED
