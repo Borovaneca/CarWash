@@ -59,7 +59,7 @@ async function getAllUsers() {
                     img.src = user.locatedOn;
                     img.width = 100;
                     img.alt = `${user.username}`;
-                    profileUrl.href = `http://localhost:8080/users/view/${user.username}`;
+                    profileUrl.href = `/users/view/${user.username}`;
                     profileUrl.appendChild(img);
                     picture.appendChild(profileUrl);
                     username.textContent = user.username;
