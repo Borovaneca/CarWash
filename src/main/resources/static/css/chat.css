@@ -60,7 +60,7 @@ a {
     color: #6db33f;
 }
 
-button {
+#buttonChat {
     box-shadow: none;
     border: 1px solid transparent;
     font-size: 14px;
@@ -75,19 +75,19 @@ button {
     min-height: 38px;
 }
 
-button.default {
+#buttonChat.default {
     background-color: #e8e8e8;
     color: #333;
     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.12);
 }
 
-button.primary {
+#buttonChat.primary {
     background-color: #6db33f;
     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.12);
     color: #fff;
 }
 
-button.accent {
+#buttonChat.accent {
     background-color: #6db33f;
     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.12);
     color: #fff;
@@ -212,7 +212,7 @@ button.accent {
     width: calc(100% - 85px);
 }
 
-#messageForm .input-group button {
+#messageForm .input-group #buttonChat {
     float: left;
     width: 80px;
     height: 38px;
@@ -265,7 +265,7 @@ button.accent {
         height: calc(100% - 120px);
     }
 
-    #messageForm .input-group button {
+    #messageForm .input-group #buttonChat {
         width: 65px;
     }
 
