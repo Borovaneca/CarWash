@@ -19,6 +19,7 @@ public class ProfileImageServiceImpl implements ProfileImageService {
 
     private final ProfileImageRepository profileImageRepository;
     private final Cloudinary cloudinary;
+    private final String DEFAULT_IMAGE = "http://res.cloudinary.com/dy2y8i2de/image/upload/v1701332934/faf63408-1397-4299-8fe3-f4b8c1aa37f0.png";
 
 
     @Autowired
@@ -48,19 +49,10 @@ public class ProfileImageServiceImpl implements ProfileImageService {
 
     @Override
     public ProfileImage getDefaultProfileImage() {
-        File image = new File("src/main/resources/static/images/default-profile-image.png");
-        try {
-            String url = cloudinary
-                    .uploader()
-                    .upload(image, Map.of("public_id", UUID.randomUUID().toString()))
-                    .get("url").toString();
 
             ProfileImage profileImage = new ProfileImage();
-            profileImage.setLocatedOn(url);
+            profileImage.setLocatedOn(DEFAULT_IMAGE);
             return profileImageRepository.save(profileImage);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @Override
