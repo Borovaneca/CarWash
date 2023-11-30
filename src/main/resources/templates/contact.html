@@ -34,9 +34,9 @@
                         <div class="col-md-12 form-group">
                             <label for="name" class="col-form-label" th:text="#{name}"></label>
                             <input type="text" class="form-control" th:field="*{name}" id="name"
-                            th:classappend="${#fields.hasErrors('name')? 'bg-danger' : ''}">
-                            <span class="invalid-feedback bg-danger" th:if="${#fields.hasErrors('name')}" th:each="msg : ${#fields.errors('name')}"
-                                th:text="${msg}"></span>
+                            th:errorclass="is-invalid">
+                            <p class="invalid-feedback bg-danger" th:if="${#fields.hasErrors('name')}" th:each="msg : ${#fields.errors('name')}"
+                                th:text="${msg}"></p>
                         </div>
                     </div>
                     <div class="row">
@@ -44,8 +44,10 @@
                             <label for="email" class="col-form-label" th:text="#{email}"></label>
                             <input type="text" class="form-control"
                                    th:field="*{email}" id="email"
-                                   th:classappend="${#fields.hasErrors('name')? 'bg-danger' : ''}">
-                            <span class="invalid-feedback bg-danger" th:if="${#fields.hasErrors('email')}">Ivalid Email!</span>
+                                   th:errorclass="is-invalid">
+                            <span class="invalid-feedback bg-danger" th:if="${#fields.hasErrors('email')}"
+                            th:each="msg : ${#fields.errors('email')}"
+                            th:text="${msg}"></span>
                         </div>
                     </div>
 
@@ -53,7 +55,7 @@
                         <div class="col-md-12 form-group">
                             <label for="message" class="col-form-label" th:text="#{message}"></label>
                             <textarea class="form-control" th:field="*{message}" id="message" cols="30" rows="7"
-                                      th:classappend="${#fields.hasErrors('message')? 'bg-danger' : ''}"></textarea>
+                                      th:errorclass="is-invalid"></textarea>
                             <span class="invalid-feedback bg-danger" th:if="${#fields.hasErrors('message')}" th:each="msg : ${#fields.errors('message')}"
                                   th:text="${msg}"></span>
                         </div>
