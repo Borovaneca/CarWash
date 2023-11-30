@@ -4,7 +4,7 @@ function myAppointments() {
     console.log(lang);
 
     const root = document.getElementById("tbody");
-    fetch('http://localhost:8080/api/appointments/')
+    fetch('https://carwash-carwash1.azuremicroservices.io/api/appointments/')
         .then(response => response.json())
         .then(vehicles => vehicles.forEach(
             vehicle => {

@@ -1,6 +1,6 @@
 function getVehicles() {
     let root = document.getElementById('tbodyVehicles');
-    fetch('http://localhost:8080/api/my-vehicles/')
+    fetch('https://carwash-carwash1.azuremicroservices.io/api/my-vehicles/')
         .then(response => response.json())
         .then(vehicles => vehicles.forEach(
             vehicle => {

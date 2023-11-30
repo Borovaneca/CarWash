@@ -2,7 +2,7 @@ function getAllAppointments() {
 
     let tbody = document.getElementById("tbody-all-appointments");
 
-    fetch('http://localhost:8080/api/all-appointments')
+    fetch('https://carwash-carwash1.azuremicroservices.io/api/all-appointments')
         .then(response => response.json())
         .then(data => data.forEach(
                 appointment => {

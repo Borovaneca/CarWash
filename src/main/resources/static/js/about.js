@@ -1,7 +1,7 @@
 async function fetchAbout() {
     let employees = document.querySelector('#staff');
 
-    await fetch('http://localhost:8080/api/about/').then(response => response.json())
+    await fetch('https://carwash-carwash1.azuremicroservices.io/api/about/').then(response => response.json())
         .then(staff => staff.forEach(member => {
             let employeeContainer = document.createElement('div');
             employeeContainer.classList.add('col-xl-3', 'col-sm-6', 'mb-5');

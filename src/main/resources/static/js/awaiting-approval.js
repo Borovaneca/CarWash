@@ -1,7 +1,7 @@
 function getAllAwaitingApprovalAppointments() {
     const root =  document.getElementById('tbody');
 
-    fetch('http://localhost:8080/api/awaiting-approval/')
+    fetch('https://carwash-carwash1.azuremicroservices.io/api/awaiting-approval/')
         .then(response => response.json())
         .then(appointments => appointments.forEach(
             appointment => {
@@ -65,7 +65,7 @@ async function approved(id) {
         [csrfHeader]: csrfToken
     };
 
-    await fetch(`http://localhost:8080/manager/awaiting-approval/approve/${id}`, {
+    await fetch(`https://carwash-carwash1.azuremicroservices.io/manager/awaiting-approval/approve/${id}`, {
         method: 'POST',
         headers: headers
     });
@@ -81,7 +81,7 @@ async function declined(id) {
         [csrfHeader]: csrfToken
     };
 
-    await fetch(`http://localhost:8080/manager/awaiting-approval/decline/${id}`, {
+    await fetch(`https://carwash-carwash1.azuremicroservices.io/manager/awaiting-approval/decline/${id}`, {
         method: 'POST',
         headers: headers
     });

@@ -2,7 +2,7 @@ async function getAllAppointmentsForToday() {
 
     let tbody = document.getElementById('tbody');
 
-    fetch('http://localhost:8080/api/appointments/today')
+    fetch('https://carwash-carwash1.azuremicroservices.io/api/appointments/today')
         .then(response => response.json())
         .then(appointments => appointments.forEach(
             appointment => {

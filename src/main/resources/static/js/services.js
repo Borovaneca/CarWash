@@ -1,7 +1,7 @@
 async function getServices(auth) {
     let root = document.getElementById('services-container');
     const removeContainer = document.querySelector('[remove-service]');
-    await fetch('http://localhost:8080/api/services/')
+    await fetch('http://carwash-carwash1.azuremicroservices.io/api/services/')
         .then(response => response.json())
         .then(services => services.forEach(
             service => {
@@ -78,7 +78,7 @@ async function deleteService(id) {
     };
 
 
-    await fetch(`http://localhost:8080/owner/services/delete/${id}`, {
+    await fetch(`https://carwash-carwash1.azuremicroservices.io/owner/services/delete/${id}`, {
         method: 'POST',
         headers: headers
     })

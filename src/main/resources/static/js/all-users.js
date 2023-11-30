@@ -38,7 +38,7 @@ async function getAllUsers() {
     let tbody = document.getElementById('tbody');
 
 
-    fetch('http://localhost:8080/api/owner/users/all')
+    fetch('https://carwash-carwash1.azuremicroservices.io/api/owner/users/all')
         .then(response => response.json())
         .then(users => {
             usersNum.textContent = users.length.toString()
@@ -186,7 +186,7 @@ async function addRole(userId, selectElement) {
 
     let roleValue = selectElement.value;
 
-    await fetch(`http://localhost:8080/owner/users/add-role/${userId}/${roleValue}`, {
+    await fetch(`https://carwash-carwash1.azuremicroservices.io/owner/users/add-role/${userId}/${roleValue}`, {
         method: 'POST',
         headers: headers
     })
@@ -206,7 +206,7 @@ async function removeRole(id, select) {
 
     let roleValue = select.value;
 
-    await fetch(`http://localhost:8080/owner/users/remove-role/${id}/${roleValue}`, {
+    await fetch(`https://carwash-carwash1.azuremicroservices.io/owner/users/remove-role/${id}/${roleValue}`, {
         method: 'POST',
         headers: headers
     })
@@ -228,7 +228,7 @@ async function banOrUnbanUser(id) {
 
     try {
 
-        const response = await fetch(`http://localhost:8080/api/owner/users/ban/${id}`, {
+        const response = await fetch(`https://carwash-carwash1.azuremicroservices.io/api/owner/users/ban/${id}`, {
             method: 'POST',
             headers: headers
         })
