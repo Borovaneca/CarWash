@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -21,9 +22,13 @@ public class ContactController {
         this.emailService = emailService;
     }
 
+    @ModelAttribute("contactDTO")
+    public ContactDTO contactDTO() {
+        return new ContactDTO();
+    }
     @GetMapping("/contact")
-    public String contact(ContactDTO contactDTO, Model model) {
-        model.addAttribute("contact", contactDTO);
+    public String contact() {
+        System.out.println("asdasd");
         return "contact";
     }
 
@@ -32,18 +37,13 @@ public class ContactController {
                               RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("invalid", true);
-            redirectAttributes.addFlashAttribute("contact", contactDTO);
+            redirectAttributes.addFlashAttribute("contactDTO", contactDTO);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.contactDTO", bindingResult);
             return "redirect:/contact";
         }
         emailService.receiveComment(contactDTO);
         redirectAttributes.addFlashAttribute("success", true);
         contactDTO = null;
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
         return "redirect:/contact";
     }
 }
