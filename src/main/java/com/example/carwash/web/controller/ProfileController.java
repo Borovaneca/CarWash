@@ -32,7 +32,6 @@ public class ProfileController {
     private final ViewService viewService;
     private final UserService userService;
 
-    private ProfileEditDTO profileEditDTO;
 
     @Autowired
     public ProfileController(ViewService viewService, @Qualifier("userServiceProxy") UserService userService) {
@@ -42,7 +41,7 @@ public class ProfileController {
 
     @ModelAttribute("profileEditDTO")
     public ProfileEditDTO profileEditDTO() {
-        return profileEditDTO;
+        return new ProfileEditDTO();
     }
 
 
@@ -76,10 +75,9 @@ public class ProfileController {
         checkIfAuthorized(userDetails, username);
 
         if (isValidUser(username)) {
-            if (profileEditDTO == null) {
-                profileEditDTO = userService.getUserAndMapToProfileEditDTO(username);
+               var profileEditDTO = userService.getUserAndMapToProfileEditDTO(username);
                 model.addAttribute("profileEditDTO", profileEditDTO);
-            }
+
         }
         return "edit-profile";
     }

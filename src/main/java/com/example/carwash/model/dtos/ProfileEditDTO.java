@@ -4,6 +4,7 @@ import com.example.carwash.validation.passwordMatcher.PasswordMatcher;
 import com.example.carwash.validation.validNewEmail.ValidNewEmailAndUsername;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -43,6 +44,7 @@ public class ProfileEditDTO {
     @Size(max = 50, message = "Email cannot be longer than 50 characters")
     private String email;
 
+    @Positive(message = "Age must be a positive number!")
     private Integer age;
 
     private String firstName;
