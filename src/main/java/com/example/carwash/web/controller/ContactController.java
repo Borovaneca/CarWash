@@ -23,7 +23,8 @@ public class ContactController {
 
     @GetMapping("/contact")
     public String contact(ContactDTO contactDTO, Model model) {
-        model.addAttribute("contact", contactDTO);
+
+            model.addAttribute("contact", contactDTO);
         return "contact";
     }
 
@@ -31,7 +32,6 @@ public class ContactController {
     public String postContact(@Valid ContactDTO contactDTO, BindingResult bindingResult,
                               RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("invalid", true);
             redirectAttributes.addFlashAttribute("contact", contactDTO);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.contactDTO", bindingResult);
             return "redirect:/contact";
