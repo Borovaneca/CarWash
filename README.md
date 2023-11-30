@@ -152,6 +152,8 @@ Upon successful authentication, a JWT is generated and stored as an HTTP-only se
 Real-time messaging feature built using WebSocket technology. It allows registered users to communicate in real time within the application, 
 enabling instant message delivery and updates without the need to refresh the page.
 
+---
+
 ```
 DEPRECATED
 * **Cacheable Implementation**
