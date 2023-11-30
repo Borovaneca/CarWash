@@ -1,5 +1,6 @@
 async function fetchAbout() {
     let employees = document.querySelector('#staff');
+    const template = document.querySelector('[employeeInfo]');
 
     await fetch('http://localhost:8080/api/about/').then(response => response.json())
         .then(staff => staff.forEach(member => {
@@ -20,7 +21,7 @@ async function fetchAbout() {
             fullName.classList.add('mb-0');
             fullName.textContent = member.fullName;
             infoContainer.appendChild(fullName);
-            let position = document.getElementById('position');
+            let position = document.createElement('p');
             let lang = localStorage.getItem('lang');
             console.log(lang);
             if (lang === null) {
@@ -59,10 +60,11 @@ async function fetchAbout() {
             }
                 position.classList.add('mb-0');
             infoContainer.appendChild(position)
-            let age = document.getElementById('age');
+            let child = template.content.cloneNode(true).children[0];
+            let age = child.querySelector('[age]');
             age.textContent = `${age.textContent}: ${member.age}`;
             age.classList.add('small', 'text-uppercase', 'text-muted');
-            infoContainer.appendChild(age);
+            infoContainer.appendChild(child);
             employeeContainer.appendChild(infoContainer);
             employees.appendChild(employeeContainer);
         }))

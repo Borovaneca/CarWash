@@ -29,11 +29,15 @@
     <div class="container">
         <div class="row text-center justify-content-around" id="staff">
 
-            <h6 id="position"></h6>
-            <small id="age" th:text="#{age}"></small>
+
         </div>
     </div>
 
+    <template employeeInfo>
+        <div>
+        <small th:text="#{age}" age></small>
+        </div>
+    </template>
 </div>
 
 <th:block th:replace="~{fragments/footer.html}"></th:block>
