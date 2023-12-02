@@ -70,7 +70,7 @@ class RegisterDTOServiceImplTest {
         assertEquals("New York", mockUser.getCity());
         assertEquals(30, mockUser.getAge());
         assertEquals("Test Bio", mockUser.getBio());
-        assertNotEquals("newPassword", mockUser.getPassword()); // Password should be encoded
+        assertNotEquals("newPassword", mockUser.getPassword());
         verify(userRepository, times(1)).save(mockUser);
     }
 

@@ -30,9 +30,9 @@ public class ServiceServiceProxy implements ServiceService {
     }
 
     @Override
-    public List<AppointmentServiceDTO> getAllServices() {
+    public List<AppointmentServiceDTO> getAllServicesForAppointmentPage() {
         if (appointmentServiceDTOS == null) {
-            appointmentServiceDTOS = serviceService.getAllServices();
+            appointmentServiceDTOS = serviceService.getAllServicesForAppointmentPage();
         }
         return appointmentServiceDTOS;
     }
@@ -62,7 +62,7 @@ public class ServiceServiceProxy implements ServiceService {
         serviceViews = null;
 
         Thread thread = new Thread(() -> {
-            getAllServices();
+            getAllServicesForAppointmentPage();
             getAllServicesForIndexPage();
             getAllServicesForServicesPage();
         });
@@ -88,7 +88,7 @@ public class ServiceServiceProxy implements ServiceService {
         serviceViews = null;
 
         Thread thread = new Thread(() -> {
-            getAllServices();
+            getAllServicesForAppointmentPage();
             getAllServicesForIndexPage();
             getAllServicesForServicesPage();
         });
@@ -104,7 +104,7 @@ public class ServiceServiceProxy implements ServiceService {
         serviceViews = null;
 
         Thread thread = new Thread(() -> {
-            getAllServices();
+            getAllServicesForAppointmentPage();
             getAllServicesForIndexPage();
             getAllServicesForServicesPage();
         });

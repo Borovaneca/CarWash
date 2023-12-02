@@ -34,7 +34,6 @@ public class ValidNewEmailAndUsernameValidator implements ConstraintValidator<Va
         Object newUsername = beanWrapper.getPropertyValue(this.username);
         Object currentEntityId = beanWrapper.getPropertyValue(this.id);
 
-        assert currentEntityId != null;
         Long entityId = Long.parseLong(currentEntityId.toString());
 
         String currentEntityUsername = userRepository.findById(entityId).get().getUsername();

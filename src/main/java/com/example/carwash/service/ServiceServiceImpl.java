@@ -8,7 +8,6 @@ import com.example.carwash.model.view.ServiceView;
 import com.example.carwash.repository.ServiceRepository;
 import com.example.carwash.service.interfaces.ServiceService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,7 +28,7 @@ public class ServiceServiceImpl implements ServiceService {
 
 
     @Override
-    public List<AppointmentServiceDTO> getAllServices() {
+    public List<AppointmentServiceDTO> getAllServicesForAppointmentPage() {
         return serviceRepository.findAll()
                 .stream()
                 .map(customMapper::appointmentToAppointmentServiceDTO)

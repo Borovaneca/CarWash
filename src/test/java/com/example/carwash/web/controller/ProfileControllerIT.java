@@ -1,5 +1,6 @@
 package com.example.carwash.web.controller;
 
+import com.example.carwash.model.dtos.ProfileEditDTO;
 import com.example.carwash.model.entity.User;
 import com.example.carwash.model.entity.ProfileImage;
 import com.example.carwash.repository.ProfileImageRepository;
@@ -24,6 +25,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -63,6 +65,7 @@ class ProfileControllerIT {
     private User user;
     @BeforeEach
     void setUp() {
+        if (greenMail != null) greenMail.stop();
         greenMail = new GreenMail(new ServerSetup(port,     host, "smtp"));
         greenMail.start();
         greenMail.setUser(username, password);
@@ -86,8 +89,27 @@ class ProfileControllerIT {
     void getProfileShouldReturnStatusOk() throws Exception {
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/users/view/Admin")
-                        .with(user("Admin").password("Adminov1"))
         ).andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser(authorities = "ADMIN")
+    void testUpdateProfileShouldUpdateIt() throws Exception {
+        String id = userRepository.findByUsername("Admin").get().getId().toString();
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/users/edit/Admin")
+                        .param("id", id)
+                        .param("firstName", "Ivan")
+                        .param("lastName", "Ivanov")
+                        .param("city", "Varna")
+                        .param("age", "23")
+                        .param("bio", "Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis ducimus ad atque nulla. Reiciendis praesentium beatae quod cumque odit accusamus. Doloribus inventore voluptatem suscipit pariatur omnis aliquid non illo mollitia!")
+                        .param("email", "borovaneca@softuni.bg")
+                        .param("username", "Admin")
+                        .param("password", "Adminov1")
+                        .with(csrf())
+                        .with(user("Admin").password("Adminov1"))
+        ).andExpect(status().isFound());
     }
 
     @AfterEach

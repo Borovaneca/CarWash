@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface ServiceService {
 
-    List<AppointmentServiceDTO> getAllServices();
+    List<AppointmentServiceDTO> getAllServicesForAppointmentPage();
 
     List<ServiceIndexView> getAllServicesForIndexPage();
 

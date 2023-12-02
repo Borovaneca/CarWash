@@ -59,7 +59,7 @@ public class ViewServiceImpl implements ViewService {
 
     @Override
     public List<AppointmentServiceDTO> getAllServices() {
-        return serviceService.getAllServices();
+        return serviceService.getAllServicesForAppointmentPage();
     }
 
     @Override

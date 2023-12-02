@@ -3,11 +3,14 @@ package com.example.carwash.model.entity;
 import com.fasterxml.jackson.databind.deser.std.StringArrayDeserializer;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Positive;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Entity
 @Table(name = "services")
+@AllArgsConstructor
 public class Service extends BaseEntity {
 
     @Column(unique = true, nullable = false)
