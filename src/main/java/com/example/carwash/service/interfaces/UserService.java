@@ -55,4 +55,6 @@ public interface UserService {
     boolean isAuthorized(UserDetails userDetails, String username);
 
     boolean isAuthorized(UserDetails userDetails, Long userId);
+
+    void deleteUser(String username);
 }

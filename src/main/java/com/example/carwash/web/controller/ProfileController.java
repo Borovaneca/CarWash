@@ -161,6 +161,17 @@ public class ProfileController {
         return "redirect:/";
     }
 
+    @PostMapping("/delete/{username}")
+    public String deleteUser(@PathVariable String username,
+                             @AuthenticationPrincipal UserDetails userDetails) {
+
+        if (isValidUser(username)) {
+            checkIfAuthorized(userDetails, username);
+            userService.deleteUser(username);
+        }
+        return "redirect:/";
+    }
+
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(UserNotFoundException.class)

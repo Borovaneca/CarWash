@@ -253,4 +253,18 @@ public class UserServiceProxy implements UserService {
     public boolean isAuthorized(UserDetails userDetails, Long userId) {
         return userService.isAuthorized(userDetails, userId);
     }
+
+    @Override
+    public void deleteUser(String username) {
+        userService.deleteUser(username);
+
+        allUsers = null;
+        staffViews = null;
+
+        Thread thread = new Thread(() -> {
+            allUsers = userService.getAllUsers();
+            staffViews = userService.getAllStaffViews();
+        });
+        thread.start();
+    }
 }
