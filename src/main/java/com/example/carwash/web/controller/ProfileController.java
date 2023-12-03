@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -156,6 +157,18 @@ public class ProfileController {
             checkIfAuthorized(userDetails, username);
             userService.deleteSocialMedia(username, type);
             return "redirect:/users/view/" + username;
+        }
+        return "redirect:/";
+    }
+
+    @PostMapping("/delete/{username}")
+    public String deleteUser(@PathVariable String username,
+                             @AuthenticationPrincipal UserDetails userDetails) {
+
+        if (isValidUser(username)) {
+            checkIfAuthorized(userDetails, username);
+            userService.deleteUser(username);
+            SecurityContextHolder.clearContext();
         }
         return "redirect:/";
     }

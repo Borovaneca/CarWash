@@ -62,6 +62,11 @@
                             <input class="nav-link border-0 bg-transparent" type="submit" th:value="#{logout}"/>
                         </form>
                     </li>
+                    <li class="nav-item btn-outline-danger rounded" sec:authorize="isAuthenticated()">
+                        <form th:action="@{/users/delete/#authentication.principal.username}" th:method="post">
+                            <input class="nav-link border-0 bg-transparent" type="submit" value="Delete"/>
+                        </form>
+                    </li>
                 </ul>
                 <div class="ml-auto mr-0">
                     <img src="/images/Bandera-UK.svg" style="cursor: pointer;" width="20" height="20" onclick="changeLanguage('en')">

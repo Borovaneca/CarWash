@@ -289,6 +289,13 @@ public class UserServiceImpl implements UserService {
                 collect(Collectors.toSet()).isEmpty() || userRepository.findById(userId).map(user -> user.getUsername().equals(userDetails.getUsername())).orElse(false);
     }
 
+    @Override
+    public void deleteUser(String username) {
+        userRepository.findByUsername(username).ifPresent(user -> {        user.getVehicles().forEach(vehicle -> vehicleService.delete(vehicle));
+        userRepository.delete(user);
+    });
+    }
+
     private ProfileView toProfileView(User user) {
         ProfileView profileView = customMapper.userToProfileView(user);
         profileView.setSocials(user.getSocialMedias().stream().map(customMapper::socialToSocialMediaView)
