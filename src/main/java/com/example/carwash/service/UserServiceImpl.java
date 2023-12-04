@@ -291,7 +291,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUser(String username) {
-        userRepository.findByUsername(username).ifPresent(user -> {        user.getVehicles().forEach(vehicle -> vehicleService.delete(vehicle));
+        userRepository.findByUsername(username).ifPresent(user -> {user.getVehicles().forEach(vehicleService::delete);
         userRepository.delete(user);
     });
     }
