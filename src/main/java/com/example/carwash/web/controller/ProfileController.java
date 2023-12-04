@@ -9,6 +9,8 @@ import com.example.carwash.model.dtos.SocialMediaAddDTO;
 import com.example.carwash.model.view.ProfileView;
 import com.example.carwash.service.interfaces.ViewService;
 import com.example.carwash.service.interfaces.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -24,6 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
+import java.util.Arrays;
 
 @CrossOrigin("*")
 @Controller
@@ -163,12 +166,21 @@ public class ProfileController {
 
     @DeleteMapping("/delete/{username}")
     public String deleteUser(@PathVariable String username,
-                             @AuthenticationPrincipal UserDetails userDetails) {
+                             @AuthenticationPrincipal UserDetails userDetails,
+                             HttpServletResponse response,
+                             HttpServletRequest request) {
 
         if (isValidUser(username)) {
             checkIfAuthorized(userDetails, username);
-            userService.deleteUser(username);
-            SecurityContextHolder.clearContext();
+                userService.deleteUser(username);
+            Arrays.stream(request.getCookies())
+                            .forEach(cookie -> {
+                                cookie.setMaxAge(0);
+                                cookie.setValue(null);
+                                cookie.setPath("/");
+                                response.addCookie(cookie);
+                            });
+                SecurityContextHolder.clearContext();
         }
         return "redirect:/";
     }

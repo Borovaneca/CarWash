@@ -106,6 +106,7 @@
                 <div class="row justify-content-end">
                     <div class="form-group col-sm-6">
                         <button type="submit" class="btn btn-outline-dark bg-secondary" th:text="#{submit}"></button>
+                        <button type="button" class="btn btn-outline-danger" onclick="deleteAccount()"></button>
                     </div>
                 </div>
             </form>
@@ -115,5 +116,6 @@
 </div>
 
 <th:block th:replace="~{fragments/footer.html}"></th:block>
+<script src="/js/delete-account.js"></script>
 </body>
 </html>
