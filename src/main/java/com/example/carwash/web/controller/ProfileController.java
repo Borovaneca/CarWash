@@ -161,7 +161,7 @@ public class ProfileController {
         return "redirect:/";
     }
 
-    @PostMapping("/delete/{username}")
+    @DeleteMapping("/delete/{username}")
     public String deleteUser(@PathVariable String username,
                              @AuthenticationPrincipal UserDetails userDetails) {
 
