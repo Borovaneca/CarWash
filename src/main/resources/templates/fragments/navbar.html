@@ -30,7 +30,7 @@
                         <a class="nav-link" href="/contact" th:text="#{contact}">Contact</a>
                     </li>
                     <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
-                        <a class="nav-link dropdown-toggle" th:text="#{appointments}" href="#" id="appointmentsNavbar" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" th:text="#{appointments}" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Appointments
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -63,8 +63,8 @@
                         </form>
                     </li>
                     <li class="nav-item btn-outline-danger rounded" sec:authorize="isAuthenticated()">
-                        <form th:action="@{/users/delete/#authentication.principal.username}" th:method="post">
-                            <input class="nav-link border-0 bg-transparent" type="submit" th:value="#{deleteAccount}"/>
+                        <form th:action="@{/users/delete/{name}(name = ${#authentication.principal.username})}" th:method="post">
+                            <input class="nav-link border-0 bg-transparent" type="submit" value="Delete"/>
                         </form>
                     </li>
                 </ul>
@@ -72,6 +72,7 @@
                     <img src="/images/Bandera-UK.svg" style="cursor: pointer;" width="20" height="20" onclick="changeLanguage('en')">
                     <img src="/images/bulgaria.png" style="cursor: pointer;" width="20" height="20" onclick="changeLanguage('bg')">
                     <img src="/images/italian-flag.svg" style="cursor: pointer;" width="20" height="20" onclick="changeLanguage('it')">
+
                 </div>
             </div>
         </div>

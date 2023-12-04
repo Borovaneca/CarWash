@@ -9,13 +9,20 @@ import com.example.carwash.model.dtos.SocialMediaAddDTO;
 import com.example.carwash.model.view.ProfileView;
 import com.example.carwash.service.interfaces.ViewService;
 import com.example.carwash.service.interfaces.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import org.apache.http.protocol.HttpRequestExecutor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,7 +30,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.security.Principal;
+import java.util.Arrays;
 
 @CrossOrigin("*")
 @Controller
@@ -162,16 +174,27 @@ public class ProfileController {
         return "redirect:/";
     }
 
-    @PostMapping("/delete/{username}")
+    @DeleteMapping("/delete/{username}")
     public String deleteUser(@PathVariable String username,
-                             @AuthenticationPrincipal UserDetails userDetails) {
+                             @AuthenticationPrincipal UserDetails userDetails,
+                             HttpServletResponse response,
+                             HttpServletRequest request) throws IOException {
 
         if (isValidUser(username)) {
             checkIfAuthorized(userDetails, username);
+
             userService.deleteUser(username);
+            Arrays.stream(request.getCookies()).filter(cookie -> cookie.getName().equals("JSESSIONID") || cookie.getName().equals("jwt")
+            || cookie.getName().equals("rememberme")).forEach(cookie -> {
+                cookie.setMaxAge(0);
+                cookie.setValue(null);
+                cookie.setPath("/");
+                response.addCookie(cookie);
+            });
             SecurityContextHolder.clearContext();
+
         }
-        return "redirect:/";
+        return "redirect:/users/login";
     }
 
 
