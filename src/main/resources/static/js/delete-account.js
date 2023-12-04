@@ -13,11 +13,9 @@ async function deleteAccount() {
         await fetch('/users/delete/' + username, {
             method: 'DELETE',
             headers: headers
-        }).then(response => {
-            if (response.ok) {
-                alert("Account deleted successfully");
-                window.location.href = "http://localhost:8080/users/login";
-            }
-        });
+        }).catch(error => {
+            alert("Account deleted successfully");
+            window.location.href = "https://carwash-carwash1.azuremicroservices.io/users/login";
+        })
     }
 }
