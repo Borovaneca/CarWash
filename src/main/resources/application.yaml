@@ -37,9 +37,11 @@ spring:
 
   remember:
     key: ${REMEMBER_KEY:carwash}
+
 admin:
   username: ${ADMIN_USERNAME}
   password: ${ADMIN_PASSWORD}
+
 cloudinary:
   name: ${CLOUDINARY_NAME:dy2y8i2de}
   api-key: ${CLOUDINARY_API_KEY:111187215981859}

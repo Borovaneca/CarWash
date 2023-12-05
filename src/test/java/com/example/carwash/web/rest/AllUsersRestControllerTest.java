@@ -1,16 +1,13 @@
 package com.example.carwash.web.rest;
 
-import com.example.carwash.model.dtos.RegisterDTO;
 import com.example.carwash.model.entity.ProfileImage;
 import com.example.carwash.model.entity.User;
-import com.example.carwash.model.view.AllUsersView;
 import com.example.carwash.repository.ProfileImageRepository;
 import com.example.carwash.repository.RoleRepository;
 import com.example.carwash.repository.UserRepository;
 import com.example.carwash.service.interfaces.ViewService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.icegreen.greenmail.util.GreenMail;
-import org.junit.BeforeClass;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,11 +23,8 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 

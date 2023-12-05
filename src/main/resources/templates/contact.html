@@ -35,7 +35,7 @@
                             <label for="name" class="col-form-label" th:text="#{name}"></label>
                             <input type="text" class="form-control" th:field="*{name}" id="name"
                                 th:errorclass="is-invalid">
-<p class="invalid-feedback bg-danger" th:if="${#fields.hasErrors('name')}" th:each="msg : ${#fields.errors('name')}"
+<p class="invalid-feedback bg-danger text-light" th:if="${#fields.hasErrors('name')}" th:each="msg : ${#fields.errors('name')}"
                 th:text="${msg}"></p>
                         </div>
                     </div>
@@ -56,7 +56,7 @@
                             <label for="message" class="col-form-label" th:text="#{message}"></label>
                             <textarea class="form-control" th:field="*{message}" id="message" cols="30" rows="7"
                                       th:errorclass="is-invalid"></textarea>
-                            <p class="invalid-feedback bg-danger" th:if="${#fields.hasErrors('message')}"
+                            <p class="invalid-feedback bg-danger text-light" th:if="${#fields.hasErrors('message')}"
                                         th:each="msg : ${#fields.errors('message')}"
                                         th:text="${msg}"></p>
                         </div>
