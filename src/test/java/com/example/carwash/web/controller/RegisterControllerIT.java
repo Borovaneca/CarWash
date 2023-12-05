@@ -2,17 +2,24 @@ package com.example.carwash.web.controller;
 
 import com.example.carwash.model.dtos.RegisterDTO;
 import com.example.carwash.repository.UserRepository;
+import com.example.carwash.service.interfaces.RegisterService;
+import com.example.carwash.service.interfaces.UserService;
 import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.ServerSetup;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.atMostOnce;
+import static org.mockito.Mockito.verify;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
@@ -28,6 +35,12 @@ public class RegisterControllerIT {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    @Qualifier("userServiceProxy") private UserService userService;
+
+    @Autowired
+    private RegisterService registerService;
 
     @Value("${spring.mail.host}")
     private String host;
@@ -56,6 +69,9 @@ public class RegisterControllerIT {
     @Test
     void testRegister() throws Exception {
 
+        Assertions.assertEquals(1, userRepository.count());
+        Assertions.assertEquals(1, userService.getAllUsers().size());
+
         mockMvc.perform(
                         post("/users/register")
                                 .param("username", registerDTO.getUsername())
@@ -66,6 +82,12 @@ public class RegisterControllerIT {
                 )
                 .andExpect(status().isFound())
                 .andExpect(redirectedUrl("/"));
+
+        Assertions.assertEquals(2, userRepository.count());
+        Assertions.assertEquals(2, userService.getAllUsers().size());
+
+        Assertions.assertNotNull(userRepository.findByUsername("testUser").get());
+        Assertions.assertEquals("test@test.com", userRepository.findByUsername("testUser").get().getEmail());
     }
 
     @AfterEach

@@ -11,6 +11,7 @@ import com.example.carwash.service.interfaces.ViewService;
 import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.ServerSetup;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,6 +26,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Optional;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -89,6 +91,9 @@ public class AppointmentControllerIT {
     @Test
     @WithMockUser(username = "Admin", roles = {"USER", "ADMIN"})
     void testAddAppointmentShouldBAdd() throws Exception {
+        Optional<User> admin = userRepository.findByUsername("Admin");
+        Assertions.assertEquals(0, admin.get().getVehicles().size());
+        Assertions.assertEquals(0, admin.get().getAppointments().size());
         VehicleAddDTO vehicleAddDTO = new VehicleAddDTO();
         vehicleAddDTO.setBrand("BMW");
         vehicleAddDTO.setModel("X5");
@@ -99,6 +104,7 @@ public class AppointmentControllerIT {
                 .andExpect(status().isFound())
                 .andExpect(status().is3xxRedirection());
 
+        Assertions.assertEquals(1, userRepository.findByUsername("Admin").get().getVehicles().size());
 
         AppointmentAddDTO appointmentAddDTO = new AppointmentAddDTO();
         appointmentAddDTO.setVehicleId(1L);
@@ -109,6 +115,9 @@ public class AppointmentControllerIT {
                         .flashAttr("appointmentAddDTO", appointmentAddDTO)
                         .with(csrf()))
                 .andExpect(status().isFound());
+
+        Assertions.assertEquals(1, userRepository.findByUsername("Admin").get().getAppointments().size());
+        Assertions.assertEquals(1L, userRepository.findByUsername("Admin").get().getAppointments().get(0).getVehicle().getId());
     }
 
 

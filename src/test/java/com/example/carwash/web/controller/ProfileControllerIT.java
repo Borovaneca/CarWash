@@ -9,6 +9,7 @@ import com.example.carwash.repository.UserRepository;
 import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.ServerSetup;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,6 +25,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Optional;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
@@ -96,6 +98,7 @@ class ProfileControllerIT {
     @WithMockUser(authorities = "ADMIN")
     void testUpdateProfileShouldUpdateIt() throws Exception {
         String id = userRepository.findByUsername("Admin").get().getId().toString();
+        Optional<User> test = userRepository.findById(Long.parseLong(id));
         mockMvc.perform(
                 MockMvcRequestBuilders.post("/users/edit/Admin")
                         .param("id", id)
@@ -110,6 +113,17 @@ class ProfileControllerIT {
                         .with(csrf())
                         .with(user("Admin").password("Adminov1"))
         ).andExpect(status().isFound());
+
+
+        userRepository.findById(Long.parseLong(id)).ifPresent(user -> {
+            Assertions.assertEquals(test.get().getId(), user.getId());
+            Assertions.assertNotEquals("Ivan", test.get().getFirstName());
+            Assertions.assertNotEquals("Ivanov", test.get().getLastName());
+            Assertions.assertNotEquals("Varna", test.get().getCity());
+            Assertions.assertEquals(23, user.getAge());
+            Assertions.assertEquals("Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis ducimus ad atque nulla. Reiciendis praesentium beatae quod cumque odit accusamus. Doloribus inventore voluptatem suscipit pariatur omnis aliquid non illo mollitia!", user.getBio());
+
+        });
     }
 
     @AfterEach
