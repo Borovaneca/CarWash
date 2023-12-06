@@ -28,7 +28,6 @@ public class ContactController {
     }
     @GetMapping("/contact")
     public String contact() {
-        System.out.println("asdasd");
         return "contact";
     }
 
