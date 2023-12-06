@@ -19,8 +19,6 @@ public class StartSeedDB implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        if (userService.findByUsername("admin") == null) {
             userService.registerAdmin();
-        }
     }
 }
