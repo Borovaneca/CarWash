@@ -1,9 +1,6 @@
 package com.example.carwash.service.proxy;
 
-import com.example.carwash.model.dtos.ProfileEditDTO;
-import com.example.carwash.model.dtos.ProfileUpdateImageDTO;
-import com.example.carwash.model.dtos.SocialMediaAddDTO;
-import com.example.carwash.model.dtos.VehicleAddDTO;
+import com.example.carwash.model.dtos.*;
 import com.example.carwash.model.entity.User;
 import com.example.carwash.model.view.AllUsersView;
 import com.example.carwash.model.view.ProfileView;
@@ -266,5 +263,10 @@ public class UserServiceProxy implements UserService {
             staffViews = userService.getAllStaffViews();
         });
         thread.start();
+    }
+
+    @Override
+    public void updatePassword(String username, UpdatePasswordDTO updatePasswordDTO) {
+        userService.updatePassword(username, updatePasswordDTO);
     }
 }

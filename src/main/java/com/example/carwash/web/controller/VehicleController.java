@@ -1,5 +1,6 @@
 package com.example.carwash.web.controller;
 
+import com.example.carwash.errors.VehicleInAppointmentException;
 import com.example.carwash.model.dtos.VehicleAddDTO;
 import com.example.carwash.service.interfaces.UserService;
 import jakarta.validation.Valid;
@@ -47,6 +48,12 @@ public class VehicleController {
             return "redirect:/my-vehicles";
         }
         return "redirect:/";
+    }
+
+    @ExceptionHandler(VehicleInAppointmentException.class)
+    public String handleVehicleInAppointmentException(VehicleInAppointmentException e, RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("vehicleInAppointment", true);
+        return "redirect:/my-vehicles";
     }
 
 }

@@ -8,6 +8,10 @@
 <body onload="getVehicles()">
 <th:block th:replace="~{fragments/navbar.html}"></th:block>
 
+<div class="container px-5 my-5" th:if="${vehicleInAppointment}">
+    <h1 class="text-center alert-danger" >Vehicle can't be removed, because it is in appointment!</h1>
+</div>
+
 <div id="vehicle-container" class="table-responsive bg-light">
     <table class="table">
         <thead>

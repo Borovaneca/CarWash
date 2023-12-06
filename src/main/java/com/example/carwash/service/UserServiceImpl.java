@@ -1,11 +1,9 @@
 package com.example.carwash.service;
 
 import com.example.carwash.errors.UserNotFoundException;
+import com.example.carwash.errors.VehicleInAppointmentException;
 import com.example.carwash.mapper.CustomMapper;
-import com.example.carwash.model.dtos.ProfileEditDTO;
-import com.example.carwash.model.dtos.ProfileUpdateImageDTO;
-import com.example.carwash.model.dtos.SocialMediaAddDTO;
-import com.example.carwash.model.dtos.VehicleAddDTO;
+import com.example.carwash.model.dtos.*;
 import com.example.carwash.model.entity.*;
 import com.example.carwash.model.enums.RoleName;
 import com.example.carwash.model.view.AllUsersView;
@@ -72,7 +70,6 @@ public class UserServiceImpl implements UserService {
             user.setCity(profileEditDTO.getCity());
             user.setAge(profileEditDTO.getAge());
             user.setBio(profileEditDTO.getBio());
-            user.setPassword(passwordEncoder.encode(profileEditDTO.getPassword()));
             userRepository.save(user);
         }
     }
@@ -80,22 +77,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public ProfileEditDTO getUserAndMapToProfileEditDTO(String username) {
         Optional<User> user = userRepository.findByUsername(username);
-        return user.map(this::mapToProfileEditDTO).orElseThrow(() -> new UserNotFoundException("User with username: " + username + " not found", username));
-    }
-
-    private ProfileEditDTO mapToProfileEditDTO(User user) {
-        ProfileEditDTO profileEditDTO = new ProfileEditDTO();
-        profileEditDTO.setId(user.getId());
-        profileEditDTO.setUsername(user.getUsername());
-        profileEditDTO.setPassword(null);
-        profileEditDTO.setConfirmPassword(null);
-        profileEditDTO.setEmail(user.getEmail());
-        profileEditDTO.setFirstName(user.getFirstName());
-        profileEditDTO.setLastName(user.getLastName());
-        profileEditDTO.setCity(user.getCity());
-        profileEditDTO.setAge(user.getAge());
-        profileEditDTO.setBio(user.getBio());
-        return profileEditDTO;
+        return user.map(customMapper::userToProfileEditDTO).orElseThrow(() -> new UserNotFoundException("User with username: " + username + " not found", username));
     }
 
     @Override
@@ -162,6 +144,10 @@ public class UserServiceImpl implements UserService {
         Vehicle vehicle = vehicleService.findById(id);
         if (vehicle == null) {
             return false;
+        }
+
+        if (!vehicle.getAppointments().isEmpty()) {
+            throw new VehicleInAppointmentException();
         }
 
         user.getVehicles().remove(vehicle);
@@ -294,6 +280,13 @@ public class UserServiceImpl implements UserService {
         userRepository.findByUsername(username).ifPresent(user -> {user.getVehicles().forEach(vehicleService::delete);
         userRepository.delete(user);
     });
+    }
+
+    @Override
+    public void updatePassword(String username, UpdatePasswordDTO updatePasswordDTO) {
+        User user = userRepository.findByUsername(username).get();
+        user.setPassword(passwordEncoder.encode(updatePasswordDTO.getPassword()));
+        userRepository.save(user);
     }
 
     private ProfileView toProfileView(User user) {
