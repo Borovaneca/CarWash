@@ -144,7 +144,7 @@ _The project incorporates a bit of Aspect-Oriented Programming (AOP) to modulari
 
 * **JWT Authentication**
 
-Upon successful authentication, a JWT is generated and stored as an HTTP-only secure cookie in the browser. This token is used to authenticate.
+Upon successful authentication, a JWT is generated and stored as an HTTP-only secure cookie in the browser.
 - [x] *Expiration*: The token expires after 24 hours.
 ---
 
