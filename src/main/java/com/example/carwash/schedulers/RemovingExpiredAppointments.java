@@ -1,4 +1,4 @@
-package com.example.carwash.tasks;
+package com.example.carwash.schedulers;
 
 import com.example.carwash.model.entity.Appointment;
 import com.example.carwash.service.interfaces.AppointmentService;

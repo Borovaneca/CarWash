@@ -1,7 +1,6 @@
-package com.example.carwash.tasks;
+package com.example.carwash.schedulers;
 
 import com.example.carwash.model.entity.User;
-import com.example.carwash.repository.UserRepository;
 import com.example.carwash.service.interfaces.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
