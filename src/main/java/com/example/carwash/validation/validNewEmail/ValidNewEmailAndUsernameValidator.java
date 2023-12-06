@@ -63,7 +63,7 @@ public class ValidNewEmailAndUsernameValidator implements ConstraintValidator<Va
         if (currentEntityUsername.equals(newUsername.toString())) {
             return true;
         } else {
-            if (userRepository.findByUsername(currentEntityUsername).isEmpty()) return true;
+            if (userRepository.findByUsername(newUsername.toString()).isEmpty()) return true;
 
             this.message = "Username already exist!";
             context.buildConstraintViolationWithTemplate(message)

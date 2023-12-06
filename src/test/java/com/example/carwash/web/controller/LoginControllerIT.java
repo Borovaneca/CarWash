@@ -60,7 +60,7 @@ public class LoginControllerIT {
         greenMail.start();
         greenMail.setUser(username, password);
         if (userRepository.count() == 0) {
-            user = registerUser();
+            user = aRandomUser();
             userRepository.save(user);
         }
     }
@@ -81,7 +81,7 @@ public class LoginControllerIT {
         userRepository.deleteAll();
     }
 
-    private User registerUser() {
+    private User aRandomUser() {
         User admin = new User();
         admin.setUsername("Admin");
         admin.setPassword(passwordEncoder.encode("Adminov1"));

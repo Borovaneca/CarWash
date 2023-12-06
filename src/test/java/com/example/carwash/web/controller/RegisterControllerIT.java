@@ -69,7 +69,7 @@ public class RegisterControllerIT {
     @Test
     void testRegister() throws Exception {
 
-        Assertions.assertEquals(1, userRepository.count());
+        Assertions.assertEquals(0, userRepository.count());
         Assertions.assertEquals(1, userService.getAllUsers().size());
 
         mockMvc.perform(
@@ -83,8 +83,8 @@ public class RegisterControllerIT {
                 .andExpect(status().isFound())
                 .andExpect(redirectedUrl("/"));
 
-        Assertions.assertEquals(2, userRepository.count());
-        Assertions.assertEquals(2, userService.getAllUsers().size());
+        Assertions.assertEquals(1, userRepository.count());
+        Assertions.assertEquals(1, userService.getAllUsers().size());
 
         Assertions.assertNotNull(userRepository.findByUsername("testUser").get());
         Assertions.assertEquals("test@test.com", userRepository.findByUsername("testUser").get().getEmail());

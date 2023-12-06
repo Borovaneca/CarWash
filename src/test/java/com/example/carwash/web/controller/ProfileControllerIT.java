@@ -27,6 +27,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Optional;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -50,30 +51,16 @@ class ProfileControllerIT {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Value("${spring.mail.host}")
-    private String host;
+private static Long USER_ID;
 
-    @Value("${spring.mail.port}")
-    private int port;
+    private User savedUser;
 
-    @Value("${spring.mail.username}")
-    private String username;
-
-    @Value("${spring.mail.password}")
-    private String password;
-
-    private GreenMail greenMail;
-
-    private User user;
     @BeforeEach
     void setUp() {
-        if (greenMail != null) greenMail.stop();
-        greenMail = new GreenMail(new ServerSetup(port,     host, "smtp"));
-        greenMail.start();
-        greenMail.setUser(username, password);
         if (userRepository.count() == 0) {
-            user = registerUser();
-            userRepository.save(user);
+            savedUser = aRandomUser();
+            userRepository.save(savedUser);
+            USER_ID = savedUser.getId();
         }
     }
     @Test
@@ -90,52 +77,47 @@ class ProfileControllerIT {
     @WithMockUser(authorities = "ADMIN")
     void getProfileShouldReturnStatusOk() throws Exception {
         mockMvc.perform(
-                MockMvcRequestBuilders.get("/users/view/Admin")
+                MockMvcRequestBuilders.get("/users/view/PetyoV")
         ).andExpect(status().isOk());
     }
 
     @Test
     @WithMockUser(authorities = "ADMIN")
     void testUpdateProfileShouldUpdateIt() throws Exception {
-        String id = userRepository.findByUsername("Admin").get().getId().toString();
-        Optional<User> test = userRepository.findById(Long.parseLong(id));
+        Assertions.assertTrue(userRepository.existsById(USER_ID));
+
         mockMvc.perform(
-                MockMvcRequestBuilders.post("/users/edit/Admin")
-                        .param("id", id)
+                MockMvcRequestBuilders.post("/users/edit/PetyoV")
+                        .param("id", String.valueOf(USER_ID))
                         .param("firstName", "Ivan")
                         .param("lastName", "Ivanov")
                         .param("city", "Varna")
                         .param("age", "23")
                         .param("bio", "Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis ducimus ad atque nulla. Reiciendis praesentium beatae quod cumque odit accusamus. Doloribus inventore voluptatem suscipit pariatur omnis aliquid non illo mollitia!")
-                        .param("email", "borovaneca@softuni.bg")
-                        .param("username", "Admin")
+                        .param("email", "petyoV@softuni.bg")
+                        .param("username", "PetyoA")
                         .param("password", "Adminov1")
+                        .param("confirmPassword", "Adminov1")
                         .with(csrf())
-                        .with(user("Admin").password("Adminov1"))
+                        .with(user("PetyoV").password("Adminov1"))
         ).andExpect(status().isFound());
 
-
-        userRepository.findById(Long.parseLong(id)).ifPresent(user -> {
-            Assertions.assertEquals(test.get().getId(), user.getId());
-            Assertions.assertNotEquals("Ivan", test.get().getFirstName());
-            Assertions.assertNotEquals("Ivanov", test.get().getLastName());
-            Assertions.assertNotEquals("Varna", test.get().getCity());
-            Assertions.assertEquals(23, user.getAge());
-            Assertions.assertEquals("Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis ducimus ad atque nulla. Reiciendis praesentium beatae quod cumque odit accusamus. Doloribus inventore voluptatem suscipit pariatur omnis aliquid non illo mollitia!", user.getBio());
-
-        });
+        Optional<User> updatedUser = userRepository.findById(USER_ID);
+        assertThat(updatedUser).isPresent();
+        assertThat(updatedUser.get())
+                .extracting(User::getFirstName, User::getLastName, User::getCity, User::getUsername)
+                .containsExactly("Ivan", "Ivanov", "Varna", "PetyoA");
     }
 
     @AfterEach
     void tearDown() {
-        greenMail.stop();
         userRepository.deleteAll();
     }
 
 
-    private User registerUser() {
+    private User aRandomUser() {
         User admin = new User();
-        admin.setUsername("Admin");
+        admin.setUsername("PetyoV");
         admin.setPassword(passwordEncoder.encode("Adminov1"));
         admin.setRoles(roleRepository.findAll());
         admin.setImage(new ProfileImage("test"));
@@ -143,7 +125,7 @@ class ProfileControllerIT {
         admin.setActive(true);
         admin.setAge(23);
         admin.setImage(profileImageRepository.save(new ProfileImage("test")));
-        admin.setEmail("borovaneca@softuni.bg");
+        admin.setEmail("petyoV@softuni.bg");
         admin.setFirstName("Petyo");
         admin.setLastName("Veselinov");
         admin.setBanned(false);

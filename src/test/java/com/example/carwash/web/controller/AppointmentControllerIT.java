@@ -107,7 +107,7 @@ public class AppointmentControllerIT {
         Assertions.assertEquals(1, userRepository.findByUsername("Admin").get().getVehicles().size());
 
         AppointmentAddDTO appointmentAddDTO = new AppointmentAddDTO();
-        appointmentAddDTO.setVehicleId(1L);
+        appointmentAddDTO.setVehicleId(2L);
         appointmentAddDTO.setService(viewService.getAllServices().get(0).getName());
         appointmentAddDTO.setMadeFor(LocalDateTime.now().plusDays(1));
 
@@ -117,7 +117,7 @@ public class AppointmentControllerIT {
                 .andExpect(status().isFound());
 
         Assertions.assertEquals(1, userRepository.findByUsername("Admin").get().getAppointments().size());
-        Assertions.assertEquals(1L, userRepository.findByUsername("Admin").get().getAppointments().get(0).getVehicle().getId());
+        Assertions.assertEquals(2L, userRepository.findByUsername("Admin").get().getAppointments().get(0).getVehicle().getId());
     }
 
 
@@ -144,6 +144,8 @@ public class AppointmentControllerIT {
         admin.setBanned(false);
         admin.setRegisteredOn(LocalDate.now());
         admin.setSocialMedias(new ArrayList<>());
+        admin.setAppointments(new ArrayList<>());
+        admin.setVehicles(new ArrayList<>());
         admin.setBio("Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis ducimus ad atque nulla. Reiciendis praesentium beatae quod cumque odit accusamus. Doloribus inventore voluptatem suscipit pariatur omnis aliquid non illo mollitia!");
         return admin;
     }
