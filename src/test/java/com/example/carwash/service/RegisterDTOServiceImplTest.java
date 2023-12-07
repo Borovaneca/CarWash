@@ -56,7 +56,6 @@ class RegisterDTOServiceImplTest {
         profileEditDTO.setCity("New York");
         profileEditDTO.setAge(30);
         profileEditDTO.setBio("Test Bio");
-        profileEditDTO.setPassword("newPassword");
 
 
         User mockUser = getUser();
@@ -98,7 +97,6 @@ class RegisterDTOServiceImplTest {
         assertEquals("New York", profileEditDTO.getCity());
         assertEquals(30, profileEditDTO.getAge());
         assertEquals("Test Bio", profileEditDTO.getBio());
-        assertNull(profileEditDTO.getPassword());
     }
 
     @Test

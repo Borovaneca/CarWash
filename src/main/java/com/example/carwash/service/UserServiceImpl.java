@@ -1,11 +1,9 @@
 package com.example.carwash.service;
 
 import com.example.carwash.errors.UserNotFoundException;
+import com.example.carwash.errors.VehicleInAppointmentException;
 import com.example.carwash.mapper.CustomMapper;
-import com.example.carwash.model.dtos.ProfileEditDTO;
-import com.example.carwash.model.dtos.ProfileUpdateImageDTO;
-import com.example.carwash.model.dtos.SocialMediaAddDTO;
-import com.example.carwash.model.dtos.VehicleAddDTO;
+import com.example.carwash.model.dtos.*;
 import com.example.carwash.model.entity.*;
 import com.example.carwash.model.enums.RoleName;
 import com.example.carwash.model.view.AllUsersView;
@@ -61,20 +59,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void update(ProfileEditDTO profileEditDTO) {
-        Optional<User> userOptional = userRepository.findById(profileEditDTO.getId());
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-
-            user.setUsername(profileEditDTO.getUsername());
-            user.setEmail(profileEditDTO.getEmail());
-            user.setFirstName(profileEditDTO.getFirstName());
-            user.setLastName(profileEditDTO.getLastName());
-            user.setCity(profileEditDTO.getCity());
-            user.setAge(profileEditDTO.getAge());
-            user.setBio(profileEditDTO.getBio());
-            user.setPassword(passwordEncoder.encode(profileEditDTO.getPassword()));
-            userRepository.save(user);
-        }
+        User user = userRepository.findById(profileEditDTO.getId()).get();
+        user = customMapper.profileEditDTOToUser(user);
+        userRepository.save(user);
     }
 
     @Override
@@ -87,8 +74,6 @@ public class UserServiceImpl implements UserService {
         ProfileEditDTO profileEditDTO = new ProfileEditDTO();
         profileEditDTO.setId(user.getId());
         profileEditDTO.setUsername(user.getUsername());
-        profileEditDTO.setPassword(null);
-        profileEditDTO.setConfirmPassword(null);
         profileEditDTO.setEmail(user.getEmail());
         profileEditDTO.setFirstName(user.getFirstName());
         profileEditDTO.setLastName(user.getLastName());
@@ -162,6 +147,10 @@ public class UserServiceImpl implements UserService {
         Vehicle vehicle = vehicleService.findById(id);
         if (vehicle == null) {
             return false;
+        }
+
+        if (!vehicle.getAppointments().isEmpty()) {
+            throw new VehicleInAppointmentException();
         }
 
         user.getVehicles().remove(vehicle);
@@ -294,6 +283,13 @@ public class UserServiceImpl implements UserService {
         userRepository.findByUsername(username).ifPresent(user -> {        user.getVehicles().forEach(vehicle -> vehicleService.delete(vehicle));
         userRepository.delete(user);
     });
+    }
+
+    @Override
+    public void updatePassword(String username, UpdatePasswordDTO updatePasswordDTO) {
+        User user = userRepository.findByUsername(username).get();
+        user.setPassword(passwordEncoder.encode(updatePasswordDTO.getPassword()));
+        userRepository.save(user);
     }
 
     private ProfileView toProfileView(User user) {

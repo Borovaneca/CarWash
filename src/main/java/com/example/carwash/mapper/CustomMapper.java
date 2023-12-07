@@ -180,4 +180,16 @@ public interface CustomMapper {
     default String isBanned(boolean banned) {
         return banned ? "Yes" : "No";
     }
+
+@Mappings({
+            @Mapping(source = "id", target = "id"),
+            @Mapping(source = "username", target = "username"),
+            @Mapping(source = "email", target = "email"),
+            @Mapping(source = "age", target = "age"),
+            @Mapping(source = "firstName", target = "firstName"),
+            @Mapping(source = "lastName", target = "lastName"),
+            @Mapping(source = "city", target = "city"),
+            @Mapping(source = "bio", target = "bio")
+    })
+    User profileEditDTOToUser(User user);
 }

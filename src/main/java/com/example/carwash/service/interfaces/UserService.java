@@ -1,9 +1,6 @@
 package com.example.carwash.service.interfaces;
 
-import com.example.carwash.model.dtos.ProfileEditDTO;
-import com.example.carwash.model.dtos.ProfileUpdateImageDTO;
-import com.example.carwash.model.dtos.SocialMediaAddDTO;
-import com.example.carwash.model.dtos.VehicleAddDTO;
+import com.example.carwash.model.dtos.*;
 import com.example.carwash.model.entity.User;
 import com.example.carwash.model.view.AllUsersView;
 import com.example.carwash.model.view.ProfileView;
@@ -57,4 +54,6 @@ public interface UserService {
     boolean isAuthorized(UserDetails userDetails, Long userId);
 
     void deleteUser(String username);
+
+    void updatePassword(String username, UpdatePasswordDTO updatePasswordDTO);
 }

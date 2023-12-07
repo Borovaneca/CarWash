@@ -1,25 +1,18 @@
 package com.example.carwash.model.dtos;
 
-import com.example.carwash.validation.passwordMatcher.PasswordMatcher;
 import com.example.carwash.validation.validNewEmail.ValidNewEmailAndUsername;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.validator.constraints.Length;
 
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@PasswordMatcher(
-        password = "password",
-        confirmPassword = "confirmPassword"
-)
 @ValidNewEmailAndUsername(
         email = "email",
         id = "id",
@@ -33,18 +26,11 @@ public class ProfileEditDTO {
     @Size(min = 3, max = 20, message = "Username must be between 3 and 20 characters")
     private String username;
 
-    @Length(min = 8, max = 20, message = "Password must be between 8 and 20 characters")
-    private String password;
-
-    @Length(min = 8, max = 20, message = "Password must be between 8 and 20 characters")
-    private String confirmPassword;
-
-    @Email
+    @Pattern(regexp = "^[\\w\\.-]+@[a-zA-Z\\d\\.-]+\\.[a-zA-Z]{2,}$", message = "Invalid email!")
     @NotBlank(message = "Email cannot be blank")
     @Size(max = 50, message = "Email cannot be longer than 50 characters")
     private String email;
 
-    @Positive(message = "Age must be a positive number!")
     private Integer age;
 
     private String firstName;
@@ -62,8 +48,6 @@ public class ProfileEditDTO {
         return "ProfileEditDTO{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
-                ", password='" + "[HIDDEN]" + '\'' +
-                ", confirmPassword='" + confirmPassword + '\'' +
                 ", email='" + email + '\'' +
                 ", age=" + age +
                 ", firstName='" + firstName + '\'' +

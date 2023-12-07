@@ -6,6 +6,7 @@ import com.example.carwash.errors.UserNotFoundException;
 import com.example.carwash.model.dtos.ProfileEditDTO;
 import com.example.carwash.model.dtos.ProfileUpdateImageDTO;
 import com.example.carwash.model.dtos.SocialMediaAddDTO;
+import com.example.carwash.model.dtos.UpdatePasswordDTO;
 import com.example.carwash.model.view.ProfileView;
 import com.example.carwash.service.interfaces.ViewService;
 import com.example.carwash.service.interfaces.UserService;
@@ -86,6 +87,35 @@ public class ProfileController {
         return "edit-profile";
     }
 
+    @GetMapping("/edit-password/{username}")
+    public String editPassword(@PathVariable String username,
+                               @ModelAttribute UpdatePasswordDTO updatePasswordDTO,
+                               @AuthenticationPrincipal UserDetails userDetails) {
+        isValidUser(username);
+        checkIfAuthorized(userDetails, username);
+        return "edit-password";
+    }
+
+    @PostMapping("/edit-password/{username}")
+    public String editPassword(@PathVariable String username,
+                               @Valid UpdatePasswordDTO updatePasswordDTO,
+                               BindingResult bindingResult,
+                               RedirectAttributes redirectAttributes,
+                               @AuthenticationPrincipal UserDetails userDetails) {
+
+        checkIfAuthorized(userDetails, username);
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("updatePasswordDTO", updatePasswordDTO);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.updatePasswordDTO", bindingResult);
+            return "redirect:/users/edit-password/" + username;
+        }
+
+
+        if (isValidUser(username)) {
+            userService.updatePassword(username, updatePasswordDTO);
+        }
+        return "redirect:/users/view/" + username;
+    }
 
     @PostMapping("/edit/{username}")
     public String postProfile(@Valid ProfileEditDTO profileEditDTO, BindingResult bindingResult,

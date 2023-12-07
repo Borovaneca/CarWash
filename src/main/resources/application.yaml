@@ -37,6 +37,11 @@ spring:
 
   remember:
     key: ${REMEMBER_KEY:carwash}
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 3MB
+      max-request-size: 3MB
 admin:
   username: ${ADMIN_USERNAME}
   password: ${ADMIN_PASSWORD}
