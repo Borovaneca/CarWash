@@ -70,6 +70,8 @@
                    onclick="showForm('container-update-photo')" class="btn btn-outline-dark profile-edit-btn btn-sm text-md-center text-sm-center"><small style="font-size: x-small" th:text="#{changePhoto}"></small></a>
                 <a th:if="${isAuthorized}"
                    onclick="showForm('container-add-social')" class="btn btn-outline-success profile-edit-btn text-md-center text-sm-center"><small style="font-size: x-small" th:text="#{addSocial}"></small></a>
+                <a th:if="${isAuthorized}"
+                   class="btn btn-outline-dark profile-edit-btn text-md-center text-sm-center" th:href="'/users/edit-password/' + ${username}"><small style="font-size: x-small" th:text="#{changePassword}"></small></a>
             </div>
         </div>
         <div class="row">
@@ -133,7 +135,7 @@
                             </div>
                             <div class="col-md-6" th:switch="*{role}">
                                 <div th:case="'OWNER'">
-                                <p th:text="#{owner}"></p>
+                                    <p th:text="#{owner}"></p>
                                 </div>
                                 <div th:case="'MANAGER'">
                                     <p th:text="#{manager}"></p>
